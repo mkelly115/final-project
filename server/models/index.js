@@ -1,6 +1,6 @@
 const User = require("./User");
 const Team = require("./Team");
-const Projects = require("./Projects");
-const Tasks = require("./Tasks");
+const Project = require("./Project");
+const Task = require("./Task");
 
-module.exports = { User, Team, Projects, Tasks };
+module.exports = { User, Team, Project, Task };
