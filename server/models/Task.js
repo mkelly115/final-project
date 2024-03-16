@@ -13,7 +13,7 @@ const taskSchema = new Schema(
     },
     dateDue: {
       type: Date,
-      required: true
+      required: false //flipped this off from true - seed was having major issues 
     },
     assignedUser: { type: Schema.Types.ObjectId, ref: "User" },
   },
