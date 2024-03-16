@@ -1,6 +1,5 @@
 const { User, Team, Project, Task } = require('../models');
-const auth = require('../utils/auth.js');
-const { AuthenticationError } = require('apollo-server-express');
+const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
     Query: {
@@ -33,19 +32,20 @@ const resolvers = {
         login: async (parent, { email, password }) => {
             const user = await User.findOne({ email });
             if (!user) {
-                return new AuthenticationError('email not found');
+                throw AuthenticationError;
             }
-            const corrPassword = await User.isCorrectPassword(password);
+
+            const corrPassword = await user.isCorrectPassword(password);
             if (!corrPassword) {
-                return new AuthenticationError('Incorrect password');
+                throw AuthenticationError;
             }
-            // auth() function imported from utils directory
-            const token = auth(user);
+
+            const token = signToken(user);
             return { user, token };
         },
         addUser: async (parent, { input }) => {
             const user = await User.create(input);
-            const token = auth(user);
+            const token = signToken(user);
 
             return { user, token };
         },
