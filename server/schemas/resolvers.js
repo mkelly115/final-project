@@ -35,8 +35,8 @@ const resolvers = {
             if (!user) {
                 return new AuthenticationError('email not found');
             }
-            const password = await User.isCorrectPassword(password);
-            if (!password) {
+            const corrPassword = await User.isCorrectPassword(password);
+            if (!corrPasswordassword) {
                 return new AuthenticationError('Incorrect password');
             }
             // auth() function imported from utils directory
