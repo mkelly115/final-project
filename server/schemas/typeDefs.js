@@ -45,14 +45,14 @@ const typeDefs = gql`
     _id: ID
     description: String
     taskStatus: String
-    dateDue: Date
+    dateDue: String
     assignedUser: User
   }
 
   input TaskInput {
     description: String!
     taskStatus: String!
-    dateDue: Date!
+    dateDue: String!
     assignedUserId: ID!
   }
 
