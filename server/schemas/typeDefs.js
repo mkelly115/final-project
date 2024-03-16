@@ -52,7 +52,7 @@ const typeDefs = gql`
   input TaskInput {
     description: String!
     taskStatus: String!
-    dateDue: String!
+    dateDue: String
     assignedUserId: ID!
   }
 
@@ -80,7 +80,8 @@ const typeDefs = gql`
     addProject(input: ProjectInput!): Project
     updateProject(projectId: ID!, input: ProjectInput): Project
     removeProject(projectId: ID!): Project
-    addTask(input: TaskInput!): Task
+    addTask(projectId: ID!, input: TaskInput!): Task
+    
     updateTask(taskId: ID!, input: TaskInput): Task
     removeTask(taskId: ID!): Task
   }

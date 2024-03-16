@@ -72,9 +72,35 @@ const resolvers = {
         removeProject: async (parent, { projectId }) => {
             return Project.findOneAndDelete({ _id: projectId });
         },
-        addTask: async (parent, { input }) => {
-            return Task.create(input);
-        },
+        // addTask: async (parent, { input }) => {
+        //     return Task.create(input);
+        // },
+        addTask: async (parent, { projectId, input }) => {
+            // Your logic to create the task and associate it with the project
+            const task = await Task.create(input);
+      
+            // Fetch the project based on the provided projectId
+            const project = await Project.findById(projectId);
+      
+            // Associate the task with the project
+            project.tasks.push(task);
+            await project.save();
+      
+            // Fetch the assigned user based on the input
+            const user = await User.findById(input.assignedUserId).populate({
+              path: 'projects',
+              populate: {
+                path: 'tasks',
+                model: 'Task',
+              },
+            });
+      
+            // Return the task with the assigned user
+            return {
+              ...task.toObject(),
+              assignedUser: user,
+            };
+          },
         updateTask: async (parent, { taskId, input }) => {
             return await Task.findOneAndUpdate(
                 { _id: taskId },
