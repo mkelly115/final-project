@@ -49,13 +49,10 @@ const resolvers = {
 
             return { user, token };
         },
-        updateUser: async (parent, { userId, firstName, lastName, email, password }) => {
+        updateUser: async (parent, { userId, input }) => {
             return await User.findOneAndUpdate(
                 { _id: userId },
-                { firstName },
-                { lastName },
-                { email },
-                { password },
+                { $set: input },
                 { new: true }
             );
         },
@@ -65,11 +62,10 @@ const resolvers = {
         addProject: async (parent, { input }) => {
             return Project.create(input);
         },
-        updateProject: async (parent, { projectId, name, projectStatus }) => {
+        updateProject: async (parent, { projectId, input }) => {
             return await Project.findOneAndUpdate(
                 { _id: projectId },
-                { name },
-                { projectStatus},
+                { $set: input },
                 { new: true }
             );
         },
@@ -79,12 +75,10 @@ const resolvers = {
         addTask: async (parent, { input }) => {
             return Task.create(input);
         },
-        updateTask: async (parent, { taskId, description, taskStatus, dueDate }) => {
+        updateTask: async (parent, { taskId, input }) => {
             return await Task.findOneAndUpdate(
                 { _id: taskId },
-                { description },
-                { taskStatus },
-                { dueDate },
+                { $set: input },
                 { new: true }
             );
         },
