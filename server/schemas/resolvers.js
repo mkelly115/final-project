@@ -4,16 +4,16 @@ const { signToken, AuthenticationError } = require("../utils/auth");
 const resolvers = {
   Query: {
     users: async () => {
-      return await User.find({}).populate("projects");
+      return await User.find({}).populate("projects").populate("tasks");
     },
     user: async (parent, args) => {
-      return await User.findById(args.id);
+      return await User.findById(args.id).populate("projects").populate("tasks");
     },
     teams: async () => {
-      return await Team.find({}).populate("projects");
+      return await Team.find({}).populate("projects").populate("members");
     },
     team: async (parent, args) => {
-      return await Team.findById(args.id);
+      return await Team.findById(args.id).populate("members");
     },
     projects: async () => {
       return await Project.find({})
@@ -30,10 +30,10 @@ const resolvers = {
       return await Project.findById(args.id);
     },
     tasks: async () => {
-      return await Task.find({});
+      return await Task.find({}).populate("assignedUser");
     },
     task: async (parent, args) => {
-      return await Task.findById(args.id);
+      return await Task.findById(args.id).populate("assignedUser");
     },
   },
   Mutation: {
