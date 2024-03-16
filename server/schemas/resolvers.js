@@ -17,7 +17,13 @@ const resolvers = {
             return await Team.findById(args.id);
         },
         projects: async () => {
-            return await Project.find({});
+            return await Project.find({}).populate({
+                path: 'teams',
+                populate: {
+                    path: 'members',
+                    model: 'User' 
+                }
+            }).populate('tasks'); 
         },
         project: async (parent, args) => {
             return await Project.findById(args.id);
