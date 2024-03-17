@@ -12,7 +12,8 @@ const resolvers = {
     user: async (parent, args) => {
       return await User.findById(args.id)
         .populate("projects")
-        .populate("tasks");
+        .populate("tasks")
+        .populate("team");
     },
     teams: async () => {
       return await Team.find({}).populate("projects").populate("members");
