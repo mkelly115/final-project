@@ -80,36 +80,31 @@ const resolvers = {
       return { user, token };
     },
     addUser: (parent, { input }) => {
-      // Destructure input to extract teamId
+
       const { teamId, ...userData } = input;
 
       try {
-        // Create the user with the provided data
         return User.create(userData).then((user) => {
-          // If teamId is provided and not null or undefined, associate the user with the team
+
           if (teamId !== null && teamId !== undefined) {
-            // Fetch the team based on the provided teamId
             return Team.findById(teamId)
               .then((team) => {
                 if (!team) {
                   throw new Error("Team not found");
                 }
 
-                // Associate the user with the team
                 user.team = team._id;
                 return user.save();
               })
               .then(() => {
-                // Return the created user
                 return { user };
               });
           }
 
-          // Return the created user
           return { user };
         });
       } catch (error) {
-        // Handle any errors
+
         throw new Error("Failed to add user");
       }
     },
