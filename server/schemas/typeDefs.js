@@ -63,13 +63,13 @@ const typeDefs = gql`
 
   type Query {
     users: [User]
-    user(userId: ID!): User
+    user(id: ID!): User
     teams: [Team]
-    team(teamId: ID!): Team
+    team(id: ID!): Team
     projects: [Project]
-    project(projectId: ID!): Project
+    project(id: ID!): Project
     tasks: [Task]
-    task(taskId: ID!): Task
+    task(id: ID!): Task
   }
 
   type Mutation {

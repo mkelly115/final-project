@@ -11,10 +11,10 @@ const taskSchema = new Schema(
       type: String,
       required: true
     },
-    dateDue: {
-      type: Date,
-      required: false //flipped this off from true - seed was having major issues 
-    },
+    // dateDue: {
+    //   type: Date,
+    //   required: false //flipped this off from true - seed was having major issues 
+    // },
     assignedUser: { type: Schema.Types.ObjectId, ref: "User" },
   },
   {
