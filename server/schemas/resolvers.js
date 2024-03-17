@@ -38,7 +38,7 @@ const resolvers = {
   },
   Mutation: {
     login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email }).populate("projects").populate("tasks").populate("team");
       if (!user) {
         throw AuthenticationError;
       }
