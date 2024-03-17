@@ -51,34 +51,42 @@ const resolvers = {
       const token = signToken(user);
       return { user, token };
     },
-    addUser: async (parent, { input }) => {
+    addUser: (parent, { input }) => {
       // Destructure input to extract teamId
       const { teamId, ...userData } = input;
-
+    
       try {
         // Create the user with the provided data
-        const user = await User.create(userData);
-
-        // If teamId is provided, associate the user with the team
-        if (teamId) {
-          // Fetch the team based on the provided teamId
-          const team = await Team.findById(teamId);
-          if (!team) {
-            throw new Error("Team not found");
-          }
-
-          // Associate the user with the team
-          user.team = team;
-          await user.save();
-        }
-
-        // Return the created user
-        return { user };
+        return User.create(userData)
+          .then((user) => {
+            // If teamId is provided and not null or undefined, associate the user with the team
+            if (teamId !== null && teamId !== undefined) {
+              // Fetch the team based on the provided teamId
+              return Team.findById(teamId)
+                .then((team) => {
+                  if (!team) {
+                    throw new Error("Team not found");
+                  }
+    
+                  // Associate the user with the team
+                  user.team = team._id;
+                  return user.save();
+                })
+                .then(() => {
+                  // Return the created user
+                  return { user };
+                });
+            }
+    
+            // Return the created user
+            return { user };
+          });
       } catch (error) {
         // Handle any errors
         throw new Error("Failed to add user");
       }
     },
+    
     updateUser: async (parent, { userId, input }) => {
       return await User.findOneAndUpdate(
         { _id: userId },
