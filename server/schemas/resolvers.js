@@ -18,13 +18,14 @@ const resolvers = {
     user: async (parent, args) => {
       return await User.findById(args.id)
         .populate("projects")
-        .populate("tasks");
+        .populate("tasks")
+        .populate("team");
     },
     teams: async () => {
       return await Team.find({}).populate("projects").populate("members");
     },
     team: async (parent, args) => {
-      return await Team.findById(args.id).populate("members");
+      return await Team.findById(args.id).populate("members").populate("projects");
     },
     projects: async () => {
       return await Project.find({})
@@ -38,7 +39,20 @@ const resolvers = {
         .populate("tasks");
     },
     project: async (parent, args) => {
-      return await Project.findById(args.id);
+      return await Project.findById(args.id).populate({
+        path: "teams",
+        populate: {
+          path: "members",
+          model: "User",
+        },
+      })
+      .populate({
+        path: "tasks",
+        populate: {
+          path: "assignedUser",
+          model: "User",
+        },
+      });
     },
     tasks: async () => {
       return await Task.find({}).populate("assignedUser").exec();
