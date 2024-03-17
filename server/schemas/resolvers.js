@@ -25,7 +25,9 @@ const resolvers = {
       return await Team.find({}).populate("projects").populate("members");
     },
     team: async (parent, args) => {
-      return await Team.findById(args.id).populate("members").populate("projects");
+      return await Team.findById(args.id)
+        .populate("members")
+        .populate("projects");
     },
     projects: async () => {
       return await Project.find({})
@@ -39,20 +41,21 @@ const resolvers = {
         .populate("tasks");
     },
     project: async (parent, args) => {
-      return await Project.findById(args.id).populate({
-        path: "teams",
-        populate: {
-          path: "members",
-          model: "User",
-        },
-      })
-      .populate({
-        path: "tasks",
-        populate: {
-          path: "assignedUser",
-          model: "User",
-        },
-      });
+      return await Project.findById(args.id)
+        .populate({
+          path: "teams",
+          populate: {
+            path: "members",
+            model: "User",
+          },
+        })
+        .populate({
+          path: "tasks",
+          populate: {
+            path: "assignedUser",
+            model: "User",
+          },
+        });
     },
     tasks: async () => {
       return await Task.find({}).populate("assignedUser").exec();
@@ -80,12 +83,10 @@ const resolvers = {
       return { user, token };
     },
     addUser: (parent, { input }) => {
-
       const { teamId, ...userData } = input;
 
       try {
         return User.create(userData).then((user) => {
-
           if (teamId !== null && teamId !== undefined) {
             return Team.findById(teamId)
               .then((team) => {
@@ -97,14 +98,15 @@ const resolvers = {
                 return user.save();
               })
               .then(() => {
-                return { user };
+                // return { user };
+                const token = signToken(user);
+                return { token, user };
               });
           }
 
           return { user };
         });
       } catch (error) {
-
         throw new Error("Failed to add user");
       }
     },
@@ -167,9 +169,7 @@ const resolvers = {
     removeProject: async (parent, { projectId }) => {
       return Project.findOneAndDelete({ _id: projectId });
     },
-    // addTask: async (parent, { input }) => {
-    //     return Task.create(input);
-    // },
+
     addTask: async (parent, { projectId, input }) => {
       // Your logic to create the task and associate it with the project
       const task = await Task.create(input);
@@ -198,19 +198,19 @@ const resolvers = {
     },
     updateTask: async (parent, { taskId, input }) => {
       const { description, taskStatus, assignedUserId } = input;
-    
+
       try {
         // Find the task by ID
         let updatedTask = await Task.findById(taskId);
- 
+
         if (description) updatedTask.description = description;
         if (taskStatus) updatedTask.taskStatus = taskStatus;
         if (assignedUserId) {
           updatedTask.assignedUser = assignedUserId;
         }
-  
+
         updatedTask = await updatedTask.save();
-    
+
         return updatedTask;
       } catch (error) {
         console.error("Error updating task:", error);
