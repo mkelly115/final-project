@@ -4,10 +4,15 @@ const { signToken, AuthenticationError } = require("../utils/auth");
 const resolvers = {
   Query: {
     users: async () => {
-      return await User.find({}).populate("projects").populate("tasks").populate("team");
+      return await User.find({})
+        .populate("projects")
+        .populate("tasks")
+        .populate("team");
     },
     user: async (parent, args) => {
-      return await User.findById(args.id).populate("projects").populate("tasks");
+      return await User.findById(args.id)
+        .populate("projects")
+        .populate("tasks");
     },
     teams: async () => {
       return await Team.find({}).populate("projects").populate("members");
@@ -38,7 +43,10 @@ const resolvers = {
   },
   Mutation: {
     login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email }).populate("projects").populate("tasks").populate("team");
+      const user = await User.findOne({ email })
+        .populate("projects")
+        .populate("tasks")
+        .populate("team");
       if (!user) {
         throw AuthenticationError;
       }
@@ -54,39 +62,38 @@ const resolvers = {
     addUser: (parent, { input }) => {
       // Destructure input to extract teamId
       const { teamId, ...userData } = input;
-    
+
       try {
         // Create the user with the provided data
-        return User.create(userData)
-          .then((user) => {
-            // If teamId is provided and not null or undefined, associate the user with the team
-            if (teamId !== null && teamId !== undefined) {
-              // Fetch the team based on the provided teamId
-              return Team.findById(teamId)
-                .then((team) => {
-                  if (!team) {
-                    throw new Error("Team not found");
-                  }
-    
-                  // Associate the user with the team
-                  user.team = team._id;
-                  return user.save();
-                })
-                .then(() => {
-                  // Return the created user
-                  return { user };
-                });
-            }
-    
-            // Return the created user
-            return { user };
-          });
+        return User.create(userData).then((user) => {
+          // If teamId is provided and not null or undefined, associate the user with the team
+          if (teamId !== null && teamId !== undefined) {
+            // Fetch the team based on the provided teamId
+            return Team.findById(teamId)
+              .then((team) => {
+                if (!team) {
+                  throw new Error("Team not found");
+                }
+
+                // Associate the user with the team
+                user.team = team._id;
+                return user.save();
+              })
+              .then(() => {
+                // Return the created user
+                return { user };
+              });
+          }
+
+          // Return the created user
+          return { user };
+        });
       } catch (error) {
         // Handle any errors
         throw new Error("Failed to add user");
       }
     },
-    
+
     updateUser: async (parent, { userId, input }) => {
       return await User.findOneAndUpdate(
         { _id: userId },
@@ -98,7 +105,24 @@ const resolvers = {
       return User.findOneAndDelete({ _id: userId });
     },
     addProject: async (parent, { input }) => {
-      return Project.create(input);
+      // Create the project
+      const project = await Project.create(input);
+
+      // Fetch the associated team using teamIds
+      const teams = await Team.find({ _id: { $in: input.teamIds } });
+
+      // Fetch the associated tasks using taskIds
+      const tasks = await Task.find({ _id: { $in: input.taskIds } });
+
+      // Populate the teams and tasks fields of the project
+      project.teams = teams;
+      project.tasks = tasks;
+
+      // Save the project with populated fields
+      await project.save();
+
+      // Return the project object
+      return project;
     },
     updateProject: async (parent, { projectId, input }) => {
       return await Project.findOneAndUpdate(
