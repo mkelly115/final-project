@@ -63,11 +63,58 @@ async function seed() {
     await Project.updateOne({ name: 'Project 1' }, { $set: { tasks: [createdTasks[0]._id] } });
     await Project.updateOne({ name: 'Project 2' }, { $set: { tasks: [createdTasks[1]._id] } });
 
-    // Assign tasks and projects to users
-    await User.updateOne({ email: 'john@example.com' }, { $set: { tasks: [createdTasks[0]._id], projects: [createdProjects[0]._id] } });
-    await User.updateOne({ email: 'jane@example.com' }, { $set: { tasks: [createdTasks[1]._id], projects: [createdProjects[1]._id] } });
-    await User.updateOne({ email: 'alice@example.com' }, { $set: { tasks: [createdTasks[0]._id], projects: [createdProjects[0]._id] } });
-    await User.updateOne({ email: 'bob@example.com' }, { $set: { tasks: [createdTasks[1]._id], projects: [createdProjects[1]._id] } });
+ // Assign tasks and projects to users
+await User.updateOne(
+  { email: 'john@example.com' },
+  {
+    $set: {
+      tasks: [createdTasks[0]._id],
+      projects: [createdProjects[0]._id],
+    },
+  }
+);
+
+await User.updateOne(
+  { email: 'jane@example.com' },
+  {
+    $set: {
+      tasks: [createdTasks[1]._id],
+      projects: [createdProjects[1]._id],
+    },
+  }
+);
+
+await User.updateOne(
+  { email: 'alice@example.com' },
+  {
+    $set: {
+      tasks: [createdTasks[0]._id],
+      projects: [createdProjects[0]._id],
+    },
+  }
+);
+
+await User.updateOne(
+  { email: 'bob@example.com' },
+  {
+    $set: {
+      tasks: [createdTasks[1]._id],
+      projects: [createdProjects[1]._id],
+    },
+  }
+);
+
+// Assign assignedUser field to tasks
+await Task.updateOne(
+  { _id: createdTasks[0]._id },
+  { $set: { assignedUser: createdUsers[0]._id } }
+);
+
+await Task.updateOne(
+  { _id: createdTasks[1]._id },
+  { $set: { assignedUser: createdUsers[1]._id } }
+);
+
 
     console.log('Database seeded successfully.');
     process.exit(0);

@@ -30,7 +30,7 @@ const resolvers = {
       return await Project.findById(args.id);
     },
     tasks: async () => {
-      return await Task.find({}).populate("assignedUser");
+      return await Task.find({}).populate("assignedUser").exec();
     },
     task: async (parent, args) => {
       return await Task.findById(args.id).populate("assignedUser");
