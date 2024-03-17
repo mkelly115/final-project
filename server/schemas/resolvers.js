@@ -197,11 +197,25 @@ const resolvers = {
       };
     },
     updateTask: async (parent, { taskId, input }) => {
-      return await Task.findOneAndUpdate(
-        { _id: taskId },
-        { $set: input },
-        { new: true }
-      );
+      const { description, taskStatus, assignedUserId } = input;
+    
+      try {
+        // Find the task by ID
+        let updatedTask = await Task.findById(taskId);
+ 
+        if (description) updatedTask.description = description;
+        if (taskStatus) updatedTask.taskStatus = taskStatus;
+        if (assignedUserId) {
+          updatedTask.assignedUser = assignedUserId;
+        }
+  
+        updatedTask = await updatedTask.save();
+    
+        return updatedTask;
+      } catch (error) {
+        console.error("Error updating task:", error);
+        throw new Error("Failed to update task");
+      }
     },
     removeTask: async (parent, { taskId }) => {
       return Task.findOneAndDelete({ _id: taskId });
