@@ -138,11 +138,29 @@ const resolvers = {
       return project;
     },
     updateProject: async (parent, { projectId, input }) => {
-      return await Project.findOneAndUpdate(
-        { _id: projectId },
-        { $set: input },
-        { new: true }
-      );
+      try {
+        const project = await Project.findById(projectId);
+
+        if (!project) {
+          throw new Error("Project not found");
+        }
+
+        project.set(input);
+
+        if (input.teamIds && input.teamIds.length > 0) {
+          const teams = await Team.find({ _id: { $in: input.teamIds } });
+          const tasks = await Task.find({ _id: { $in: input.taskIds } });
+          project.teams = teams;
+          project.tasks = tasks;
+        }
+
+        const updatedProject = await project.save();
+
+        return updatedProject;
+      } catch (error) {
+        console.error("Failed to update project:", error);
+        throw new Error("Failed to update project");
+      }
     },
     removeProject: async (parent, { projectId }) => {
       return Project.findOneAndDelete({ _id: projectId });
