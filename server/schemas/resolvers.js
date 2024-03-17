@@ -19,7 +19,7 @@ const resolvers = {
       return await Team.find({}).populate("projects").populate("members");
     },
     team: async (parent, args) => {
-      return await Team.findById(args.id).populate("members");
+      return await Team.findById(args.id).populate("members").populate("projects");
     },
     projects: async () => {
       return await Project.find({})
