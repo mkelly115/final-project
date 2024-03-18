@@ -1,7 +1,18 @@
-import '../LoginForm/LoginForm.css';
+import "../LoginForm/LoginForm.css";
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { TextField, Button, Alert } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Alert,
+  FormControl,
+  OutlinedInput,
+  IconButton,
+  InputLabel,
+  InputAdornment,
+  FormHelperText,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Auth from "../../utils/auth";
 import { LOGIN_USER } from "../../utils/mutations";
 
@@ -9,6 +20,7 @@ const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
   const [validated, setValidated] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [login] = useMutation(LOGIN_USER);
 
@@ -76,6 +88,12 @@ const LoginForm = () => {
     }
   };
 
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <>
       <form noValidate onSubmit={handleFormSubmit}>
@@ -89,41 +107,74 @@ const LoginForm = () => {
             Something went wrong with your login credentials!
           </Alert>
         )}
-        <TextField
-          fullWidth
-          label="Email"
-          type="email"
-          placeholder="Your email"
-          name="email"
-          onChange={handleInputChange}
-          value={userFormData.email}
-          required
-          error={validated === false}
-          helperText={!validated && !userFormData.email && "Email is required!"}
-        />
-
-        <TextField
-          fullWidth
-          label="Password"
-          type="password"
-          placeholder="Your password"
-          name="password"
-          onChange={handleInputChange}
-          value={userFormData.password}
-          required
-          error={validated === false}
-          helperText={!validated && !userFormData.password && "Password is required!"}
-        />
-
-        <Button
-          fullWidth
-          disabled={!(userFormData.email && userFormData.password)}
-          type="submit"
-          variant="contained"
-          color="success"
-        >
-          Submit
-        </Button>
+        <div>
+          <FormControl sx={{ m: 1, width: "50%" }} variant="outlined">
+            <TextField
+              fullWidth
+              label="Email"
+              type="email"
+              placeholder="Your email"
+              name="email"
+              onChange={handleInputChange}
+              value={userFormData.email}
+              required
+              error={validated === false}
+            />
+            {!validated && !userFormData.email && (
+              <FormHelperText>Email is required!</FormHelperText>
+            )}
+          </FormControl>
+        </div>
+        <div>
+          <FormControl sx={{ m: 1, width: "50%" }} variant="outlined">
+            <InputLabel
+              htmlFor="outlined-adornment-password"
+              required
+              error={validated === false}
+            >
+              Password
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              fullWidth
+              label="Password"
+              placeholder="Your password"
+              name="password"
+              onChange={handleInputChange}
+              value={userFormData.password}
+              required
+              error={validated === false}
+            />
+            {!validated && !userFormData.password && (
+              <FormHelperText>Password is required!</FormHelperText>
+            )}
+          </FormControl>
+        </div>
+        <div className="buttonContainer">
+          <Button
+            sx={{ m: 1, width: "50%" }}
+            disabled={!(userFormData.email && userFormData.password)}
+            type="submit"
+            variant="contained"
+            color="success"
+            size="large"
+          >
+            Submit
+          </Button>
+        </div>
       </form>
     </>
   );
