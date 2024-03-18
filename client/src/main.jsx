@@ -5,6 +5,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import SideNav from './components/SideNav/sideNav';
 import './index.css';
 import ProjectList from './components/ProjectsList/projectsList.jsx';
+import LoginForm from './components/LoginForm/LoginForm.jsx';
 
 
 const client = new ApolloClient({
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <ApolloProvider client={client}>
       <SideNav />
       <ProjectList />
+      <LoginForm />
     </ApolloProvider>
   </React.StrictMode>,
 )
