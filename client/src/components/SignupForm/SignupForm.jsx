@@ -22,7 +22,8 @@ const SignupForm = () => {
     firstName: "",
     lastName: "",
     email: "",
-    team: "",
+    password: "",
+    // team: "",
   });
   // set state for form validation
   const [validated, setValidated] = useState(null);
@@ -42,7 +43,7 @@ const SignupForm = () => {
     console.log(userFormData);
 
     try {
-      const { data } = await addUser({ variables: { ...userFormData } });
+      const { data } = await addUser({ variables: { input: userFormData } });
 
       // Handle successful signup
       const { token, user } = data.addUser;
@@ -54,7 +55,8 @@ const SignupForm = () => {
         firstName: "",
         lastName: "",
         email: "",
-        team: "",
+        password: "",
+        // team: "",
       });
 
       setValidated(true);

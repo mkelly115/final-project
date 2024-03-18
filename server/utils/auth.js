@@ -22,9 +22,9 @@ module.exports = {
       token = token.split(" ").pop().trim();
     }
 
-    // Handles cases where there is no authentication token provided with the request. By setting user to null, this code indicates that the request is made by an unauthenticated user or that the authentication process failed for some reason.
+    // Handles cases where there is no authentication token provided with the request. 
     if (!token) {
-      return { ...req, user: null };
+      return req;
     }
 
     // verify token and get user data out of it

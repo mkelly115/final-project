@@ -6,6 +6,7 @@ import SideNav from './components/SideNav/sideNav';
 import './index.css';
 import ProjectList from './components/ProjectsList/projectsList.jsx';
 import LoginForm from './components/LoginForm/LoginForm.jsx';
+import SignupForm from './components/SignupForm/SignupForm.jsx'
 
 
 const client = new ApolloClient({
@@ -19,6 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <SideNav />
       <ProjectList />
       <LoginForm />
+      <SignupForm />
     </ApolloProvider>
   </React.StrictMode>,
 )
