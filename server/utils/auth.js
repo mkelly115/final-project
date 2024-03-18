@@ -38,8 +38,8 @@ module.exports = {
   },
 
   // Generates a JWT by creating a payload containing user data and signing it using a secret key, returning the token with an optional expiration time.
-  signToken: function ({ username, email, _id }) {
-    const payload = { username, email, _id };
+  signToken: function ({ email, _id }) {
+    const payload = { email, _id };
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   },
 };

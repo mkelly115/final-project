@@ -90,16 +90,21 @@ query singleTeam($teamId: ID!) {
 
 export const QUERY_PROJECTS = gql`
 query allProjects {
-    projects {
+  projects {
+    _id
+    name
+    projectStatus
+    teams {
       _id
       name
-      projectStatus
-      teams {
+      members {
         _id
-        name
+        firstName
+        lastName
       }
     }
   }
+}
 `;
 
 export const QUERY_SINGLE_PROJECT = gql`
