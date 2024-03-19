@@ -1,6 +1,7 @@
 import './index.css';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useState } from 'react';
 
 import App from './App.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
@@ -13,8 +14,7 @@ import TeamMember from './pages/TeamMember.jsx';
 import TeamProject from './pages/TeamProject.jsx';
 import CompanyOverview from './pages/CompanyOverview.jsx';
 import Profile from './pages/Profile.jsx';
-import Login from './pages/Login.jsx';
-import Signup from './pages/Signup.jsx';
+import LoginForm from './components/LoginForm/LoginForm.jsx';
 
 
 const router = createBrowserRouter([
@@ -59,19 +59,28 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <Profile />
       },
-      {
-        path: "/login",
-        element: <Login />
-      },
-      {
-        path: "/signup",
-        element: <Signup />
-      },
     ]
   }
-])
+]);
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
-);
+export default function AppWithRouter() {
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const handleLogin = () => {
+    setShowLoginModal(true);
+  };
+
+  const handleCloseLoginModal = () => {
+    setShowLoginModal(false);
+  };
+
+  return (
+    <RouterProvider router={router}>
+      <App handleLogin={handleLogin} />
+      {showLoginModal && <LoginForm handleClose={handleCloseLoginModal} />}
+    </RouterProvider>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<AppWithRouter />);
 
