@@ -108,8 +108,8 @@ const LoginForm = () => {
             Something went wrong with your login credentials!
           </Alert>
         )}
-        <div>
-          <FormControl sx={{ m: 1, width: "50%" }} variant="outlined">
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <FormControl sx={{ m: 1, width: "100%", flex: 1}} variant="outlined">
             <TextField
               fullWidth
               label="Email"
@@ -121,13 +121,14 @@ const LoginForm = () => {
               required
               error={validated === false}
             />
+           
             {!validated && !userFormData.email && (
-              <FormHelperText>Email is required!</FormHelperText>
+              <FormHelperText sx={{ color: 'red', marginLeft: '10px' }}>Email is required!</FormHelperText>
             )}
-          </FormControl>
+           </FormControl>
         </div>
         <div>
-          <FormControl sx={{ m: 1, width: "50%" }} variant="outlined">
+          <FormControl sx={{ m: 1, width: "98%", flex: 1 }} variant="outlined">
             <InputLabel
               htmlFor="outlined-adornment-password"
               required
@@ -160,13 +161,13 @@ const LoginForm = () => {
               error={validated === false}
             />
             {!validated && !userFormData.password && (
-              <FormHelperText>Password is required!</FormHelperText>
+              <FormHelperText sx={{ color: 'red', marginLeft: '10px' }}>Password is required!</FormHelperText>
             )}
           </FormControl>
         </div>
         <div className="buttonContainer">
           <Button
-            sx={{ m: 1, width: "50%" }}
+            sx={{ m: 1, width: "100%" }}
             disabled={!(userFormData.email && userFormData.password)}
             type="submit"
             variant="contained"

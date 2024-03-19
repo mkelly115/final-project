@@ -2,9 +2,6 @@ import "./App.css";
 import React from "react";
 import { Outlet } from "react-router-dom";
 import SideNav from "./components/SideNav/sideNav";
-// import ProjectList from "./components/ProjectsList/projectsList.jsx";
-// import LoginForm from "./components/LoginForm/LoginForm.jsx";
-// import SignupForm from "./components/SignupForm/SignupForm.jsx";
 import {
   ApolloClient,
   ApolloProvider,
