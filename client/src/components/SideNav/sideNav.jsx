@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -158,9 +160,17 @@ export default function MiniDrawer() {
               <strong>My Dashboard</strong>
             </ListSubheader>
           )}
-          {["Overview", "Projects", "Tasks", "Calendar"].map((text, index) => (
+          {/* {["Overview", "Projects", "Tasks", "Calendar"].map((text, index) => ( */}
+          {[
+          { text: "Overview", path: "/dashboard" },
+          { text: "Projects", path: "/dashboard/projects" },
+          { text: "Tasks", path: "/dashboard/tasks" },
+          { text: "Calendar", path: "/dashboard/calendar" }
+            ].map(({ text, path }, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
+              component={Link}
+              to={path}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
@@ -196,9 +206,15 @@ export default function MiniDrawer() {
               <strong>My Team</strong>
             </ListSubheader>
           )}
-          {["Members", "Projects"].map((text, index) => (
+          {/* {["Members", "Projects"].map((text, index) => ( */}
+          {[
+          { text: "Members", path: "/team" },
+          { text: "Projects", path: "/team/projects" }
+            ].map(({ text, path }, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
+              component={Link}
+              to={path}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
@@ -221,9 +237,14 @@ export default function MiniDrawer() {
         </List>
         <Divider />
         <List>
-          {["Company Overview"].map((text, index) => (
+          {/* {["Company Overview"].map((text, index) => ( */}
+          {[
+          { text: "Conpany Overview", path: "/overview" },
+            ].map(({ text, path }, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
+              component={Link}
+              to={path}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
@@ -246,17 +267,26 @@ export default function MiniDrawer() {
         </List>
         <Divider />
         <List>
-          {["Profile Settings", "Logout"].map((text, index) => (
+          {/* {["Profile Settings", "Logout"].map((text, index) => ( */}
+          {[
+          { text: "Profile Settings", path: "/profile" },
+          { text: "Login", path: "/login" },
+          // { text: "Logout", path: "/login" },
+          // { text: "Signup", path: "/signup" },
+            ].map(({ text, path }, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
+               component={Link}
+               to={path}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
                   px: 2.5,
                 }}
-                onClick={
-                  text === "Logout" && (isLoggedIn ? handleLogout : handleLogin)
-                }
+                // onClick={
+                //   text === "Logout" && (isLoggedIn ? handleLogout : handleLogin)
+                // }
+                onClick={text === "Logout" ? (isLoggedIn ? handleLogout : handleLogin) : undefined}
               >
                 <ListItemIcon
                   sx={{

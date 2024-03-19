@@ -11,6 +11,7 @@ import {
   InputLabel,
   InputAdornment,
   FormHelperText,
+  Box,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Auth from "../../utils/auth";
@@ -95,7 +96,7 @@ const LoginForm = () => {
   };
 
   return (
-    <>
+    <Box>
       <form noValidate onSubmit={handleFormSubmit}>
         {/* Display alert only if showAlert is true */}
         {showAlert && (
@@ -176,7 +177,7 @@ const LoginForm = () => {
           </Button>
         </div>
       </form>
-    </>
+    </Box>
   );
 };
 

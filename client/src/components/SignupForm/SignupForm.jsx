@@ -11,6 +11,7 @@ import {
   InputLabel,
   InputAdornment,
   FormHelperText,
+  Box
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Auth from "../../utils/auth";
@@ -73,7 +74,7 @@ const SignupForm = () => {
     event.preventDefault();
   };
   return (
-    <>
+    <Box>
       <form noValidate onSubmit={handleFormSubmit}>
         {/* Show alert if showAlert is true */}
         {showAlert && (
@@ -183,7 +184,7 @@ const SignupForm = () => {
           Submit
         </Button>
       </form>
-    </>
+    </Box>
   );
 };
 
