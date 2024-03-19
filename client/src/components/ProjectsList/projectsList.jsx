@@ -5,7 +5,7 @@ import { QUERY_PROJECTS } from '../../utils/queries';
 
 const ProjectList = () => {
   const { loading, error, data } = useQuery(QUERY_PROJECTS, {
-    fetchPolicy: 'cache-and-network', // Ensure fresh data
+    fetchPolicy: 'cache-and-network', 
   });
 
   if (loading) return <p>Loading...</p>;
