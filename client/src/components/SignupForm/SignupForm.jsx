@@ -139,7 +139,7 @@ const SignupForm = () => {
             Password
           </InputLabel>
           <OutlinedInput
-            id="outlined-adornment-password"
+            className="outlined-adornment-password"
             type={showPassword ? "text" : "password"}
             endAdornment={
               <InputAdornment position="end">
