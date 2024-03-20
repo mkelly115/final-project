@@ -35,7 +35,6 @@ function App() {
       <React.StrictMode>
         <ApolloProvider client={client}>
           <SideNav />
-          <Outlet />
         </ApolloProvider>
       </React.StrictMode>
     </>
