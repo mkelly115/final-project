@@ -10,12 +10,19 @@ import {
   IconButton,
   InputLabel,
   InputAdornment,
-  FormHelperText,
+  // FormHelperText,
   Box,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Auth from "../../utils/auth";
 import { LOGIN_USER } from "../../utils/mutations";
+
+// New code
+// Define redirectToDashboard function
+const redirectToDashboard = () => {
+  window.location.href = "/dashboard";
+};
+// End of new code
 
 const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
@@ -38,6 +45,9 @@ const LoginForm = () => {
       const { token, user } = data.login;
       Auth.login(token);
       console.log("User logged in successfully: ", user);
+
+      // Redirect user to dashboard
+      redirectToDashboard();
 
       // Reset form data
       setUserFormData({
@@ -108,8 +118,8 @@ const LoginForm = () => {
             Something went wrong with your login credentials!
           </Alert>
         )}
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <FormControl sx={{ m: 1, width: "100%", flex: 1}} variant="outlined">
+        <div style={{ display: "flex", gap: "10px" }}>
+          <FormControl sx={{ m: 1, width: "100%", flex: 1 }} variant="outlined">
             <TextField
               fullWidth
               label="Email"
@@ -121,11 +131,13 @@ const LoginForm = () => {
               required
               error={validated === false}
             />
-           
-            {!validated && !userFormData.email && (
-              <FormHelperText sx={{ color: 'red', marginLeft: '10px' }}>Email is required!</FormHelperText>
-            )}
-           </FormControl>
+
+            {/* {!validated && !userFormData.email && (
+              <FormHelperText sx={{ color: "red", marginLeft: "10px" }}>
+                Email is required!
+              </FormHelperText>
+            )} */}
+          </FormControl>
         </div>
         <div>
           <FormControl sx={{ m: 1, width: "98%", flex: 1 }} variant="outlined">
@@ -160,9 +172,11 @@ const LoginForm = () => {
               required
               error={validated === false}
             />
-            {!validated && !userFormData.password && (
-              <FormHelperText sx={{ color: 'red', marginLeft: '10px' }}>Password is required!</FormHelperText>
-            )}
+            {/* {!validated && !userFormData.password && (
+              <FormHelperText sx={{ color: "red", marginLeft: "10px" }}>
+                Password is required!
+              </FormHelperText>
+            )} */}
           </FormControl>
         </div>
         <div className="buttonContainer">

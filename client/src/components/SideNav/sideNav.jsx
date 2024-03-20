@@ -161,7 +161,7 @@ export default function MiniDrawer() {
             <List>
               {[
                 {
-                  text: isLoggedIn ? "Logout" : "Login",
+                  text: isLoggedIn ? "Logout" : "Login/Sign Up",
                   onClick: isLoggedIn ? handleLogout : handleLogin,
                 },
               ].map(({ text, path, onClick }, index) => (
@@ -358,7 +358,7 @@ export default function MiniDrawer() {
             style={{
               backgroundColor: "white",
               width: "30%",
-              height: "45%",
+              height: "400px",
               borderRadius: "8px",
               boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
               padding: "20px",
