@@ -10,11 +10,13 @@ import {
   IconButton,
   InputLabel,
   InputAdornment,
-  FormHelperText,
-  Box
+  Box,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Auth from "../../utils/auth";
+import { validateEmail } from "../../utils/helpers";
 import { ADD_USER } from "../../utils/mutations";
 
 const SignupForm = () => {
@@ -24,12 +26,13 @@ const SignupForm = () => {
     lastName: "",
     email: "",
     password: "",
-    // team: "",
+    teamId: "",
   });
   // set state for form validation
   const [validated, setValidated] = useState(null);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
   const [addUser] = useMutation(ADD_USER);
@@ -42,6 +45,20 @@ const SignupForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     console.log(userFormData);
+
+    // Validate email
+    if (!validateEmail(userFormData.email)) {
+      setErrorMessage("Invalid email address");
+      setShowAlert(true);
+      return;
+    }
+
+    // Validate password length
+    if (userFormData.password.length < 8) {
+      setErrorMessage("Password must be at least 8 characters long");
+      setShowAlert(true);
+      return;
+    }
 
     try {
       const { data } = await addUser({ variables: { input: userFormData } });
@@ -57,7 +74,7 @@ const SignupForm = () => {
         lastName: "",
         email: "",
         password: "",
-        // team: "",
+        teamId: "",
       });
 
       setValidated(true);
@@ -73,122 +90,132 @@ const SignupForm = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const handleTeamChange = (event) => {
+    const teamValue = event.target.value;
+    setUserFormData({ ...userFormData, teamId: teamValue });
+  };
+  
   return (
     <Box>
       <form noValidate onSubmit={handleFormSubmit}>
-        {/* Show alert if showAlert is true */}
-        {showAlert && (
-          <Alert onClose={() => setShowAlert(false)} severity="error">
-            Something went wrong with your signup!
-          </Alert>
-        )}
-<div style={{ display: 'flex', gap: '10px' }}>
-        <FormControl sx={{ m: 1, width: "50%", flex: 1 }} variant="outlined">
-          <TextField
-            label="First Name"
-            type="text"
-            placeholder="Your first name"
-            name="firstName"
-            onChange={handleInputChange}
-            value={userFormData.firstName}
-            required
-            error={validated === false}
-          />
-          {!validated && !userFormData.firstName && (
-            <FormHelperText sx={{ color: 'red', marginLeft: '10px' }}>First name is required!</FormHelperText>
-          )}
-        </FormControl>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <FormControl sx={{ m: 1, width: "50%", flex: 1 }} variant="outlined">
+            <TextField
+              label="First Name"
+              type="text"
+              placeholder="Your first name"
+              name="firstName"
+              onChange={handleInputChange}
+              value={userFormData.firstName}
+              required
+              error={validated === false}
+            />
+          </FormControl>
 
-        <FormControl sx={{ m: 1, width: "50%", flex: 1 }} variant="outlined">
-          <TextField
-            label="Last Name"
-            type="text"
-            placeholder="Your last name"
-            name="lastName"
-            onChange={handleInputChange}
-            value={userFormData.lastName}
-            required
-            error={validated === false}
-          />
-          {!validated && !userFormData.lastName && (
-            <FormHelperText sx={{ color: 'red', marginLeft: '10px' }}>Last name is required!</FormHelperText>
-          )}
-        </FormControl>
+          <FormControl sx={{ m: 1, width: "50%", flex: 1 }} variant="outlined">
+            <TextField
+              label="Last Name"
+              type="text"
+              placeholder="Your last name"
+              name="lastName"
+              onChange={handleInputChange}
+              value={userFormData.lastName}
+              required
+              error={validated === false}
+            />
+          </FormControl>
         </div>
-        <div style={{ display: 'flex', gap: '10px' }}>
-        <FormControl sx={{ m: 1, width: "50%", flex: 1}} variant="outlined">
-          <TextField
-            label="Email"
-            type="email"
-            placeholder="Your email address"
-            name="email"
-            onChange={handleInputChange}
-            value={userFormData.email}
-            required
-            error={validated === false}
-          />
-          {!validated && !userFormData.email && (
-            <FormHelperText sx={{ color: 'red', marginLeft: '10px' }}>Email is required!</FormHelperText>
-          )}
-        </FormControl>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <FormControl sx={{ m: 1, width: "50%", flex: 1 }} variant="outlined">
+            <TextField
+              label="Email"
+              type="email"
+              placeholder="Your email address"
+              name="email"
+              onChange={handleInputChange}
+              value={userFormData.email}
+              required
+              error={validated === false}
+            />
+          </FormControl>
 
-        <FormControl sx={{ m: 1, width: "50%", flex: 1}} variant="outlined">
-          <InputLabel
-            htmlFor="outlined-adornment-password"
-            required
-            error={validated === false}
-          >
-            Password
-          </InputLabel>
-          <OutlinedInput
-            className="outlined-adornment-password"
-            type={showPassword ? "text" : "password"}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            fullWidth
-            label="Password"
-            placeholder="Your password"
-            name="password"
-            onChange={handleInputChange}
-            value={userFormData.password}
-            required
-            error={validated === false}
-          />
-          {!validated && !userFormData.password && (
-            <FormHelperText sx={{ color: 'red', marginLeft: '10px' }}>Password is required!</FormHelperText>
-          )}
-        </FormControl>
+          <FormControl sx={{ m: 1, width: "50%", flex: 1 }} variant="outlined">
+            <InputLabel
+              htmlFor="outlined-adornment-password"
+              required
+              error={validated === false}
+            >
+              Password
+            </InputLabel>
+            <OutlinedInput
+              className="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              fullWidth
+              label="Password"
+              placeholder="Your password"
+              name="password"
+              onChange={handleInputChange}
+              value={userFormData.password}
+              required
+              error={validated === false}
+            />
+          </FormControl>
         </div>
-<div className="buttonContainer">
-        <Button
-        sx={{ m: 1, width: "100%" }}
-          disabled={
-            !(
-              userFormData.firstName &&
-              userFormData.lastName &&
-              userFormData.email &&
-              userFormData.password
-            )
-          }
-          type="submit"
-          variant="contained"
-          color="success"
-          size="large"
-        >
-          Submit
-        </Button>
+        {/* Dropdown for selecting team */}
+        <div style={{ display: "flex", gap: "10px" }}>
+          <FormControl sx={{ m: 1, width: "50%", flex: 1 }} variant="outlined">
+            <InputLabel id="team-select-label">Team</InputLabel>
+            <Select
+              labelId="team-select-label"
+              id="team-select"
+              value={userFormData.teamId}
+              onChange={handleTeamChange}
+              label="Team"
+            >
+              <MenuItem value="65f6352262320f5d03db71c0">Team A</MenuItem>
+              <MenuItem value="65f6352262320f5d03db71c1">Team B</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ m: 1, width: "50%", flex: 1,justifyContent:"center" }}>
+            <Button
+              disabled={
+                !(
+                  userFormData.firstName &&
+                  userFormData.lastName &&
+                  userFormData.email &&
+                  userFormData.password
+                )
+              }
+              type="submit"
+              variant="contained"
+              color="success"
+              size="large"
+            >
+              Submit
+            </Button>
+          </FormControl>
         </div>
       </form>
+      {/* Show alert if showAlert is true */}
+      {showAlert && (
+        <Alert onClose={() => setShowAlert(false)} severity="error">
+          {/* Display specific error messages */}
+          {errorMessage || "Something went wrong with your signup!"}
+        </Alert>
+      )}
     </Box>
   );
 };

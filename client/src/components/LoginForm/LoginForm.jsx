@@ -10,19 +10,17 @@ import {
   IconButton,
   InputLabel,
   InputAdornment,
-  // FormHelperText,
   Box,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Auth from "../../utils/auth";
 import { LOGIN_USER } from "../../utils/mutations";
 
-// New code
+
 // Define redirectToDashboard function
 const redirectToDashboard = () => {
   window.location.href = "/dashboard";
 };
-// End of new code
 
 const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
@@ -108,16 +106,7 @@ const LoginForm = () => {
   return (
     <Box>
       <form noValidate onSubmit={handleFormSubmit}>
-        {/* Display alert only if showAlert is true */}
-        {showAlert && (
-          <Alert
-            onClose={() => setShowAlert(false)}
-            open={showAlert}
-            severity="error"
-          >
-            Something went wrong with your login credentials!
-          </Alert>
-        )}
+       
         <div style={{ display: "flex", gap: "10px" }}>
           <FormControl sx={{ m: 1, width: "100%", flex: 1 }} variant="outlined">
             <TextField
@@ -131,12 +120,6 @@ const LoginForm = () => {
               required
               error={validated === false}
             />
-
-            {/* {!validated && !userFormData.email && (
-              <FormHelperText sx={{ color: "red", marginLeft: "10px" }}>
-                Email is required!
-              </FormHelperText>
-            )} */}
           </FormControl>
         </div>
         <div>
@@ -172,11 +155,6 @@ const LoginForm = () => {
               required
               error={validated === false}
             />
-            {/* {!validated && !userFormData.password && (
-              <FormHelperText sx={{ color: "red", marginLeft: "10px" }}>
-                Password is required!
-              </FormHelperText>
-            )} */}
           </FormControl>
         </div>
         <div className="buttonContainer">
@@ -192,6 +170,16 @@ const LoginForm = () => {
           </Button>
         </div>
       </form>
+       {/* Display alert only if showAlert is true */}
+       {showAlert && (
+          <Alert
+            onClose={() => setShowAlert(false)}
+            open={showAlert}
+            severity="error"
+          >
+            Incorrect email or password. Please try again!
+          </Alert>
+        )}
     </Box>
   );
 };
