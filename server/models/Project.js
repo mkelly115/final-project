@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const dateFormat = require('../utils/dateFormat');
 
 const projectSchema = new Schema({
   name: {
@@ -9,6 +10,11 @@ const projectSchema = new Schema({
   },
   projectStatus: {
     type: String
+  },
+  dateDue: {
+    type: Date,
+    default: Date.now,
+    get: (timestamp) => dateFormat(timestamp)
   },
   teams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
   tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }], 

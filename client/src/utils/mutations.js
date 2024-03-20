@@ -63,6 +63,7 @@ mutation addProject($input: ProjectInput!) {
       _id
       name
       projectStatus
+      dateDue
       teams {
         _id
         name
@@ -77,6 +78,7 @@ mutation updateProject($projectId: ID!, $input: ProjectInput) {
       _id
       name
       projectStatus
+      dateDue
       teams {
         _id
         name

@@ -19,13 +19,7 @@ const taskSchema = new Schema(
     },
     assignedUser: { type: Schema.Types.ObjectId, ref: "User" },
   },
-  {
-    toJSON: {
-      virtuals: true,
-    },
-    id: false,
-  }
-);
+ );
 
 const Task = mongoose.model("Task", taskSchema);
 
