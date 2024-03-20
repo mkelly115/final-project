@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import LoginForm from "../LoginForm/LoginForm";
 import SignupForm from "../SignupForm/SignupForm";
 import { styled, useTheme } from "@mui/material/styles";
@@ -387,6 +387,7 @@ export default function MiniDrawer() {
           </div>
         </Modal>
       </Drawer>
+      <Outlet open={open} />
     </Box>
   );
   function TabPanel(props) {
