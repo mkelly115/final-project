@@ -10,7 +10,7 @@ const projectSchema = new Schema({
   projectStatus: {
     type: String
   },
-  // teams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
+  teams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
   tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }], 
 });
 
