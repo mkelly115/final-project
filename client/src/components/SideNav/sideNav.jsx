@@ -216,8 +216,9 @@ export default function MiniDrawer() {
           ].map(({ text, path }, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
-                component={Link}
+                component={isLoggedIn ? Link : "button"}
                 to={path}
+                disabled={!isLoggedIn}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
@@ -259,8 +260,9 @@ export default function MiniDrawer() {
           ].map(({ text, path }, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
-                component={Link}
+                component={isLoggedIn ? Link : "button"}
                 to={path}
+                disabled={!isLoggedIn}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
@@ -287,8 +289,9 @@ export default function MiniDrawer() {
             ({ text, path }, index) => (
               <ListItem key={text} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
-                  component={Link}
+                  component={isLoggedIn ? Link : "button"}
                   to={path}
+                  disabled={!isLoggedIn}
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? "initial" : "center",
@@ -316,8 +319,9 @@ export default function MiniDrawer() {
             ({ text, path }, index) => (
               <ListItem key={text} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
-                  component={Link}
+                  component={isLoggedIn ? Link : "button"}
                   to={path}
+                  disabled={!isLoggedIn}
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? "initial" : "center",
