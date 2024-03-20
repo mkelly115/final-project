@@ -65,7 +65,8 @@ const SignupForm = () => {
 
       // Handle successful signup
       const { token, user } = data.addUser;
-      Auth.login(token);
+      // Auth.login(token);
+      Auth.signup(token); //should this be signup and not login?
 
       console.log("User signed up successfully ", user);
       // Reset form data
@@ -177,10 +178,10 @@ const SignupForm = () => {
         {/* Dropdown for selecting team */}
         <div style={{ display: "flex", gap: "10px" }}>
           <FormControl sx={{ m: 1, width: "50%", flex: 1 }} variant="outlined">
-            <InputLabel id="team-select-label">Team</InputLabel>
+            <InputLabel className="team-select-label">Team</InputLabel>
             <Select
               labelId="team-select-label"
-              id="team-select"
+              className="team-select"
               value={userFormData.teamId}
               onChange={handleTeamChange}
               label="Team"

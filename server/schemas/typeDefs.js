@@ -30,6 +30,7 @@ const typeDefs = gql`
     _id: ID
     name: String
     projectStatus: String
+    dateDue: String
     teams: [Team]
     tasks: [Task]
   }
@@ -37,8 +38,8 @@ const typeDefs = gql`
   input ProjectInput {
     name: String!
     projectStatus: String
+    dateDue: String
     teamIds: [ID]
-    taskIds: [ID]
   }
 
   type Task {
@@ -82,7 +83,6 @@ const typeDefs = gql`
     updateProject(projectId: ID!, input: ProjectInput): Project
     removeProject(projectId: ID!): Project
     addTask(projectId: ID!, input: TaskInput!): Task
-    
     updateTask(taskId: ID!, input: TaskInput): Task
     removeTask(taskId: ID!): Task
   }
