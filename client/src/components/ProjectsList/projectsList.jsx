@@ -4,7 +4,9 @@ import { useQuery } from '@apollo/client';
 import { QUERY_PROJECTS } from '../../utils/queries';
 
 const ProjectList = () => {
-  const { loading, error, data } = useQuery(QUERY_PROJECTS);
+  const { loading, error, data } = useQuery(QUERY_PROJECTS, {
+    fetchPolicy: 'cache-and-network', 
+  });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -13,30 +15,47 @@ const ProjectList = () => {
   }
 
   return (
-    <Grid container>
-      {data.projects?.map((project) => (
-        <Grid item   key={project._id}>
-        <Card
-          variant='outlined'
-          sx={{ height: '300px', width: '300px' }}
-        >
-          <CardActionArea
-            component={RouterLink}
-            to={`/dashboard/projects/${project._id}`}
-            underline='none'
-            sx={{ display: 'block', height: '100%', width: '100%' }}
-          >
-            <CardContent>
-              <Typography id='card-description'>{project.name}</Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-        </ Grid>
+    <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
+      {data.projects.map((project) => (
+        <Grid item key={project.name}>
+          <Card variant='outlined' sx={{ width: 400 }}>
+            <CardActionArea
+              component={RouterLink}
+              to={`/dashboard/projects/${project._id}`}
+              underline='none'
+              sx={{ display: 'block' }}
+            >
+              <CardContent>
+                <Typography variant="h5" component="div" gutterBottom>
+                  {project.name}
+                </Typography>
+                <Typography variant="subtitle1" gutterBottom>
+                  Status: {project.projectStatus}
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                  Teams:
+                </Typography>
+                {project.teams.map((team) => (
+                  <div key={team.name}>
+                    <Typography variant="subtitle2" component="div" gutterBottom>
+                      {team.name}
+                    </Typography>
+                    <ul style={{ listStyleType: 'none', padding: 0 }}>
+                      {team.members.map((member) => (
+                        <li key={`${member.firstName}-${member.lastName}`}>
+                          {member.firstName} {member.lastName}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
       ))}
-  </Grid>
+    </Grid>
   );
 };
 
 export default ProjectList;
-
-
