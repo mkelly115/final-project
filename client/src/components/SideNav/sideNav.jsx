@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import LoginForm from "../LoginForm/LoginForm";
 import SignupForm from "../SignupForm/SignupForm";
@@ -24,11 +24,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import SettingsIcon from "@mui/icons-material/Settings";
-import LogoutIcon from "@mui/icons-material/Logout";
 import GroupsIcon from "@mui/icons-material/Groups";
 import BusinessIcon from "@mui/icons-material/Business";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
-import LoginIcon from "@mui/icons-material/Login";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import TabIcon from "@mui/icons-material/Tab";
@@ -104,9 +102,14 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const jwt = localStorage.getItem("id_token");
+    setIsLoggedIn(!!jwt);
+  }, []);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -121,6 +124,7 @@ export default function MiniDrawer() {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("id_token");
     setIsLoggedIn(false);
     setShowModal(false);
     console.log("Logging out");
@@ -153,7 +157,35 @@ export default function MiniDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div"></Typography>
+          <Typography variant="h6" noWrap component="div">
+            <List>
+              {[
+                {
+                  text: isLoggedIn ? "Logout" : "Login",
+                  onClick: isLoggedIn ? handleLogout : handleLogin,
+                },
+              ].map(({ text, path, onClick }, index) => (
+                <ListItem
+                  key={text}
+                  disablePadding
+                  sx={{ display: "flex", justifyContent: "flex-end" }}
+                >
+                  <ListItemButton
+                    component={Link}
+                    to={path}
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: "flex-end",
+                      px: open ? 2.5 : 1,
+                    }}
+                    onClick={onClick}
+                  >
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </Typography>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -176,7 +208,6 @@ export default function MiniDrawer() {
               <strong>My Dashboard</strong>
             </ListSubheader>
           )}
-          {/* {["Overview", "Projects", "Tasks", "Calendar"].map((text, index) => ( */}
           {[
             { text: "Overview", path: "/dashboard" },
             { text: "Projects", path: "/dashboard/projects" },
@@ -222,7 +253,6 @@ export default function MiniDrawer() {
               <strong>My Team</strong>
             </ListSubheader>
           )}
-          {/* {["Members", "Projects"].map((text, index) => ( */}
           {[
             { text: "Members", path: "/team" },
             { text: "Projects", path: "/team/projects" },
@@ -253,8 +283,7 @@ export default function MiniDrawer() {
         </List>
         <Divider />
         <List>
-          {/* {["Company Overview"].map((text, index) => ( */}
-          {[{ text: "Conpany Overview", path: "/overview" }].map(
+          {[{ text: "Company Overview", path: "/overview" }].map(
             ({ text, path }, index) => (
               <ListItem key={text} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
@@ -283,41 +312,32 @@ export default function MiniDrawer() {
         </List>
         <Divider />
         <List>
-          {[
-            { text: "Profile Settings", path: "/profile" },
-            {
-              text: isLoggedIn ? "Logout" : "Login",
-              onClick: isLoggedIn ? handleLogout : handleLogin,
-            }, // Show "Login" or "Logout" based on isLoggedIn state
-          ].map(({ text, path, onClick }, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                component={Link}
-                to={path}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-                onClick={onClick}
-              >
-                <ListItemIcon
+          {[{ text: "Profile Settings", path: "/profile" }].map(
+            ({ text, path }, index) => (
+              <ListItem key={text} disablePadding sx={{ display: "block" }}>
+                <ListItemButton
+                  component={Link}
+                  to={path}
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
                 >
-                  {text === "Profile Settings" ? (
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
                     <SettingsIcon />
-                    ) : (
-                      isLoggedIn ? <LogoutIcon /> : <LoginIcon />
-                    )}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            )
+          )}
         </List>
 
         <Modal
