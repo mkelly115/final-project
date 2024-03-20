@@ -27,7 +27,10 @@ const resolvers = {
         .populate("tasks");
     },
     project: async (parent, args) => {
-      return await Project.findById(args.id);
+      return await Project.findById(args.id).populate({
+        path: 'tasks',
+        populate: { path: 'assignedUser' } 
+      });
     },
     tasks: async () => {
       return await Task.find({}).populate("assignedUser").exec();

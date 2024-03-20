@@ -15,6 +15,7 @@ import TeamProject from './pages/TeamProject.jsx';
 import CompanyOverview from './pages/CompanyOverview.jsx';
 import Profile from './pages/Profile.jsx';
 import LoginForm from './components/LoginForm/LoginForm.jsx';
+import ProjectTask from './pages/ProjectTask.jsx';
 
 
 const router = createBrowserRouter([
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/projects",
         element: <MyProject />
+      },
+      {
+        path: '/dashboard/projects/:projectId', 
+        element: <ProjectTask />
       },
       {
         path: "/dashboard/tasks",
@@ -73,6 +78,7 @@ export default function AppWithRouter() {
   const handleCloseLoginModal = () => {
     setShowLoginModal(false);
   };
+  
 
   return (
     <RouterProvider router={router}>
