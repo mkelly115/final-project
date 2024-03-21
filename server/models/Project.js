@@ -16,7 +16,7 @@ const projectSchema = new Schema({
     default: Date.now,
     get: (timestamp) => dateFormat(timestamp)
   },
-  teams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
+  team: [{ type: Schema.Types.ObjectId, ref: "Team" }],
   tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }], 
 });
 

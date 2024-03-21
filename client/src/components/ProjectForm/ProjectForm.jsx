@@ -1,4 +1,4 @@
-import "../ProjectForm/ProjectForm.css";
+// import "../ProjectForm/ProjectForm.css";
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import {
@@ -20,8 +20,8 @@ const ProjectForm = () => {
   const [userFormData, setUserFormData] = useState({
     name: "",
     projectStatus: "",
-    dateDue: "",
-    teamIds: "",
+    // dateDue: "",
+    teamId: "",
   });
   // set state for form validation
   const [validated, setValidated] = useState(null);
@@ -29,7 +29,6 @@ const ProjectForm = () => {
   const [showAlert, setShowAlert] = useState(false);
   // State to store selected date
   const [selectedDate, setSelectedDate] = useState(null);
-  // const [errorMessage, setErrorMessage] = useState(null);
 
   const [addProject] = useMutation(ADD_PROJECT);
 
@@ -46,20 +45,28 @@ const ProjectForm = () => {
     event.preventDefault();
     console.log("Selected Date:", selectedDate);
     try {
-      const { data } = await addProject({ variables: { input: userFormData } });
+      // await addProject({ variables: { input: userFormData } });
+      const input = {
+        name: userFormData.name,
+        projectStatus: userFormData.projectStatus,
+        dateDue: selectedDate ? selectedDate.toISOString() : "", // Convert Date to ISO string format
+        teamId: userFormData.teamId,
+      };
+  
+      await addProject({ variables: { input } });
 
-      console.log("Project created successfully ", data);
+      console.log("Project created successfully ");
 
       setUserFormData({
         name: "",
         projectStatus: "",
         dateDue: "",
-        teamIds: "",
+        teamId: "",
       });
 
       setValidated(true);
     } catch (err) {
-      console.error("Error adding project", err);
+      console.error("Error adding project", err.message);
       setShowAlert(true);
 
       setValidated(false);
@@ -68,7 +75,7 @@ const ProjectForm = () => {
 
   const handleTeamChange = (event) => {
     const teamValue = event.target.value;
-    setUserFormData({ ...userFormData, teamIds: teamValue });
+    setUserFormData({ ...userFormData, teamId: teamValue });
   };
 
   const handleStatusChange = (event) => {
@@ -110,13 +117,14 @@ const ProjectForm = () => {
             </Select>
           </FormControl>
         </div>
+        {/* Dropdown for selecting team */}
         <div style={{ display: "flex", gap: "10px" }}>
           <FormControl sx={{ m: 1, width: "50%", flex: 1 }} variant="outlined">
             <InputLabel className="team-select-label">Team</InputLabel>
             <Select
               labelId="team-select-label"
               className="team-select"
-              value={userFormData.teamIds}
+              value={userFormData.teamId}
               onChange={handleTeamChange}
               label="Team"
             >
@@ -143,7 +151,7 @@ const ProjectForm = () => {
                 userFormData.name
                 // userFormData.projectStatus &&
                 // userFormData.dateDue &&
-                // userFormData.teamIds
+                // userFormData.teamId
               )
             }
             type="submit"
