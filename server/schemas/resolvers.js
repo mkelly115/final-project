@@ -35,7 +35,13 @@ const resolvers = {
             model: "User",
           },
         })
-        .populate("tasks")
+        .populate({
+          path: "tasks",
+          populate: {
+            path: "assignedUser",
+            model: "User",
+          },
+        })
         .populate("team");
     },
     project: async (parent, args) => {
