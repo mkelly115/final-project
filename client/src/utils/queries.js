@@ -7,6 +7,7 @@ query me {
       firstName
       lastName
       email
+      password
     }
   }
 `;
