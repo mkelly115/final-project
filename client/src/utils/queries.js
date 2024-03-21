@@ -95,7 +95,7 @@ query allProjects {
     name
     projectStatus
     dateDue
-    teams {
+    team {
       _id
       name
       members {
@@ -115,7 +115,7 @@ query singleProject($projectId: ID!) {
       name
       projectStatus
       dateDue
-      teams {
+      team {
         _id
         name
       }

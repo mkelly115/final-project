@@ -31,7 +31,7 @@ const typeDefs = gql`
     name: String
     projectStatus: String
     dateDue: String
-    teams: [Team]
+    team: Team
     tasks: [Task]
   }
 
@@ -39,7 +39,7 @@ const typeDefs = gql`
     name: String!
     projectStatus: String
     dateDue: String
-    teamIds: [ID]
+    teamId: ID
   }
 
   type Task {

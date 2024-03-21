@@ -3,33 +3,45 @@ const { signToken, AuthenticationError } = require("../utils/auth");
 
 const resolvers = {
   Query: {
+    me: async (parent, args, context) => {
+      if (context.user) {
+        return await User.findOne({ _id: context.user._id }).populate("projects").populate("tasks").populate("team")
+      }
+      throw AuthenticationError;
+    },
     users: async () => {
-      return await User.find({}).populate("projects").populate("tasks").populate("team");
+      return await User.find({})
+        .populate("projects")
+        .populate("tasks")
+        .populate("team");
     },
     user: async (parent, args) => {
-      return await User.findById(args.id).populate("projects").populate("tasks");
+      return await User.findById(args.id)
+        .populate("projects")
+        .populate("tasks");
     },
     teams: async () => {
       return await Team.find({}).populate("projects").populate("members");
     },
     team: async (parent, args) => {
-      return await Team.findById(args.id).populate("members");
+      return await Team.findById(args.id).populate("projects").populate("members");
     },
     projects: async () => {
       return await Project.find({})
         .populate({
-          path: "teams",
+          path: "team",
           populate: {
             path: "members",
             model: "User",
           },
         })
-        .populate("tasks");
+        .populate("tasks")
+        .populate("team");
     },
     project: async (parent, args) => {
       return await Project.findById(args.id).populate({
-        path: 'tasks',
-        populate: { path: 'assignedUser' } 
+        path: "tasks",
+        populate: { path: "assignedUser" },
       });
     },
     tasks: async () => {
@@ -63,7 +75,7 @@ const resolvers = {
         const user = await User.create(userData);
 
         // If teamId is provided, associate the user with the team
-          if (teamId) {
+        if (teamId) {
           // Fetch the team based on the provided teamId
           const team = await Team.findById(teamId);
           if (!team) {
@@ -93,8 +105,33 @@ const resolvers = {
     removeUser: async (parent, { userId }) => {
       return User.findOneAndDelete({ _id: userId });
     },
+
     addProject: async (parent, { input }) => {
-      return Project.create(input);
+      // Destructure input fields
+      const { teamId, ...projectData } = input;
+      console.log(input)
+      try {
+        // Create the project with the provided data
+        const project = await Project.create(projectData);
+
+        // If teamId is provided, associate the user with the team
+        if (teamId) {
+          // Fetch the team based on the provided teamId
+          const team = await Team.findById(teamId);
+          if (!team) {
+            throw new Error("Team not found");
+          }
+          console.log("Retrieved Team:", team);
+          //Associate the project with the team
+          project.team = team;
+          console.log("Project before association:", project);
+          await project.save();
+          console.log("Project after association:", project);
+        }
+        return project;
+      } catch (error) {
+        throw new Error(`Failed to create project: ${error.message}`);
+      }
     },
     updateProject: async (parent, { projectId, input }) => {
       return await Project.findOneAndUpdate(
