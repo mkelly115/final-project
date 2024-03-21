@@ -39,6 +39,7 @@ mutation updateUser($userId: ID!, $input: UserInput) {
       firstName
       lastName
       email
+      password
       team {
         _id
         name

@@ -66,7 +66,7 @@ const SignupForm = () => {
       // Handle successful signup
       const { token, user } = data.addUser;
       // Auth.login(token);
-      Auth.signup(token); //should this be signup and not login?
+      Auth.login(token);
 
       console.log("User signed up successfully ", user);
       // Reset form data
