@@ -17,7 +17,7 @@ const ProjectList = () => {
   return (
     <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
       {data.projects.map((project) => (
-        <Grid item key={project.name}>
+        <Grid item key={project._id}>
           <Card variant='outlined' sx={{ width: 400 }}>
             <CardActionArea
               component={RouterLink}
@@ -35,20 +35,20 @@ const ProjectList = () => {
                 <Typography variant="h6" gutterBottom>
                   Teams:
                 </Typography>
-                {project.teams.map((team) => (
-                  <div key={team.name}>
+                {project.teams && typeof project.teams === 'object' && (
+                  <div key={project.teams._id}>
                     <Typography variant="subtitle2" component="div" gutterBottom>
-                      {team.name}
+                      {project.teams.name}
                     </Typography>
                     <ul style={{ listStyleType: 'none', padding: 0 }}>
-                      {team.members.map((member) => (
-                        <li key={`${member.firstName}-${member.lastName}`}>
+                      {project.teams.members && Array.isArray(project.teams.members) && project.teams.members.map((member) => (
+                        <li key={member._id}>
                           {member.firstName} {member.lastName}
                         </li>
                       ))}
                     </ul>
                   </div>
-                ))}
+                )}
               </CardContent>
             </CardActionArea>
           </Card>
