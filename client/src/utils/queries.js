@@ -37,6 +37,14 @@ query singleUser($userId: ID!) {
       team {
         _id
         name
+        members {
+          email
+          firstName
+          lastName
+          tasks {
+            _id
+          }
+        }
       }
       projects {
         _id
