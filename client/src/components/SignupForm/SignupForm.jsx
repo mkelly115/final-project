@@ -1,6 +1,6 @@
 import "../SignupForm/SignupForm.css";
 import { useState } from "react";
-import { useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import {
   TextField,
   Button,
@@ -17,9 +17,17 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Auth from "../../utils/auth";
 import { validateEmail } from "../../utils/helpers";
+import { QUERY_TEAMS } from "../../utils/queries";
 import { ADD_USER } from "../../utils/mutations";
 
 const SignupForm = () => {
+  const {
+    loading: teamsLoading,
+    error: teamsError,
+    data: teamsData
+  } = useQuery(QUERY_TEAMS);
+    console.log(teamsData);
+
   // set initial form state
   const [userFormData, setUserFormData] = useState({
     firstName: "",
@@ -61,14 +69,17 @@ const SignupForm = () => {
     }
 
     try {
-      const { data } = await addUser({ variables: { input: userFormData } });
-
+      const { data } = await addUser({
+        variables: {
+          input: userFormData
+        },
+      });
+  
       // Handle successful signup
       const { token, user } = data.addUser;
-      // Auth.login(token);
       Auth.login(token);
-
       console.log("User signed up successfully ", user);
+  
       // Reset form data
       setUserFormData({
         firstName: "",
@@ -77,12 +88,11 @@ const SignupForm = () => {
         password: "",
         teamId: "",
       });
-
+  
       setValidated(true);
     } catch (err) {
-      console.error("Error signing up - You went to catch:", err);
+      console.error("Error signing up:", err);
       setShowAlert(true);
-
       setValidated(false);
     }
   };
@@ -96,7 +106,11 @@ const SignupForm = () => {
     const teamValue = event.target.value;
     setUserFormData({ ...userFormData, teamId: teamValue });
   };
-  
+
+  if (teamsLoading) return <p>Loading...</p>;
+  if (teamsError) return <p>Error: {teamsError.message}</p>;
+
+
   return (
     <Box>
       <form noValidate onSubmit={handleFormSubmit}>
@@ -186,11 +200,16 @@ const SignupForm = () => {
               onChange={handleTeamChange}
               label="Team"
             >
-              <MenuItem value="65f6352262320f5d03db71c0">Team A</MenuItem>
-              <MenuItem value="65f6352262320f5d03db71c1">Team B</MenuItem>
+              {teamsData && teamsData.teams && teamsData.teams.map(team => (
+  <MenuItem key={team._id} value={team._id}>
+    {`${team.name}`}
+  </MenuItem>
+))}
             </Select>
           </FormControl>
-          <FormControl sx={{ m: 1, width: "50%", flex: 1,justifyContent:"center" }}>
+          <FormControl
+            sx={{ m: 1, width: "50%", flex: 1, justifyContent: "center" }}
+          >
             <Button
               disabled={
                 !(

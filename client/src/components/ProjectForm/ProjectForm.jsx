@@ -1,6 +1,6 @@
 // import "../ProjectForm/ProjectForm.css";
 import { useState } from "react";
-import { useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import PropTypes from "prop-types";
 import {
   TextField,
@@ -17,9 +17,17 @@ import {
 } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { QUERY_TEAMS } from "../../utils/queries";
 import { ADD_PROJECT } from "../../utils/mutations";
 
 const ProjectForm = ({ open, handleClose }) => {
+  const {
+    loading: teamsLoading,
+    error: teamsError,
+    data: teamsData
+  } = useQuery(QUERY_TEAMS);
+  console.log(teamsData);
+
   // set initial form state
   const initialState = {
     name: "",
@@ -93,6 +101,10 @@ const ProjectForm = ({ open, handleClose }) => {
     handleClose();
   };
 
+  
+  if (teamsLoading) return <p>Loading...</p>;
+  if (teamsError) return <p>Error: {teamsError.message}</p>;
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Add Project</DialogTitle>
@@ -149,8 +161,11 @@ const ProjectForm = ({ open, handleClose }) => {
                 onChange={handleTeamChange}
                 label="Team"
               >
-                <MenuItem value="65f6352262320f5d03db71c0">Team A</MenuItem>
-                <MenuItem value="65f6352262320f5d03db71c1">Team B</MenuItem>
+                {teamsData.teams.map(team => (
+                  <MenuItem key={team._id} value={team._id}>
+                    {`${team.name}`}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
             <FormControl sx={{ m: 1, width: "50%", flex: 1 }}>
@@ -189,7 +204,7 @@ const ProjectForm = ({ open, handleClose }) => {
 };
 
 ProjectForm.propTypes = {
-  open: PropTypes.bool.isRequired, 
+  open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
 

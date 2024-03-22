@@ -97,6 +97,13 @@ const resolvers = {
           // Associate the user with the team
           user.team = team;
           await user.save();
+<<<<<<< Updated upstream
+          
+=======
+
+>>>>>>> Stashed changes
+          team.members.push(user);
+          await team.save();
         }
 
         // Return the created user
