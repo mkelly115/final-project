@@ -34,13 +34,7 @@ const resolvers = {
     },
     projects: async () => {
       return await Project.find({})
-        .populate({
-          path: "team",
-          populate: {
-            path: "members",
-            model: "User",
-          },
-        })
+        .populate("team")
         .populate({
           path: "tasks",
           populate: {
@@ -48,7 +42,6 @@ const resolvers = {
             model: "User",
           },
         })
-        .populate("team");
     },
     project: async (parent, args) => {
       return await Project.findById(args.id).populate({
@@ -97,11 +90,7 @@ const resolvers = {
           // Associate the user with the team
           user.team = team;
           await user.save();
-<<<<<<< Updated upstream
           
-=======
-
->>>>>>> Stashed changes
           team.members.push(user);
           await team.save();
         }
@@ -137,10 +126,10 @@ const resolvers = {
     addProject: async (parent, { input }) => {
       // Destructure input fields
       const { teamId, ...projectData } = input;
-      console.log(input);
+  
       try {
         // Create the project with the provided data
-        const project = await Project.create(projectData);
+        const project = await Project.create({ ...projectData, team: [teamId] });
 
         // If teamId is provided, associate the user with the team
         if (teamId) {
@@ -155,6 +144,9 @@ const resolvers = {
           console.log("Project before association:", project);
           await project.save();
           console.log("Project after association:", project);
+
+          team.projects.push(project);
+          await team.save();
         }
         return project;
       } catch (error) {

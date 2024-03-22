@@ -21,8 +21,8 @@ const teams = [
 ];
 
 const projects = [
-  { name: 'Project 1', projectStatus: 'In Progress', teams: [] },
-  { name: 'Project 2', projectStatus: 'Completed', teams: [] },
+  { name: 'Project 1', projectStatus: 'In Progress', team: [] },
+  { name: 'Project 2', projectStatus: 'Completed', team: [] },
 ];
 
 const tasks = [
@@ -55,7 +55,7 @@ async function seed() {
 
     // Assign teams to projects and projects to teams
     for (let i = 0; i < createdProjects.length; i++) {
-      await Project.updateOne({ _id: createdProjects[i]._id }, { $push: { teams: createdTeams[i]._id } });
+      await Project.updateOne({ _id: createdProjects[i]._id }, { $push: { team: createdTeams[i]._id } });
       await Team.updateOne({ _id: createdTeams[i]._id }, { $push: { projects: createdProjects[i]._id } });
     }
 

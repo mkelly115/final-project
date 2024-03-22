@@ -24,9 +24,9 @@ const SignupForm = () => {
   const {
     loading: teamsLoading,
     error: teamsError,
-    data: teamsData
+    data: teamsData,
   } = useQuery(QUERY_TEAMS);
-    console.log(teamsData);
+  console.log(teamsData);
 
   // set initial form state
   const [userFormData, setUserFormData] = useState({
@@ -71,15 +71,15 @@ const SignupForm = () => {
     try {
       const { data } = await addUser({
         variables: {
-          input: userFormData
+          input: userFormData,
         },
       });
-  
+
       // Handle successful signup
       const { token, user } = data.addUser;
       Auth.login(token);
       console.log("User signed up successfully ", user);
-  
+
       // Reset form data
       setUserFormData({
         firstName: "",
@@ -88,7 +88,7 @@ const SignupForm = () => {
         password: "",
         teamId: "",
       });
-  
+
       setValidated(true);
     } catch (err) {
       console.error("Error signing up:", err);
@@ -109,7 +109,6 @@ const SignupForm = () => {
 
   if (teamsLoading) return <p>Loading...</p>;
   if (teamsError) return <p>Error: {teamsError.message}</p>;
-
 
   return (
     <Box>
@@ -200,11 +199,13 @@ const SignupForm = () => {
               onChange={handleTeamChange}
               label="Team"
             >
-              {teamsData && teamsData.teams && teamsData.teams.map(team => (
-  <MenuItem key={team._id} value={team._id}>
-    {`${team.name}`}
-  </MenuItem>
-))}
+              {teamsData &&
+                teamsData.teams &&
+                teamsData.teams.map((team) => (
+                  <MenuItem key={team._id} value={team._id}>
+                    {`${team.name}`}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
           <FormControl
