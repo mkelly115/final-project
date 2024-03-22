@@ -1,0 +1,15 @@
+.profile-container {
+    padding: 25px;
+}
+
+.profile-details {
+    font-size: 2rem;
+}
+
+.profile-grid-field {
+    padding-bottom: 1rem;
+}
+
+.btn-container button {
+    margin: 1rem;
+}
