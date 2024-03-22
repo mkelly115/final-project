@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { QUERY_ME } from '../../utils/queries';
-import { UPDATE_USER } from '../../utils/mutations';
+import "../ProfileForm/Profileform.css";
+import { useState } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { QUERY_ME } from "../../utils/queries";
+import { UPDATE_USER } from "../../utils/mutations";
+import { Typography, TextField, Grid, Button } from "@mui/material";
 
 const ProfileForm = () => {
   const { loading, error, data } = useQuery(QUERY_ME);
@@ -16,8 +18,6 @@ const ProfileForm = () => {
 
   // Extract user data
   const { me } = data;
-
-  
 
   // Handle edit button click
   const handleEditClick = () => {
@@ -44,9 +44,9 @@ const ProfileForm = () => {
       // After successful save, reset editing state
       setIsEditing(false);
       // Update user data in the component state
-      setUserData({})
+      setUserData({});
     } catch (err) {
-      console.error('Error updating user:', err);
+      console.error("Error updating user:", err);
     }
   };
 
@@ -65,53 +65,78 @@ const ProfileForm = () => {
 
   return (
     <div>
-      <h2>User Profile</h2>
       {isEditing ? (
-        <div>
-          <label>First Name:</label>
-          <input
-            type="text"
-            name="firstName"
-            value={userData.firstName}
-            onChange={handleChange}
-          />
-          <label>Last Name:</label>
-          <input
-            type="text"
-            name="lastName"
-            value={userData.lastName}
-            onChange={handleChange}
-          />
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={userData.email}
-            onChange={handleChange}
-          />
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={userData.password}
-            onChange={handleChange}
-          />
-          <button onClick={handleSaveClick}>Save</button>
-          <button onClick={handleCancelClick}>Cancel</button>
-        </div>
+        <Grid  className="profile-grid-container" container spacing={2}>
+          <Grid item xs={12} className="profile-grid-field">
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              First Name:
+            </Typography>
+            <TextField
+              type="text"
+              name="firstName"
+              value={userData.firstName}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12} className="profile-grid-field">
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              Last Name:
+            </Typography>
+            <TextField
+              type="text"
+              name="lastName"
+              value={userData.lastName}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12} className="profile-grid-field">
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              Email:
+            </Typography>
+            <TextField
+              type="email"
+              name="email"
+              value={userData.email}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12} className="profile-grid-field">
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              Password:
+            </Typography>
+            <TextField
+              type="password"
+              name="password"
+              value={userData.password}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12} className="btn-container" container justifyContent="center">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSaveClick}
+            >
+              Save
+            </Button>
+            <Button variant="contained" onClick={handleCancelClick}>
+              Cancel
+            </Button>
+          </Grid>
+        </Grid>
       ) : (
-        <div>
-          <p>
+        <div className="profile-container">
+          <p className="profile-details">
             <strong>First Name:</strong> {me.firstName}
           </p>
-          <p>
+          <p className="profile-details">
             <strong>Last Name:</strong> {me.lastName}
           </p>
-          <p>
+          <p className="profile-details">
             <strong>Email:</strong> {me.email}
           </p>
-          <p>
-          <strong>Password: *****</strong> 
+          <p className="profile-details">
+            <strong>Password: *****</strong>
           </p>
           <button onClick={handleEditClick}>Edit Profile</button>
         </div>
