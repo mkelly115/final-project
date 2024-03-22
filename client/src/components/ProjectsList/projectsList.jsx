@@ -36,12 +36,12 @@ const ProjectList = () => {
                   Team:
                 </Typography>
                 {project.team && typeof project.team === 'object' && (
-                  <div key={project.team._id}>
+                  <div key={project.team[0]._id}>
                     <Typography variant="subtitle2" component="div" gutterBottom>
-                      {project.team.name}
+                      {project.team[0].name}
                     </Typography>
                     <ul style={{ listStyleType: 'none', padding: 0 }}>
-                      {project.team.members && Array.isArray(project.team.members) && project.team.members.map((member) => (
+                      {project.team[0].members && Array.isArray(project.team[0].members) && project.team[0].members.map((member) => (
                         <li key={member._id}>
                           {member.firstName} {member.lastName}
                         </li>
