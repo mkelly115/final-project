@@ -168,37 +168,59 @@ const resolvers = {
     //     return Task.create(input);
     // },
     addTask: async (parent, { projectId, input }) => {
-      // Your logic to create the task and associate it with the project
-      const task = await Task.create(input);
-
-      // Fetch the project based on the provided projectId
-      const project = await Project.findById(projectId);
-
-      // Associate the task with the project
-      project.tasks.push(task);
-      await project.save();
-
-      // Fetch the assigned user based on the input
-      const user = await User.findById(input.assignedUserId).populate({
-        path: "projects",
-        populate: {
-          path: "tasks",
-          model: "Task",
-        },
-      });
-
-      // Return the task with the assigned user
-      return {
-        ...task.toObject(),
-        assignedUser: user,
-      };
+      try {
+        // Create the task with the provided input
+        const task = await Task.create(input);
+    
+        // Fetch the project based on the provided projectId
+        const project = await Project.findById(projectId);
+        if (!project) {
+          throw new Error("Project not found");
+        }
+    
+        // Associate the task with the project
+        project.tasks.push(task);
+        await project.save();
+    
+        // Fetch the assigned user based on the provided input
+        const assignedUser = await User.findById(input.assignedUserId);
+        if (!assignedUser) {
+          throw new Error("Assigned user not found");
+        }
+    
+        // Set the assigned user for the task
+        task.assignedUser = assignedUser;
+        await task.save();
+    
+        // Return the task with the assigned user
+        return {
+          ...task.toObject(),
+          assignedUser,
+        };
+      } catch (error) {
+        throw new Error(`Failed to create task: ${error.message}`);
+      }
     },
     updateTask: async (parent, { taskId, input }) => {
-      return await Task.findOneAndUpdate(
-        { _id: taskId },
-        { $set: input },
-        { new: true }
-      );
+      try {
+        const existingTask = await Task.findById(taskId);
+        if (!existingTask) {
+          throw new Error("Task not found");
+        }
+    
+        const assignedUserId = existingTask.assignedUser;
+    
+        const updatedTask = await Task.findOneAndUpdate(
+          { _id: taskId },
+          { $set: { ...input, assignedUser: assignedUserId } },
+          { new: true }
+        );
+    
+        return updatedTask;
+      } catch (error) {
+        console.error("Error updating task:", error);
+        throw new Error("Error updating task");
+      }
     },
     removeTask: async (parent, { taskId }) => {
       return Task.findOneAndDelete({ _id: taskId });
