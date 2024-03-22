@@ -32,7 +32,7 @@ const typeDefs = gql`
     name: String
     projectStatus: String
     dateDue: String
-    team: Team
+    team: [Team]
     tasks: [Task]
   }
 
