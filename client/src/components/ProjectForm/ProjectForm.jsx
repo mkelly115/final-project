@@ -50,7 +50,6 @@ const ProjectForm = ({ open, handleClose }) => {
     event.preventDefault();
     console.log("Selected Date:", selectedDate);
     try {
-      // await addProject({ variables: { input: userFormData } });
       const input = {
         name: userFormData.name,
         projectStatus: userFormData.projectStatus,
