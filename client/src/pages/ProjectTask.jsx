@@ -18,10 +18,10 @@ export default function ProjectTask() {
   const projectName = data && data.project && data.project.name;
 
   return (
-    <Grid container spacing={2} direction="column" alignItems="center">
+    <Grid container spacing={2} direction="column" alignItems="center" justifyContent="space-around">
       <Grid item sx={{ py: 2 }}>
         <Typography variant="h2" align="center" gutterBottom>
-          {projectName} Tasks
+          {projectName}
         </Typography>
       </Grid>
       <Grid item sx={{ py: 2 }}>
