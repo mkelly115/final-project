@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_SINGLE_PROJECT, QUERY_USERS } from '../../utils/queries'; 
 import { ADD_TASK, UPDATE_TASK } from '../../utils/mutations';
+
 import { useParams } from 'react-router-dom';
 
 const TaskTable = () => {
@@ -52,6 +53,7 @@ const TaskTable = () => {
         });
     };
 
+
     const handleEditClick = (taskId, currentStatus) => {
         setEditingTaskId(taskId);
         setEditedStatus(currentStatus);
@@ -76,6 +78,7 @@ const TaskTable = () => {
         setEditedStatus('');
     };
 
+
     const handleAddRow = () => {
         if (!newTask.description || !newTask.taskStatus || !newTask.dateDue || !newTask.assignedUserId) {
             setError('All fields are required.');
@@ -90,6 +93,7 @@ const TaskTable = () => {
                     taskStatus: newTask.taskStatus,
                     dateDue: newTask.dateDue ? newTask.dateDue.toISOString() : null,
                     assignedUserId: newTask.assignedUserId
+
                 }
             },
             refetchQueries: [{ query: QUERY_SINGLE_PROJECT, variables: { projectId } }]
@@ -201,6 +205,7 @@ const TaskTable = () => {
                                     <Button variant="contained" color="primary" onClick={handleAddRow}>Add Task</Button>
                                 </TableCell>
                             </TableRow>
+
                             <TableRow>
                                 <TableCell colSpan={5}>
                                     {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -215,3 +220,4 @@ const TaskTable = () => {
     
     export default TaskTable;
     
+
