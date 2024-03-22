@@ -33,15 +33,15 @@ const ProjectList = () => {
                   Status: {project.projectStatus}
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                  Teams:
+                  Team:
                 </Typography>
-                {project.teams && typeof project.teams === 'object' && (
-                  <div key={project.teams._id}>
+                {project.team && typeof project.team === 'object' && (
+                  <div key={project.team._id}>
                     <Typography variant="subtitle2" component="div" gutterBottom>
-                      {project.teams.name}
+                      {project.team.name}
                     </Typography>
                     <ul style={{ listStyleType: 'none', padding: 0 }}>
-                      {project.teams.members && Array.isArray(project.teams.members) && project.teams.members.map((member) => (
+                      {project.team.members && Array.isArray(project.team.members) && project.team.members.map((member) => (
                         <li key={member._id}>
                           {member.firstName} {member.lastName}
                         </li>
