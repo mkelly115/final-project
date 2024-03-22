@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import DatePicker from 'react-datepicker'; 
+import 'react-datepicker/dist/react-datepicker.css'; 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,7 +15,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_SINGLE_PROJECT, QUERY_USERS } from '../../utils/queries'; 
 import { ADD_TASK } from '../../utils/mutations';
-
 import { useParams } from 'react-router-dom';
 
 const TaskTable = () => {
@@ -28,7 +29,7 @@ const TaskTable = () => {
     const [newTask, setNewTask] = useState({
         description: '',
         taskStatus: '',
-        dateDue: '',
+        dateDue: null, 
         assignedUserId: '' 
     });
 
@@ -49,6 +50,13 @@ const TaskTable = () => {
         });
     };
 
+    const handleDateChange = (date) => {
+        setNewTask({
+            ...newTask,
+            dateDue: date
+        });
+    };
+
     const handleAddRow = () => {
         addTask({
             variables: {
@@ -56,8 +64,8 @@ const TaskTable = () => {
                 input: {
                     description: newTask.description,
                     taskStatus: newTask.taskStatus,
-                    dateDue: newTask.dateDue,
-                    assignedUserId: newTask.assignedUserId // Pass assignedUserId to mutation
+                    dateDue: newTask.dateDue ? newTask.dateDue.toISOString() : null, 
+                    assignedUserId: newTask.assignedUserId 
                 }
             },
             refetchQueries: [{ query: QUERY_SINGLE_PROJECT, variables: { projectId } }]
@@ -65,7 +73,7 @@ const TaskTable = () => {
             setNewTask({
                 description: '',
                 taskStatus: '',
-                dateDue: '',
+                dateDue: null,
                 assignedUserId: ''
             });
         }).catch((error) => {
@@ -112,7 +120,13 @@ const TaskTable = () => {
                                 <TextField name="taskStatus" value={newTask.taskStatus} onChange={handleInputChange} />
                             </TableCell>
                             <TableCell>
-                                <TextField name="dateDue" value={newTask.dateDue} onChange={handleInputChange} />
+                                <DatePicker
+                                    selected={newTask.dateDue}
+                                    onChange={handleDateChange}
+                                    dateFormat="yyyy-MM-dd"
+                                    isClearable
+                                    placeholderText="Click to select a date"
+                                />
                             </TableCell>
                             <TableCell>
                                 <Select
