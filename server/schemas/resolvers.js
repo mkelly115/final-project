@@ -1,12 +1,15 @@
 const { User, Team, Project, Task } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
-        return await User.findOne({ _id: context.user._id }).populate("projects").populate("tasks").populate("team")
+        return await User.findOne({ _id: context.user._id })
+          .populate("projects")
+          .populate("tasks")
+          .populate("team");
       }
       throw AuthenticationError;
     },
@@ -25,7 +28,9 @@ const resolvers = {
       return await Team.find({}).populate("projects").populate("members");
     },
     team: async (parent, args) => {
-      return await Team.findById(args.id).populate("projects").populate("members");
+      return await Team.findById(args.id)
+        .populate("projects")
+        .populate("members");
     },
     projects: async () => {
       return await Project.find({})
@@ -102,41 +107,21 @@ const resolvers = {
         throw new Error("Failed to add user");
       }
     },
-    // updateUser: async (parent, { userId, input }) => {
-    //   return await User.findOneAndUpdate(
-    //     { _id: userId },
-    //     { $set: input },
-    //     { new: true }
-    //   );
-    // },
 
     updateUser: async (parent, { userId, input }, context) => {
       try {
-        // Fetch user by userId
-        const user = await User.findById(userId);
-    
-        // Update user fields
-        user.firstName = input.firstName;
-        user.lastName = input.lastName;
-        user.email = input.email;
-    
-        // Check if password is provided and update if needed
         if (input.password) {
-          // Hash the new password before updating
-          const saltRounds = 10;
-          user.password = await bcrypt.hash(input.password, saltRounds);
+          input.password = await bcrypt.hash(input.password, 10);
         }
-    
-        // Save updated user
-        await user.save();
-    
+
+        const user = await User.findOneAndUpdate({ _id: userId }, input);
+
         return user; // Return the updated user
       } catch (error) {
-        console.error('Error updating user:', error);
-        throw new Error('Error updating user');
+        console.error("Error updating user:", error);
+        throw new Error("Error updating user");
       }
     },
-    
 
     removeUser: async (parent, { userId }) => {
       return User.findOneAndDelete({ _id: userId });
@@ -145,7 +130,7 @@ const resolvers = {
     addProject: async (parent, { input }) => {
       // Destructure input fields
       const { teamId, ...projectData } = input;
-      console.log(input)
+      console.log(input);
       try {
         // Create the project with the provided data
         const project = await Project.create(projectData);

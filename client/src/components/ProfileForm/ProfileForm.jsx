@@ -7,7 +7,7 @@ const ProfileForm = () => {
   const { loading, error, data } = useQuery(QUERY_ME);
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
   const [updateUser] = useMutation(UPDATE_USER);
 
   // Handle user data loading
@@ -91,7 +91,7 @@ const ProfileForm = () => {
           />
           <label>Password:</label>
           <input
-            type={showPassword ? "text" : "password"}
+            type="password"
             name="password"
             value={userData.password}
             onChange={handleChange}
@@ -111,7 +111,7 @@ const ProfileForm = () => {
             <strong>Email:</strong> {me.email}
           </p>
           <p>
-          <strong>Password:</strong> {showPassword ? me.password.replace(/./g, '*') : '******'} {/* Display asterisks if not editing */} 
+          <strong>Password: *****</strong> 
           </p>
           <button onClick={handleEditClick}>Edit Profile</button>
         </div>
