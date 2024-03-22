@@ -33,7 +33,7 @@ const ProjectList = () => {
                   Status: {project.projectStatus}
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                  Teams:
+                  Team:
                 </Typography>
                 {project.team && typeof project.team === 'object' && (
                   <div key={project.team._id}>
