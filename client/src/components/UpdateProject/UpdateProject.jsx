@@ -1,3 +1,4 @@
+import "../UpdateProject/UpdateProject.css"
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
@@ -36,11 +37,11 @@ const UpdateProject = () => {
     setSelectedDate(date); // Update selected date state
   };
 
-const handleSaveClick = async () => {
+  const handleSaveClick = async () => {
     try {
       // Extract only the necessary fields from projectData
       const { name, projectStatus, teamId } = projectData;
-  
+
       // Construct the input object to pass to the mutation
       const input = {
         name,
@@ -48,7 +49,7 @@ const handleSaveClick = async () => {
         dateDue: selectedDate ? selectedDate.toISOString() : "",
         teamId,
       };
-  
+
       // Call the updateProject mutation with the projectId and input
       await updateProject({
         variables: {
@@ -61,7 +62,6 @@ const handleSaveClick = async () => {
       console.error("Error updating project:", err);
     }
   };
-  
 
   const handleCancelClick = () => {
     setIsEditing(false);
@@ -76,12 +76,12 @@ const handleSaveClick = async () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div>
-      <Typography variant="h4" gutterBottom>
+    <div className="grid-container">
+      {/* <Typography variant="h4" gutterBottom>
         Edit Project
-      </Typography>
+      </Typography> */}
       {isEditing ? (
-        <Grid container spacing={2}>
+        <Grid className="grid-grid-container" container spacing={2}>
           <Grid item xs={12}>
             <TextField
               name="name"
@@ -105,27 +105,28 @@ const handleSaveClick = async () => {
               <MenuItem value="Completed">Completed</MenuItem>
             </Select>
           </Grid>
-            <Grid item xs={12}>
+          <Grid item xs={12}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              name="dateDue"
-              label="Due Date"
-              type="date"
-              value={projectData.dateDue}
-              onChange={handleDateChange}
-              fullWidth
-              textField={(props) => <TextField {...props} fullWidth />}
-            />
+              <DatePicker
+                name="dateDue"
+                label="Due Date"
+                type="date"
+                value={projectData.dateDue}
+                onChange={handleDateChange}
+                fullWidth
+                textField={(props) => <TextField {...props} fullWidth />}
+              />
             </LocalizationProvider>
           </Grid>
           <Grid item xs={12}>
             <InputLabel className="team-select-label">Team</InputLabel>
             <Select
               name="teamId"
-              label="Team ID"
+              label="Team"
               value={projectData.teamId}
               onChange={handleChange}
-              fullWidth>
+              fullWidth
+            >
               <MenuItem value="65f6352262320f5d03db71c0">Team A</MenuItem>
               <MenuItem value="65f6352262320f5d03db71c1">Team B</MenuItem>
             </Select>
@@ -134,7 +135,8 @@ const handleSaveClick = async () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={handleSaveClick}>
+              onClick={handleSaveClick}
+            >
               Save
             </Button>
             <Button variant="contained" onClick={handleCancelClick}>
@@ -144,17 +146,17 @@ const handleSaveClick = async () => {
         </Grid>
       ) : (
         <div>
-          <Typography variant="h5" gutterBottom>
-            Name: {data.project.name}
+          <Typography className="project-info project-name" variant="h4" gutterBottom>
+            Project Name: {data.project.name}
           </Typography>
-          <Typography variant="subtitle1" gutterBottom>
+          <Typography className="project-info project-status" variant="h4" gutterBottom>
             Status: {data.project.projectStatus}
           </Typography>
-          <Typography variant="subtitle1" gutterBottom>
+          <Typography className="project-info project-due-date" variant="h4" gutterBottom>
             Due Date: {data.project.dateDue}
           </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            Team ID: {data.project.teamId}
+          <Typography className="project-info project-team" variant="h4" gutterBottom>
+            Team: {data.project.teamId}
           </Typography>
           <Button variant="contained" color="primary" onClick={handleEditClick}>
             Edit
