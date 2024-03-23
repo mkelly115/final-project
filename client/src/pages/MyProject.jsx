@@ -2,6 +2,7 @@
 import ProjectForm from "../components/ProjectForm/ProjectForm";
 import { useState } from "react";
 import { Button } from "@mui/material";
+import MyProjectList from "../components/MyProject/MyProjectList"
 
 export default function MyProject() {
   const [open, setOpen] = useState(false);
@@ -15,7 +16,8 @@ export default function MyProject() {
   };
   return (
     <>
-      {/* <h1>My Projects</h1> */}
+    <h1>My Projects</h1>
+    <MyProjectList />
       <Button onClick={handleOpenModal}>Add Project</Button>
       <ProjectForm open={open} handleClose={handleCloseModal} />
     </>
