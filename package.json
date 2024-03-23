@@ -25,6 +25,7 @@
     "@mui/styled-engine-sc": "^6.0.0-alpha.17",
     "@mui/x-date-pickers": "^6.19.8",
     "dayjs": "^1.11.10",
+    "react-calendar": "^4.8.0",
     "react-datepicker": "^6.5.0",
     "styled-components": "^6.1.8"
   }

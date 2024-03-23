@@ -1,8 +1,11 @@
+import TeamCalendar from "../components/Calender/calender"
+
 export default function MyCalendar() {
 
-    return(
+    return (
         <>
-        <h1>My Calendar</h1>
+            <h1>My Calendar</h1>
+            <TeamCalendar />
         </>
-    )
+    );
 }
