@@ -163,8 +163,7 @@ const TaskTable = () => {
                                         {editingTaskId === task._id ? (
                                             <Select
                                                 value={editedStatus}
-                                                onChange={(e) => setEditedStatus(e.target.value)}
-                                            >
+                                                onChange={(e) => setEditedStatus(e.target.value)}>
                                                 <MenuItem value="Created">Created</MenuItem>
                                                 <MenuItem value="Pending">Pending</MenuItem>
                                                 <MenuItem value="In Progress">In Progress</MenuItem>
@@ -186,15 +185,15 @@ const TaskTable = () => {
                                             )}
                                         </TableCell>
                                     </StyledTableRow>
-                                ))}     <StyledTableRow>
+                                ))}
+                                <StyledTableRow>
                                 <TableCell>
                                     <TextField name="description" value={newTask.description} onChange={handleInputChange} />
                                 </TableCell>
                                 <TableCell>
                                     <Select
                                         value={newTask.taskStatus}
-                                        onChange={(e) => setNewTask({ ...newTask, taskStatus: e.target.value })}
-                                    >
+                                        onChange={(e) => setNewTask({ ...newTask, taskStatus: e.target.value })}>
                                         <MenuItem value="Created">Created</MenuItem>
                                         <MenuItem value="Pending">Pending</MenuItem>
                                         <MenuItem value="In Progress">In Progress</MenuItem>
@@ -214,8 +213,7 @@ const TaskTable = () => {
                                     <Select
                                         value={newTask.assignedUserId}
                                         onChange={handleAssignedUserChange}
-                                        name="assignedUserId"
-                                    >
+                                        name="assignedUserId">
                                         {usersData.users.map(user => (
                                             <MenuItem key={user._id} value={user._id}>
                                                 {`${user.firstName} ${user.lastName}`}
@@ -227,7 +225,6 @@ const TaskTable = () => {
                                     <Button variant="contained" sx={{ backgroundColor: '#a6d8aa' }} onClick={handleAddRow}>Add Task</Button>
                                 </TableCell>
                             </StyledTableRow>
-
                             <StyledTableRow>
                                 <TableCell colSpan={5}>
                                     {error && <p style={{ color: 'red' }}>{error}</p>}
