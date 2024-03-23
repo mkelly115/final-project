@@ -1,11 +1,11 @@
-import ProjectList from "../components/ProjectsList/projectsList.jsx"
+import TeamProjectList from "../components/TeamProjects/teamProjects";
 
 export default function TeamProject() {
 
     return(
         <>
         <h1>Team Projects</h1>
-        <ProjectList />
+        <TeamProjectList />
         </>
     )
 }
