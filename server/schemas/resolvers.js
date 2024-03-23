@@ -39,32 +39,65 @@ const resolvers = {
         .populate("projects")
         .populate("members");
     },
-    projects: async () => {
-      return await Project.find({})
-        .populate("team")
-        .populate({
-          path: "tasks",
-          populate: {
-            path: "assignedUser",
-            model: "User",
-          },
-        })
-    },
-    project: async (parent, args) => {
-      return await Project.findById(args.id).populate({
-        path: "tasks",
-        populate: { path: "assignedUser" },
-      })
-      .populate({
-        path: "team"
-      });
-    },
-    tasks: async () => {
-      return await Task.find({}).populate("assignedUser").exec();
-    },
-    task: async (parent, args) => {
-      return await Task.findById(args.id).populate("assignedUser");
-    },
+    // projects: async () => {
+    //   return await Project.find({})
+        // .populate("team")
+    //     .populate({
+    //       path: "tasks",
+    //       populate: {
+    //         path: "assignedUser",
+    //         model: "User",
+    //       },
+    //     })
+    // },
+    // project: async (parent, args) => {
+    //   return await Project.findById(args.id).populate({
+    //     path: "tasks",
+    //     populate: { path: "assignedUser" },
+    //   })
+    //   .populate({
+    //     path: "team"
+    //   });
+    // },
+    // tasks: async () => {
+    //   return await Task.find({}).populate("assignedUser").exec();
+    // },
+    // task: async (parent, args) => {
+    //   return await Task.findById(args.id).populate("assignedUser");
+    // },
+
+    // Modify the resolver to populate the members array within the team field
+projects: async () => {
+  return await Project.find({})
+    .populate({
+      path: 'team',
+      populate: {
+        path: 'members', // Populate the members array within each Team object
+        model: 'User' // Reference to the User model
+      }
+    })
+    .populate({
+      path: 'tasks',
+      populate: {
+        path: 'assignedUser',
+        model: 'User',
+      },
+    });
+},
+project: async (parent, args) => {
+  return await Project.findById(args.id)
+    .populate({
+      path: 'team',
+      populate: {
+        path: 'members', // Populate the members array within each Team object
+        model: 'User' // Reference to the User model
+      }
+    })
+    .populate({
+      path: 'tasks',
+      populate: { path: 'assignedUser' },
+    });
+},
   },
   Mutation: {
     login: async (parent, { email, password }) => {
