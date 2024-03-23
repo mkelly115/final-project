@@ -66,8 +66,8 @@ const ProfileForm = () => {
   return (
     <div>
       {isEditing ? (
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
+        <Grid className="profile-grid-container" container spacing={2}>
+          <Grid item xs={12} className="profile-grid-container">
             <Typography variant="h5" fontWeight="bold" gutterBottom>
               First Name:
             </Typography>
@@ -78,7 +78,7 @@ const ProfileForm = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} className="profile-grid-field">
             <Typography variant="h5" fontWeight="bold" gutterBottom>
               Last Name:
             </Typography>
@@ -89,7 +89,7 @@ const ProfileForm = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} className="profile-grid-field">
             <Typography variant="h5" fontWeight="bold" gutterBottom>
               Email:
             </Typography>
@@ -100,7 +100,7 @@ const ProfileForm = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} className="profile-grid-field">
             <Typography variant="h5" fontWeight="bold" gutterBottom>
               Password:
             </Typography>
@@ -111,7 +111,7 @@ const ProfileForm = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} container justifyContent="center">
+          <Grid item xs={12} className="btn-container" container justifyContent="center">
             <Button
               variant="contained"
               color="primary"
@@ -127,16 +127,16 @@ const ProfileForm = () => {
       ) : (
         <div>
           <Typography variant="h5">Profile Details</Typography>
-          <p>
+          <p className="profile-details">
             <strong>First Name:</strong> {me.firstName}
           </p>
-          <p>
+          <p className="profile-details">
             <strong>Last Name:</strong> {me.lastName}
           </p>
-          <p>
+          <p className="profile-details">
             <strong>Email:</strong> {me.email}
           </p>
-          <p>
+          <p className="profile-details">
             <strong>Password: *****</strong>
           </p>
           <Button variant="contained" onClick={handleEditClick}>
