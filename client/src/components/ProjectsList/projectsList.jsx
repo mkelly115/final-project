@@ -16,44 +16,46 @@ const ProjectList = () => {
 
   return (
     <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
-      {data.projects.map((project) => (
-        <Grid item key={project._id}>
-          <Card variant='outlined' sx={{ width: 400 }}>
-            <CardActionArea
-              component={RouterLink}
-              to={`/dashboard/projects/${project._id}`}
-              underline='none'
-              sx={{ display: 'block' }}
-            >
-              <CardContent>
-                <Typography variant="h5" component="div" gutterBottom>
-                  {project.name}
+      {data.projects.map((project) => {
+        return (
+          <Grid item key={project._id}>
+            <Card variant='outlined' sx={{ width: 400 }}>
+              <CardActionArea
+                component={RouterLink}
+                to={`/dashboard/projects/${project._id}`}
+                underline='none'
+                sx={{ display: 'block' }}
+              >
+                <CardContent>
+                  <Typography variant="h5" component="div" gutterBottom>
+                    {project.name}
+                  </Typography>
+                  <Typography variant="subtitle1" gutterBottom>
+                    Status: {project.projectStatus}
+                  </Typography>
+                  <Typography variant="h6" gutterBottom>
+                    Team:
+                  </Typography>
+                  {project.team && typeof project.team === 'object' && (
+              <div key={project.team[0]._id}>
+                <Typography variant="subtitle2" component="div" gutterBottom>
+                  {project.team[0].name}
                 </Typography>
-                <Typography variant="subtitle1" gutterBottom>
-                  Status: {project.projectStatus}
-                </Typography>
-                <Typography variant="h6" gutterBottom>
-                  Team:
-                </Typography>
-                {project.team && typeof project.team === 'object' && (
-                  <div key={project.team[0]._id}>
-                    <Typography variant="subtitle2" component="div" gutterBottom>
-                      {project.team[0].name}
-                    </Typography>
-                    <ul style={{ listStyleType: 'none', padding: 0 }}>
-                      {project.team[0].members && Array.isArray(project.team[0].members) && project.team[0].members.map((member) => (
-                        <li key={member._id}>
-                          {member.firstName} {member.lastName}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-      ))}
+                <ul style={{ listStyleType: 'none', padding: 0 }}>
+                  {project.team[0].members && Array.isArray(project.team[0].members) && project.team[0].members.map((member) => (
+                    <li key={member._id}>
+                      {member.firstName} {member.lastName}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+        );
+      })}
     </Grid>
   );
 };

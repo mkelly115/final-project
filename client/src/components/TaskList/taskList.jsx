@@ -2,11 +2,33 @@ import { useState } from 'react';
 import DatePicker from 'react-datepicker'; 
 import 'react-datepicker/dist/react-datepicker.css'; 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Select, MenuItem } from '@mui/material';
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles'; // Import styled, createTheme, and ThemeProvider from MUI
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_SINGLE_PROJECT, QUERY_USERS } from '../../utils/queries'; 
 import { ADD_TASK, UPDATE_TASK } from '../../utils/mutations';
 
 import { useParams } from 'react-router-dom';
+
+// Create a custom theme
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#a6d8aa', // Set primary color to #a6d8aa
+    },
+  },
+});
+
+// StyledTableCell and StyledTableRow components for custom styling
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.common.white,
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
 
 const TaskTable = () => {
     const { projectId } = useParams(); 
@@ -120,51 +142,51 @@ const TaskTable = () => {
     }
 
     return (
-        <div>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="task table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Task</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell>Due Date</TableCell>
-                            <TableCell>Assigned User</TableCell>
-                            <TableCell>Edit</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {projectData.project.tasks.map(task => (
-                            <TableRow key={task._id}>
-                                <TableCell>{task.description}</TableCell>
-                                <TableCell>
-                                    {editingTaskId === task._id ? (
-                                        <Select
-                                            value={editedStatus}
-                                            onChange={(e) => setEditedStatus(e.target.value)}
-                                        >
-                                            <MenuItem value="Created">Created</MenuItem>
-                                            <MenuItem value="Pending">Pending</MenuItem>
-                                            <MenuItem value="In Progress">In Progress</MenuItem>
-                                            <MenuItem value="Completed">Completed</MenuItem>
-                                        </Select>
-                                    ) : (
-                                        task.taskStatus
-                                    )}
-                                </TableCell>
-                                <TableCell>{task.dateDue}</TableCell>
-                                <TableCell>
-                                    {task.assignedUser ? `${task.assignedUser.firstName} ${task.assignedUser.lastName}` : 'Not Assigned'}
-                                </TableCell>
-                                <TableCell>
-                                    {editingTaskId === task._id ? (
-                                        <Button variant="contained" color="primary" onClick={() => handleSaveClick(task._id, task.description, task.assignedUserId)}>Save</Button>
+        <ThemeProvider theme={theme}> {/* Apply the custom theme */}
+            <div>
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} aria-label="task table">
+                        <TableHead>
+                            <StyledTableRow>
+                                <StyledTableCell>Task</StyledTableCell>
+                                <StyledTableCell>Status</StyledTableCell>
+                                <StyledTableCell>Due Date</StyledTableCell>
+                                <StyledTableCell>Assigned User</StyledTableCell>
+                                <StyledTableCell>Edit</StyledTableCell>
+                            </StyledTableRow>
+                        </TableHead>
+                        <TableBody>
+                            {projectData.project.tasks.map(task => (
+                                <StyledTableRow key={task._id}>
+                                    <TableCell>{task.description}</TableCell>
+                                    <TableCell>
+                                        {editingTaskId === task._id ? (
+                                            <Select
+                                                value={editedStatus}
+                                                onChange={(e) => setEditedStatus(e.target.value)}
+                                            >
+                                                <MenuItem value="Created">Created</MenuItem>
+                                                <MenuItem value="Pending">Pending</MenuItem>
+                                                <MenuItem value="In Progress">In Progress</MenuItem>
+                                                <MenuItem value="Completed">Completed</MenuItem>
+                                            </Select>
                                         ) : (
-                                            <Button variant="contained" color="primary" onClick={() => handleEditClick(task._id, task.taskStatus)}>Edit</Button>
+                                            task.taskStatus
                                         )}
                                     </TableCell>
-                                </TableRow>
-                            ))}
-                            <TableRow>
+                                    <TableCell>{task.dateDue}</TableCell>
+                                    <TableCell>
+                                        {task.assignedUser ? `${task.assignedUser.firstName} ${task.assignedUser.lastName}` : 'Not Assigned'}
+                                    </TableCell>
+                                    <TableCell>
+                                        {editingTaskId === task._id ? (
+                                            <Button variant="contained" color="primary" onClick={() => handleSaveClick(task._id, task.description, task.assignedUserId)}>Save</Button>
+                                            ) : (
+                                                <Button variant="contained" color="primary" onClick={() => handleEditClick(task._id, task.taskStatus)}>Edit</Button>
+                                            )}
+                                        </TableCell>
+                                    </StyledTableRow>
+                                ))}     <StyledTableRow>
                                 <TableCell>
                                     <TextField name="description" value={newTask.description} onChange={handleInputChange} />
                                 </TableCell>
@@ -202,22 +224,21 @@ const TaskTable = () => {
                                     </Select>
                                 </TableCell>
                                 <TableCell>
-                                    <Button variant="contained" color="primary" onClick={handleAddRow}>Add Task</Button>
+                                    <Button variant="contained" sx={{ backgroundColor: '#a6d8aa' }} onClick={handleAddRow}>Add Task</Button>
                                 </TableCell>
-                            </TableRow>
+                            </StyledTableRow>
 
-                            <TableRow>
+                            <StyledTableRow>
                                 <TableCell colSpan={5}>
                                     {error && <p style={{ color: 'red' }}>{error}</p>}
                                 </TableCell>
-                            </TableRow>
+                            </StyledTableRow>
                         </TableBody>
                     </Table>
                 </TableContainer>
             </div>
-        );
-    };
-    
-    export default TaskTable;
-    
+        </ThemeProvider>
+    );
+};
 
+export default TaskTable;
