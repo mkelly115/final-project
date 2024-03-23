@@ -54,6 +54,9 @@ const resolvers = {
       return await Project.findById(args.id).populate({
         path: "tasks",
         populate: { path: "assignedUser" },
+      })
+      .populate({
+        path: "team"
       });
     },
     tasks: async () => {
@@ -97,7 +100,7 @@ const resolvers = {
           // Associate the user with the team
           user.team = team;
           await user.save();
-          
+
           team.members.push(user);
           await team.save();
         }
@@ -133,7 +136,7 @@ const resolvers = {
     addProject: async (parent, { input }) => {
       // Destructure input fields
       const { teamId, ...projectData } = input;
-  
+
       try {
         // Create the project with the provided data
         const project = await Project.create({ ...projectData, team: [teamId] });
@@ -177,27 +180,31 @@ const resolvers = {
       try {
         // Create the task with the provided input
         const task = await Task.create(input);
-    
+
         // Fetch the project based on the provided projectId
         const project = await Project.findById(projectId);
         if (!project) {
           throw new Error("Project not found");
         }
-    
+
         // Associate the task with the project
         project.tasks.push(task);
         await project.save();
-    
+
         // Fetch the assigned user based on the provided input
         const assignedUser = await User.findById(input.assignedUserId);
         if (!assignedUser) {
           throw new Error("Assigned user not found");
         }
-    
+
         // Set the assigned user for the task
         task.assignedUser = assignedUser;
         await task.save();
-    
+
+        // Update the user's tasks field
+        assignedUser.tasks.push(task);
+        await assignedUser.save();
+
         // Return the task with the assigned user
         return {
           ...task.toObject(),
@@ -213,15 +220,15 @@ const resolvers = {
         if (!existingTask) {
           throw new Error("Task not found");
         }
-    
+
         const assignedUserId = existingTask.assignedUser;
-    
+
         const updatedTask = await Task.findOneAndUpdate(
           { _id: taskId },
           { $set: { ...input, assignedUser: assignedUserId } },
           { new: true }
         );
-    
+
         return updatedTask;
       } catch (error) {
         console.error("Error updating task:", error);

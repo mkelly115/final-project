@@ -1,28 +1,27 @@
-import "../ProfileForm/Profileform.css";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_ME } from "../../utils/queries";
 import { UPDATE_USER } from "../../utils/mutations";
-import { Typography, TextField, Grid, Button } from "@mui/material";
+import {
+  Typography,
+  TextField,
+  Grid,
+  Button,
+} from "@mui/material";
 
 const ProfileForm = () => {
-  const { loading, error, data } = useQuery(QUERY_ME);
+  const { loading, error, data, refetch } = useQuery(QUERY_ME);
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState({});
-  // const [showPassword, setShowPassword] = useState(false);
   const [updateUser] = useMutation(UPDATE_USER);
 
-  // Handle user data loading
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  // Extract user data
   const { me } = data;
 
-  // Handle edit button click
   const handleEditClick = () => {
     setIsEditing(true);
-    // Clone user data for editing
     setUserData({ ...me });
   };
 
@@ -40,24 +39,25 @@ const ProfileForm = () => {
           userId: me._id,
           input,
         },
+        update(cache, { data: { updateUser: updatedUser } }) {
+          cache.writeQuery({
+            query: QUERY_ME,
+            data: { me: updatedUser },
+          });
+        },
       });
-      // After successful save, reset editing state
       setIsEditing(false);
-      // Update user data in the component state
-      setUserData({});
+      refetch(); // Refetch the QUERY_ME query to update the UI
     } catch (err) {
       console.error("Error updating user:", err);
     }
   };
 
-  // Handle cancel button click
   const handleCancelClick = () => {
     setIsEditing(false);
-    // Reset user data to original values
     setUserData({});
   };
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
@@ -66,8 +66,8 @@ const ProfileForm = () => {
   return (
     <div>
       {isEditing ? (
-        <Grid  className="profile-grid-container" container spacing={2}>
-          <Grid item xs={12} className="profile-grid-field">
+        <Grid className="profile-grid-container" container spacing={2}>
+          <Grid item xs={12} className="profile-grid-container">
             <Typography variant="h5" fontWeight="bold" gutterBottom>
               First Name:
             </Typography>
@@ -125,7 +125,8 @@ const ProfileForm = () => {
           </Grid>
         </Grid>
       ) : (
-        <div className="profile-container">
+        <div>
+          <Typography variant="h5">Profile Details</Typography>
           <p className="profile-details">
             <strong>First Name:</strong> {me.firstName}
           </p>
@@ -138,7 +139,9 @@ const ProfileForm = () => {
           <p className="profile-details">
             <strong>Password: *****</strong>
           </p>
-          <button onClick={handleEditClick}>Edit Profile</button>
+          <Button variant="contained" onClick={handleEditClick}>
+            Edit Profile
+          </Button>
         </div>
       )}
     </div>
