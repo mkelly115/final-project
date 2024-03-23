@@ -1,5 +1,5 @@
-import "../UpdateProject/UpdateProject.css"
-import { useState } from "react";
+import "../UpdateProject/UpdateProject.css";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import {
@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { QUERY_SINGLE_PROJECT } from "../../utils/queries";
+import { QUERY_SINGLE_PROJECT, QUERY_TEAMS } from "../../utils/queries";
 import { UPDATE_PROJECT } from "../../utils/mutations";
 
 const UpdateProject = () => {
@@ -22,15 +22,36 @@ const UpdateProject = () => {
     variables: { projectId },
   });
 
+  const {
+    loading: teamsLoading,
+    error: teamsError,
+    data: teamsData,
+  } = useQuery(QUERY_TEAMS);
+  console.log(teamsData);
+
   const [projectData, setProjectData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+
+  useEffect(() => {
+    if (data.project) {
+      setProjectData({
+        ...data.project,
+        teamId: data.project.teamId ? data.project.teamId : "",
+      });
+    }
+  }, [data]);
 
   const [updateProject] = useMutation(UPDATE_PROJECT);
 
   const handleEditClick = () => {
     setIsEditing(true);
-    setProjectData(data.project);
+    // Find the team corresponding to the teamId in the project data
+    const team = teamsData.teams.find(
+      (team) => team._id === data.project.team[0]._id
+    );
+    // Update projectData with team name and other project data
+    setProjectData({ ...data.project, team: team ? team.name : "" });
   };
 
   const handleDateChange = (date) => {
@@ -41,6 +62,9 @@ const UpdateProject = () => {
     try {
       // Extract only the necessary fields from projectData
       const { name, projectStatus, teamId } = projectData;
+
+      // Find the selected team object
+      const selectedTeam = teamsData.teams.find((team) => team._id === teamId);
 
       // Construct the input object to pass to the mutation
       const input = {
@@ -57,6 +81,10 @@ const UpdateProject = () => {
           input: input,
         },
       });
+
+      // Update projectData with the selected team
+      setProjectData({ ...projectData, team: selectedTeam });
+
       setIsEditing(false);
     } catch (err) {
       console.error("Error updating project:", err);
@@ -69,11 +97,19 @@ const UpdateProject = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProjectData({ ...projectData, [name]: value });
+    setProjectData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
+  
 
-  if (loading) return <p>Loading...</p>;
+  if (loading || teamsLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
+  if (teamsError) return <p>Error: {teamsError.message}</p>;
+
+  const team = teamsData.teams.find((team) => team._id === projectData.teamId);
+  const teamName = team ? team.name : "No Team";
 
   return (
     <div className="grid-container">
@@ -123,12 +159,15 @@ const UpdateProject = () => {
             <Select
               name="teamId"
               label="Team"
-              value={projectData.teamId}
+              value={projectData.team ? projectData.team._id : ""}
               onChange={handleChange}
               fullWidth
             >
-              <MenuItem value="65f6352262320f5d03db71c0">Team A</MenuItem>
-              <MenuItem value="65f6352262320f5d03db71c1">Team B</MenuItem>
+              {teamsData.teams.map((team) => (
+                <MenuItem key={team._id} value={team._id}>
+                  {team.name}
+                </MenuItem>
+              ))}
             </Select>
           </Grid>
           <Grid item xs={12}>
@@ -146,17 +185,33 @@ const UpdateProject = () => {
         </Grid>
       ) : (
         <div>
-          <Typography className="project-info project-name" variant="h4" gutterBottom>
+          <Typography
+            className="project-info project-name"
+            variant="h4"
+            gutterBottom
+          >
             Project Name: {data.project.name}
           </Typography>
-          <Typography className="project-info project-status" variant="h4" gutterBottom>
+          <Typography
+            className="project-info project-status"
+            variant="h4"
+            gutterBottom
+          >
             Status: {data.project.projectStatus}
           </Typography>
-          <Typography className="project-info project-due-date" variant="h4" gutterBottom>
+          <Typography
+            className="project-info project-due-date"
+            variant="h4"
+            gutterBottom
+          >
             Due Date: {data.project.dateDue}
           </Typography>
-          <Typography className="project-info project-team" variant="h4" gutterBottom>
-            Team: {data.project.teamId}
+          <Typography
+            className="project-info project-team"
+            variant="h4"
+            gutterBottom
+          >
+            Team: {teamName}
           </Typography>
           <Button variant="contained" color="primary" onClick={handleEditClick}>
             Edit

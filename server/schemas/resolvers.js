@@ -54,6 +54,9 @@ const resolvers = {
       return await Project.findById(args.id).populate({
         path: "tasks",
         populate: { path: "assignedUser" },
+      })
+      .populate({
+        path: "team"
       });
     },
     tasks: async () => {
