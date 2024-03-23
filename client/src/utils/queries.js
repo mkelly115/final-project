@@ -38,6 +38,7 @@ query singleUser($userId: ID!) {
         _id
         name
         members {
+          _id
           email
           firstName
           lastName

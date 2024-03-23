@@ -25,9 +25,7 @@ export default function TeamMember() {
   if (userError) return <p>Error: {userError.message}</p>;
 
   const { user: {team} } = userData;
-  console.log(team)
   const members = team.members
-  console.log(members);
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
