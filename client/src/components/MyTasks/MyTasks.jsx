@@ -4,6 +4,7 @@ import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
 } from "@mui/material";
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { useEffect } from "react";
 
 // Create a custom theme
 const theme = createTheme({
@@ -27,12 +28,22 @@ const theme = createTheme({
   }));
 
 const MyTaskList = () => {
-  const { loading: meLoading, error: meError, data: meData } = useQuery(
-    QUERY_ME
-  );
+  // const { loading: meLoading, error: meError, data: meData } = useQuery(QUERY_ME);
 
-  const { loading: tasksLoading, error: tasksError, data: tasksData } =
+  const { loading: meLoading, error: meError, data: meData, refetch: refetchMe } = useQuery(QUERY_ME);
+
+  // const { loading: tasksLoading, error: tasksError, data: tasksData } =
+  //   useQuery(QUERY_TASKS);
+
+  const { loading: tasksLoading, error: tasksError, data: tasksData, refetch: refetchTask } =
     useQuery(QUERY_TASKS);
+
+    useEffect(() => {
+      refetchMe();
+      refetchTask();
+    }, [refetchMe, refetchTask]);
+
+
 
   if (meLoading || tasksLoading) return <p>Loading...</p>;
   if (meError || tasksError) return <p>Error fetching data...</p>;
