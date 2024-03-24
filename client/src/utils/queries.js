@@ -99,23 +99,34 @@ query singleTeam($teamId: ID!) {
 `;
 
 export const QUERY_PROJECTS = gql`
-query allProjects {
-  projects {
-    _id
-    name
-    projectStatus
-    dateDue
-    team {
+  query allProjects {
+    projects {
       _id
       name
-      members {
+      projectStatus
+      dateDue
+      team {
         _id
-        firstName
-        lastName
+        name
+        members {
+          _id
+          firstName
+          lastName
+        }
+      }
+      tasks { 
+        _id
+        description
+        taskStatus
+        dateDue
+        assignedUser {
+          _id
+          firstName
+          lastName
+        }
       }
     }
   }
-}
 `;
 
 export const QUERY_SINGLE_PROJECT = gql`
