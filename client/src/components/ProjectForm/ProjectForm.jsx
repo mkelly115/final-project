@@ -24,7 +24,7 @@ const ProjectForm = ({ open, handleClose }) => {
   const {
     loading: teamsLoading,
     error: teamsError,
-    data: teamsData
+    data: teamsData,
   } = useQuery(QUERY_TEAMS);
   console.log(teamsData);
 
@@ -77,6 +77,9 @@ const ProjectForm = ({ open, handleClose }) => {
       });
 
       setValidated(true);
+
+      // Reload the page to show the newly added project
+      window.location.reload();
     } catch (err) {
       console.error("Error adding project", err.message);
       setShowAlert(true);
@@ -100,7 +103,6 @@ const ProjectForm = ({ open, handleClose }) => {
     handleClose();
   };
 
-  
   if (teamsLoading) return <p>Loading...</p>;
   if (teamsError) return <p>Error: {teamsError.message}</p>;
 
@@ -160,7 +162,7 @@ const ProjectForm = ({ open, handleClose }) => {
                 onChange={handleTeamChange}
                 label="Team"
               >
-                {teamsData.teams.map(team => (
+                {teamsData.teams.map((team) => (
                   <MenuItem key={team._id} value={team._id}>
                     {`${team.name}`}
                   </MenuItem>
