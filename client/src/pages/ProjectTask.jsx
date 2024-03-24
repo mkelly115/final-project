@@ -16,12 +16,25 @@ export default function ProjectTask() {
 
   // Extract the project name from the data
   const projectName = data && data.project && data.project.name;
+  const projectStatus = data && data.project && data.project.projectStatus;
+  const dueDate = data && data.project && data.project.dateDue;
+  const team = data && data.project && data.project.team[0].name;
+  console.log(team)
 
   return (
     <Grid container spacing={2} direction="column" alignItems="center" justifyContent="space-around">
       <Grid item sx={{ py: 2 }}>
         <Typography variant="h2" align="center" gutterBottom>
           {projectName}
+        </Typography>
+        <Typography variant="h4" align="center" gutterBottom>
+          Status: {projectStatus}
+        </Typography>
+        <Typography variant="h4" align="center" gutterBottom>
+          Due Date: {dueDate}
+        </Typography>
+        <Typography variant="h4" align="center" gutterBottom>
+          Team: {team}
         </Typography>
       </Grid>
       <Grid item sx={{ py: 2 }}>
