@@ -238,7 +238,7 @@ const tasks = [
   },
   {
     description: "Develop notification system for user interactions",
-    taskStatus: "Pending",
+    taskStatus: "In Progress",
     dueDate: new Date(),
   },
   {

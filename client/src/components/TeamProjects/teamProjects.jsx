@@ -33,8 +33,8 @@ const TeamProjectList = () => {
   return (
     <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
       {userProjects.map(project => (
-        <Grid item key={project._id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Card variant='outlined' sx={{ width: 400 }}>
+        <Grid item key={project._id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} xs={12}>
+          <Card variant='outlined' sx={{ width: '100%', borderRadius: 2, boxShadow: 3 }}>
             <CardActionArea
               component={RouterLink}
               to={`/dashboard/projects/${project._id}`}
