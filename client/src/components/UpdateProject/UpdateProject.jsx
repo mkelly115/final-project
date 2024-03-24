@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import {
-  Typography,
+  // Typography,
   Button,
   TextField,
   Grid,
@@ -46,7 +46,7 @@ const UpdateProject = () => {
   const handleSaveClick = async () => {
     try {
       const { name, projectStatus, teamId } = projectData;
-      const selectedTeam = teamsData.teams.find((team) => team._id === teamId);
+      // const selectedTeam = teamsData.teams.find((team) => team._id === teamId);
 
       const input = {
         name,
@@ -88,8 +88,8 @@ const UpdateProject = () => {
   if (error) return <p>Error: {error.message}</p>;
   if (teamsError) return <p>Error: {teamsError.message}</p>;
 
-  const team = teamsData.teams.find((team) => team._id === projectData.teamId);
-  const teamName = team ? team.name : "No Team";
+  // const team = teamsData.teams.find((team) => team._id === projectData.teamId);
+  // const teamName = team ? team.name : "No Team";
 
   return (
     <div className="grid-container">
