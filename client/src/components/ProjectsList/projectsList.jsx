@@ -18,8 +18,8 @@ const ProjectList = () => {
     <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
       {data.projects.map((project) => {
         return (
-          <Grid item key={project._id}>
-            <Card variant='outlined' sx={{ width: 400 }}>
+          <Grid item key={project._id} xs={12} sm={6} md={4} lg={3}>
+            <Card variant='outlined' sx={{ width: '100%', borderRadius: 2, boxShadow: 3 }}>
               <CardActionArea
                 component={RouterLink}
                 to={`/dashboard/projects/${project._id}`}

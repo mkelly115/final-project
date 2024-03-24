@@ -1,11 +1,19 @@
-// import ProjectList from "../components/ProjectsList/projectsList.jsx"
-import MyProjectList from "../components/MyProject/MyProjectList"
+import MyProjectList from "../components/MyProject/MyProjectList";
+import { Grid } from "@mui/material";
 
 export default function MyProject() {
   return (
-    <>
-    <h1>My Projects</h1>
-    <MyProjectList />
-    </>
+    <Grid
+      container
+      spacing={2}
+      direction="column"
+      alignItems="center"
+      justifyContent="space-around"
+    >
+      <Grid item sx={{ py: 2 }}>
+        <h1>My Projects</h1>
+        <MyProjectList />
+      </Grid>
+    </Grid>
   );
 }
