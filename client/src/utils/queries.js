@@ -51,6 +51,7 @@ query singleUser($userId: ID!) {
         _id
         name
         projectStatus
+        dateDue
       }
       tasks {
         _id
