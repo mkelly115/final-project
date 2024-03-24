@@ -72,6 +72,7 @@ button:focus-visible {
 .chart-container {
   width: 400px;
   max-width: 400px;
+  height: 300px;
 }
 
 .chart-container {
@@ -87,4 +88,11 @@ button:focus-visible {
 .chart-border {
   border: 1px solid #ccc;
   padding: 10px;
+}
+
+.gauge-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px; /* Set the height to match the other chart containers */
 }
