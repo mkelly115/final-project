@@ -68,3 +68,23 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.chart-container {
+  width: 400px;
+  max-width: 400px;
+}
+
+.chart-container {
+  margin-top: 20px;
+}
+
+.chart-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.chart-border {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
