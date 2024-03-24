@@ -85,71 +85,99 @@ const MyOverview = () => {
     .filter((status) => status !== "Completed")
     .reduce((acc, status) => acc + taskStatusCounts[status], 0);
 
-    const completedTasksCount = taskStatusCounts.Completed || 0;
+  const completedTasksCount = taskStatusCounts.Completed || 0;
+
+  const today = new Date();
+  console.log("Today's date:", today);
+  
+  const closestDueDateProject = projectsData.user.projects.reduce(
+    (closestProject, currentProject) => {
+      const currentDueDate = new Date(currentProject.dateDue);
+      console.log(
+        `Project: ${currentProject.projectName}, Due Date: ${currentDueDate}`
+      );
+      if (
+        (!closestProject ||
+          (currentDueDate > today && currentDueDate < new Date(closestProject.dateDue))) &&
+          currentDueDate > today
+      ) {
+        return currentProject;
+      }
+      return closestProject;
+    },
+    null
+  );
+  
+  console.log("Closest Due Date Project:", closestDueDateProject);
+
+  console.log(projectsData.user.projects);
+
 
   return (
-        <div>
-          <div className="chart-container">
-            <div className="chart-border">
-              <div className="chart-header">Project Status Overview</div>
-              <PieChart
-                series={[
-                  {
-                    data: projectChartData,
-                    highlightScope: { faded: "global", highlighted: "item" },
-                    faded: {
-                      innerRadius: 30,
-                      additionalRadius: -30,
-                      color: "gray",
-                    },
-                  },
-                ]}
-                height={200}
-              />
-              <div>Total Projects: {totalProjectsCount}</div>
-            </div>
+    <div>
+      <div className="chart-container">
+        <div className="chart-border">
+          <div className="chart-header">Project Status Overview</div>
+          <PieChart
+            series={[
+              {
+                data: projectChartData,
+                highlightScope: { faded: "global", highlighted: "item" },
+                faded: {
+                  innerRadius: 30,
+                  additionalRadius: -30,
+                  color: "gray",
+                },
+              },
+            ]}
+            height={200}
+          />
+          <div>Total Projects: {totalProjectsCount}</div>
+        </div>
+      </div>
+      <div className="chart-container">
+        <div className="chart-border">
+          <div className="chart-header">Task Status Overview</div>
+          <PieChart
+            series={[
+              {
+                data: taskChartData,
+                highlightScope: { faded: "global", highlighted: "item" },
+                faded: {
+                  innerRadius: 30,
+                  additionalRadius: -30,
+                  color: "gray",
+                },
+              },
+            ]}
+            height={200}
+          />
+          <div>Total Tasks: {totalTasksCount}</div>
+        </div>
+      </div>
+      <div className="chart-container">
+        <div className="chart-border">
+          <div className="chart-header">
+            You have {incompleteTasksCount} tasks to complete
           </div>
-          <div className="chart-container">
-            <div className="chart-border">
-              <div className="chart-header">Task Status Overview</div>
-              <PieChart
-                series={[
-                  {
-                    data: taskChartData,
-                    highlightScope: { faded: "global", highlighted: "item" },
-                    faded: {
-                      innerRadius: 30,
-                      additionalRadius: -30,
-                      color: "gray",
-                    },
-                  },
-                ]}
-                height={200}
-              />
-              <div>Total Tasks: {totalTasksCount}</div>
-            </div>
+          <div className="gauge-container">
+            <Gauge
+              value={completedTasksCount}
+              valueMax={totalTasksCount}
+              startAngle={-110}
+              endAngle={110}
+              sx={{
+                [`& .${gaugeClasses.valueText}`]: {
+                  fontSize: 40,
+                  transform: "translate(0px, 0px)",
+                },
+              }}
+              text={({ value, valueMax }) => `${value} / ${valueMax}`}
+            />
           </div>
-          <div className="chart-container">
-            <div className="chart-border">
-              <div className="chart-header">You have {incompleteTasksCount} tasks to complete</div>
-              <div className="gauge-container">
-                <Gauge
-                  value={completedTasksCount}
-                  valueMax={totalTasksCount}
-                  startAngle={-110}
-                  endAngle={110}
-                  sx={{
-                    [`& .${gaugeClasses.valueText}`]: {
-                      fontSize: 40,
-                      transform: "translate(0px, 0px)",
-                    },
-                  }}
-                  text={({ value, valueMax }) => `${value} / ${valueMax}`}
-                />
-              </div>
-            </div>
-          </div>
-        </div>  
+        </div>
+      </div>
+    </div>
   );
 };
 
