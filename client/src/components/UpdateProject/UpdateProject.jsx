@@ -22,16 +22,11 @@ const UpdateProject = () => {
     variables: { projectId },
   });
 
-  const {
-    loading: teamsLoading,
-    error: teamsError,
-    data: teamsData,
-  } = useQuery(QUERY_TEAMS);
-  console.log(teamsData);
+  const { loading: teamsLoading, error: teamsError, data: teamsData } = useQuery(QUERY_TEAMS);
 
-  const [projectData, setProjectData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [projectData, setProjectData] = useState({});
 
   useEffect(() => {
     if (data.project) {
@@ -46,27 +41,13 @@ const UpdateProject = () => {
 
   const handleEditClick = () => {
     setIsEditing(true);
-    // Find the team corresponding to the teamId in the project data
-    const team = teamsData.teams.find(
-      (team) => team._id === data.project.team[0]._id
-    );
-    // Update projectData with team name and other project data
-    setProjectData({ ...data.project, team: team ? team.name : "" });
-  };
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date); // Update selected date state
   };
 
   const handleSaveClick = async () => {
     try {
-      // Extract only the necessary fields from projectData
       const { name, projectStatus, teamId } = projectData;
-
-      // Find the selected team object
       const selectedTeam = teamsData.teams.find((team) => team._id === teamId);
 
-      // Construct the input object to pass to the mutation
       const input = {
         name,
         projectStatus,
@@ -74,16 +55,12 @@ const UpdateProject = () => {
         teamId,
       };
 
-      // Call the updateProject mutation with the projectId and input
       await updateProject({
         variables: {
           projectId: projectId,
           input: input,
         },
       });
-
-      // Update projectData with the selected team
-      setProjectData({ ...projectData, team: selectedTeam });
 
       setIsEditing(false);
     } catch (err) {
@@ -102,7 +79,10 @@ const UpdateProject = () => {
       [name]: value,
     }));
   };
-  
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
 
   if (loading || teamsLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -113,9 +93,6 @@ const UpdateProject = () => {
 
   return (
     <div className="grid-container">
-      {/* <Typography variant="h4" gutterBottom>
-        Edit Project
-      </Typography> */}
       {isEditing ? (
         <Grid className="grid-grid-container" container spacing={2}>
           <Grid item xs={12}>
@@ -130,7 +107,7 @@ const UpdateProject = () => {
           <Grid item xs={12}>
             <Select
               name="projectStatus"
-              labelId="status-select-label"
+              label="Status"
               value={projectData.projectStatus}
               onChange={handleChange}
               fullWidth
@@ -146,20 +123,19 @@ const UpdateProject = () => {
               <DatePicker
                 name="dateDue"
                 label="Due Date"
-                type="date"
-                value={projectData.dateDue}
+                value={selectedDate}
                 onChange={handleDateChange}
                 fullWidth
-                textField={(props) => <TextField {...props} fullWidth />}
+                renderInput={(params) => <TextField {...params} fullWidth />}
               />
             </LocalizationProvider>
           </Grid>
           <Grid item xs={12}>
-            <InputLabel className="team-select-label">Team</InputLabel>
+            <InputLabel>Team</InputLabel>
             <Select
               name="teamId"
               label="Team"
-              value={projectData.team ? projectData.team._id : ""}
+              value={projectData.teamId}
               onChange={handleChange}
               fullWidth
             >
@@ -171,11 +147,7 @@ const UpdateProject = () => {
             </Select>
           </Grid>
           <Grid item xs={12}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSaveClick}
-            >
+            <Button variant="contained" color="primary" onClick={handleSaveClick}>
               Save
             </Button>
             <Button variant="contained" onClick={handleCancelClick}>
@@ -185,34 +157,6 @@ const UpdateProject = () => {
         </Grid>
       ) : (
         <div>
-          <Typography
-            className="project-info project-name"
-            variant="h4"
-            gutterBottom
-          >
-            Project Name: {data.project.name}
-          </Typography>
-          <Typography
-            className="project-info project-status"
-            variant="h4"
-            gutterBottom
-          >
-            Status: {data.project.projectStatus}
-          </Typography>
-          <Typography
-            className="project-info project-due-date"
-            variant="h4"
-            gutterBottom
-          >
-            Due Date: {data.project.dateDue}
-          </Typography>
-          <Typography
-            className="project-info project-team"
-            variant="h4"
-            gutterBottom
-          >
-            Team: {teamName}
-          </Typography>
           <Button variant="contained" color="primary" onClick={handleEditClick}>
             Edit
           </Button>
@@ -223,3 +167,4 @@ const UpdateProject = () => {
 };
 
 export default UpdateProject;
+

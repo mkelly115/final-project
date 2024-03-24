@@ -190,11 +190,18 @@ const resolvers = {
       }
     },
     updateProject: async (parent, { projectId, input }) => {
+      // Map 'teamId' from input to 'team' field in update object
+      const updateObject = { ...input };
+      if (input.teamId) {
+        updateObject.team = input.teamId;
+        delete updateObject.teamId; // Remove 'teamId' from update object
+      }
+    
       return await Project.findOneAndUpdate(
         { _id: projectId },
-        { $set: input },
+        { $set: updateObject },
         { new: true }
-      );
+      ).populate('team'); // Populate the 'team' field
     },
     removeProject: async (parent, { projectId }) => {
       return Project.findOneAndDelete({ _id: projectId });
