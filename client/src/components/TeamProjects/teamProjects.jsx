@@ -2,6 +2,8 @@ import { useQuery } from '@apollo/client';
 import { QUERY_ME, QUERY_TEAMS, QUERY_PROJECTS } from '../../utils/queries';
 import { Card, CardActionArea, CardContent, Typography, Grid } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import TeamTaskList from '../TeamTaskList/TeamTaskList';
+
 
 const TeamProjectList = () => {
   const { loading: meLoading, error: meError, data: meData } = useQuery(QUERY_ME);
@@ -15,6 +17,7 @@ const TeamProjectList = () => {
 
   console.log("Projects Data:", projectsData); 
 
+  // Extract the user's team information
   let userTeams = [];
   if (meData.me && meData.me._id && teamsData.teams) {
     userTeams = teamsData.teams.filter(team => team.members.some(member => member._id === meData.me._id));
@@ -30,7 +33,7 @@ const TeamProjectList = () => {
   return (
     <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
       {userProjects.map(project => (
-        <Grid item key={project._id}>
+        <Grid item key={project._id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Card variant='outlined' sx={{ width: 400 }}>
             <CardActionArea
               component={RouterLink}
@@ -65,11 +68,11 @@ const TeamProjectList = () => {
               </CardContent>
             </CardActionArea>
           </Card>
+          <TeamTaskList tasks={project.tasks} /> 
         </Grid>
       ))}
     </Grid>
   );
 };
-
 
 export default TeamProjectList;
