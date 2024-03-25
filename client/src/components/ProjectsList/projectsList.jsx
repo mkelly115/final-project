@@ -27,20 +27,21 @@ const ProjectList = () => {
                 sx={{ display: 'block' }}
               >
                 <CardContent>
-                  <Typography variant="h5" component="div" gutterBottom>
+                  <Typography variant="h5" component="div" gutterBottom sx={{ fontWeight: 'bold', color: '#a6d8aa', textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>
                     {project.name}
-                  </Typography>
-                  <Typography variant="subtitle1" gutterBottom>
-                    Status: {project.projectStatus}
-                  </Typography>
-                  <Typography variant="h6" gutterBottom>
-                    Team:
                   </Typography>
                   {project.team && typeof project.team === 'object' && (
               <div key={project.team[0]._id}>
-                <Typography variant="subtitle2" component="div" gutterBottom>
+                <Typography variant="subtitle1" component="div" gutterBottom sx={{ textTransform: 'uppercase', fontWeight: 'bold' }}>
                   {project.team[0].name}
                 </Typography>
+                  <Typography variant="subtitle1" gutterBottom sx={{ fontStyle: 'italic', color: "red" }}>
+                    Status: {project.projectStatus}
+                  </Typography>
+                  {/* <Typography variant="subtitle1" gutterBottom>
+                    Team:
+                  </Typography> */}
+                  
                 <ul style={{ listStyleType: 'none', padding: 0 }}>
                   {project.team[0].members && Array.isArray(project.team[0].members) && project.team[0].members.map((member) => (
                     <li key={member._id}>
