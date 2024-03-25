@@ -15,7 +15,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles"; // Import styled, createTheme, and ThemeProvider from MUI
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery, useMutation, useApolloClient } from "@apollo/client";
 import {
   QUERY_SINGLE_PROJECT,
   QUERY_USERS,
@@ -48,6 +48,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const TaskTable = () => {
+  const client = useApolloClient();
   const { projectId } = useParams();
   const {
     loading: projectLoading,
@@ -158,6 +159,20 @@ const TaskTable = () => {
     });
     setEditingTaskId(null);
     setEditedStatus("");
+    client.writeQuery({
+      query: QUERY_SINGLE_PROJECT,
+      variables: { projectId },
+      data: {
+        project: {
+          ...projectData.project,
+          tasks: projectData.project.tasks.map((task) =>
+            task._id === taskId
+              ? { ...task, taskStatus: editedStatus, description: currentDescription }
+              : task
+          ),
+        },
+      },
+    });
   };
 
   const handleAddRow = () => {
@@ -196,6 +211,16 @@ const TaskTable = () => {
       .catch((error) => {
         console.error("Error adding task:", error);
         setError("Error adding task.");
+      });
+      client.writeQuery({
+        query: QUERY_SINGLE_PROJECT,
+        variables: { projectId },
+        data: {
+          project: {
+            ...projectData.project,
+            tasks: [...projectData.project.tasks, newTask],
+          },
+        },
       });
   };
 

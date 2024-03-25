@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import {
-  // Typography,
   Button,
   TextField,
   Grid,
@@ -18,11 +17,15 @@ import { UPDATE_PROJECT } from "../../utils/mutations";
 
 const UpdateProject = () => {
   const { projectId } = useParams();
-  const { loading, error, data } = useQuery(QUERY_SINGLE_PROJECT, {
+  const { loading, error, data, refetch } = useQuery(QUERY_SINGLE_PROJECT, {
     variables: { projectId },
   });
 
-  const { loading: teamsLoading, error: teamsError, data: teamsData } = useQuery(QUERY_TEAMS);
+  const {
+    loading: teamsLoading,
+    error: teamsError,
+    data: teamsData,
+  } = useQuery(QUERY_TEAMS);
 
   const [isEditing, setIsEditing] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -39,6 +42,18 @@ const UpdateProject = () => {
 
   const [updateProject] = useMutation(UPDATE_PROJECT);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProjectData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
   const handleEditClick = () => {
     setIsEditing(true);
   };
@@ -46,7 +61,6 @@ const UpdateProject = () => {
   const handleSaveClick = async () => {
     try {
       const { name, projectStatus, teamId } = projectData;
-      // const selectedTeam = teamsData.teams.find((team) => team._id === teamId);
 
       const input = {
         name,
@@ -63,6 +77,9 @@ const UpdateProject = () => {
       });
 
       setIsEditing(false);
+
+      // Refetch project data after the update is successful
+      refetch();
     } catch (err) {
       console.error("Error updating project:", err);
     }
@@ -72,24 +89,9 @@ const UpdateProject = () => {
     setIsEditing(false);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProjectData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
   if (loading || teamsLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
   if (teamsError) return <p>Error: {teamsError.message}</p>;
-
-  // const team = teamsData.teams.find((team) => team._id === projectData.teamId);
-  // const teamName = team ? team.name : "No Team";
 
   return (
     <div className="grid-container">
@@ -112,6 +114,7 @@ const UpdateProject = () => {
               onChange={handleChange}
               fullWidth
             >
+              <MenuItem value="Created">Created</MenuItem>
               <MenuItem value="Pending">Pending</MenuItem>
               <MenuItem value="Started">Started</MenuItem>
               <MenuItem value="In Progress">In Progress</MenuItem>
@@ -130,24 +133,32 @@ const UpdateProject = () => {
               />
             </LocalizationProvider>
           </Grid>
+          {data.project.tasks.every(
+            (task) => task.taskStatus === "Completed"
+          ) && (
+            <Grid item xs={12}>
+              <InputLabel>Team</InputLabel>
+              <Select
+                name="teamId"
+                label="Team"
+                value={projectData.teamId}
+                onChange={handleChange}
+                fullWidth
+              >
+                {teamsData.teams.map((team) => (
+                  <MenuItem key={team._id} value={team._id}>
+                    {team.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
+          )}
           <Grid item xs={12}>
-            <InputLabel>Team</InputLabel>
-            <Select
-              name="teamId"
-              label="Team"
-              value={projectData.teamId}
-              onChange={handleChange}
-              fullWidth
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSaveClick}
             >
-              {teamsData.teams.map((team) => (
-                <MenuItem key={team._id} value={team._id}>
-                  {team.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" color="primary" onClick={handleSaveClick}>
               Save
             </Button>
             <Button variant="contained" onClick={handleCancelClick}>
@@ -167,4 +178,3 @@ const UpdateProject = () => {
 };
 
 export default UpdateProject;
-
