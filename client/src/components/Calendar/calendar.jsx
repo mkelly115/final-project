@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment'; // Import moment library
+import moment from 'moment'; 
 import { QUERY_TASKS } from '../../utils/queries';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
@@ -36,7 +36,6 @@ const MyCalendarTasks = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error fetching data...</p>;
 
-  // Custom localizer using momentLocalizer
   const customLocalizer = momentLocalizer(moment);
 
   return (
