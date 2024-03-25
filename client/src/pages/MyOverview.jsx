@@ -13,6 +13,7 @@ import { QUERY_ME, QUERY_SINGLE_USER } from "../utils/queries";
 
 import "../index.css";
 
+// bullet points for styling
 const bull = (
   <Box
     component="span"
@@ -52,7 +53,9 @@ const MyOverview = () => {
   )
     return <p>No user data or projects found...</p>;
 
-  // Map over the projects array to count the number of projects for each status
+     // ------------------ start of code for projects pie chart ------------------------------
+
+  // Map over the projects array to count the number of projects for each project status
   const projectStatusCounts = projectsData.user.projects.reduce(
     (acc, project) => {
       if (acc[project.projectStatus]) {
@@ -74,7 +77,12 @@ const MyOverview = () => {
     })
   );
 
+  // total project count for project pie chart
   const totalProjectsCount = projectsData.user.projects.length;
+
+  // ------------------ end of code for projects pie chart ------------------------------
+
+   // ------------------ start of code for tasks pie chart ------------------------------
 
   // Map over the tasks array to count the number of tasks for each status
   const taskStatusCounts = projectsData.user.tasks.reduce((acc, task) => {
@@ -95,14 +103,25 @@ const MyOverview = () => {
     })
   );
 
+   // total tasks count for task pie chart
   const totalTasksCount = projectsData.user.tasks.length;
+   // ------------------ end of code for tasks pie chart ------------------------------
 
+  //  ------------------ start of task counts by status for gauge ------------------------------
+
+  // count for how many tasks are imcomplete
   const incompleteTasksCount = Object.keys(taskStatusCounts)
     .filter((status) => status !== "Completed")
     .reduce((acc, status) => acc + taskStatusCounts[status], 0);
 
+    // count for how many tasks are completed
   const completedTasksCount = taskStatusCounts.Completed || 0;
 
+ //  ------------------ end of task counts by status for gauge ------------------------------
+
+  // ------------------ start of code for upcoming due dates ------------------------------
+
+  // date formatting function
   const parseFormattedDate = (formattedDate) => {
     // Split the formatted date string into parts
     const parts = formattedDate.split(" ");
@@ -136,6 +155,7 @@ const MyOverview = () => {
   const today = new Date();
   console.log("Today's date:", today);
 
+  // check if a projects due date matches today's date
   const hasDueDateToday = projectsData.user.projects.some((project) => {
     const projectDueDate = parseFormattedDate(project.dateDue);
     return projectDueDate.toDateString() === today.toDateString();
@@ -148,6 +168,7 @@ const MyOverview = () => {
     console.log("No project has a due date today.");
   }
 
+  // find the next closest due date if a date doesn't match today's date
   const closestDueDateProject = projectsData.user.projects.reduce(
     (closestProject, currentProject) => {
       const currentDueDate = parseFormattedDate(currentProject.dateDue);
@@ -175,8 +196,7 @@ const MyOverview = () => {
     null
   );
 
-  console.log("Closest Due Date Project:", closestDueDateProject);
-
+// return the appropriate project object based on the selected due date above (todays date or most upcoming due date)
   const projectToReturn = hasDueDateToday
     ? projectsData.user.projects.find((project) => {
         const projectDueDate = parseFormattedDate(project.dateDue);
@@ -184,8 +204,7 @@ const MyOverview = () => {
       })
     : closestDueDateProject;
 
-  console.log("Project to Return:", projectToReturn);
-
+// repeat the due date evaluation for the tasks array and return the appropriate task object
   const taskToReturn = () => {
     const hasDueDateToday = projectsData.user.tasks.some((task) => {
       const taskDueDate = parseFormattedDate(task.dateDue);
@@ -228,8 +247,7 @@ const MyOverview = () => {
   };
 
   const taskToReturnResult = taskToReturn();
-
-  console.log("Task to Return:", taskToReturnResult);
+// ------------------ end of code for upcoming due dates ------------------------------
 
   return (
     <div>
