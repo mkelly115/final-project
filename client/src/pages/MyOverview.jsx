@@ -7,6 +7,7 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useQuery } from "@apollo/client";
 import { QUERY_ME, QUERY_SINGLE_USER } from "../utils/queries";
@@ -53,7 +54,7 @@ const MyOverview = () => {
   )
     return <p>No user data or projects found...</p>;
 
-     // ------------------ start of code for projects pie chart ------------------------------
+  // ------------------ start of code for projects pie chart ------------------------------
 
   // Map over the projects array to count the number of projects for each project status
   const projectStatusCounts = projectsData.user.projects.reduce(
@@ -82,7 +83,7 @@ const MyOverview = () => {
 
   // ------------------ end of code for projects pie chart ------------------------------
 
-   // ------------------ start of code for tasks pie chart ------------------------------
+  // ------------------ start of code for tasks pie chart ------------------------------
 
   // Map over the tasks array to count the number of tasks for each status
   const taskStatusCounts = projectsData.user.tasks.reduce((acc, task) => {
@@ -103,9 +104,9 @@ const MyOverview = () => {
     })
   );
 
-   // total tasks count for task pie chart
+  // total tasks count for task pie chart
   const totalTasksCount = projectsData.user.tasks.length;
-   // ------------------ end of code for tasks pie chart ------------------------------
+  // ------------------ end of code for tasks pie chart ------------------------------
 
   //  ------------------ start of task counts by status for gauge ------------------------------
 
@@ -114,10 +115,10 @@ const MyOverview = () => {
     .filter((status) => status !== "Completed")
     .reduce((acc, status) => acc + taskStatusCounts[status], 0);
 
-    // count for how many tasks are completed
+  // count for how many tasks are completed
   const completedTasksCount = taskStatusCounts.Completed || 0;
 
- //  ------------------ end of task counts by status for gauge ------------------------------
+  //  ------------------ end of task counts by status for gauge ------------------------------
 
   // ------------------ start of code for upcoming due dates ------------------------------
 
@@ -196,7 +197,7 @@ const MyOverview = () => {
     null
   );
 
-// return the appropriate project object based on the selected due date above (todays date or most upcoming due date)
+  // return the appropriate project object based on the selected due date above (todays date or most upcoming due date)
   const projectToReturn = hasDueDateToday
     ? projectsData.user.projects.find((project) => {
         const projectDueDate = parseFormattedDate(project.dateDue);
@@ -204,7 +205,7 @@ const MyOverview = () => {
       })
     : closestDueDateProject;
 
-// repeat the due date evaluation for the tasks array and return the appropriate task object
+  // repeat the due date evaluation for the tasks array and return the appropriate task object
   const taskToReturn = () => {
     const hasDueDateToday = projectsData.user.tasks.some((task) => {
       const taskDueDate = parseFormattedDate(task.dateDue);
@@ -247,130 +248,163 @@ const MyOverview = () => {
   };
 
   const taskToReturnResult = taskToReturn();
-// ------------------ end of code for upcoming due dates ------------------------------
+  // ------------------ end of code for upcoming due dates ------------------------------
 
   return (
-    <div>
-      <div className="chart-container">
-        <div className="chart-border">
-          <div className="chart-header">Project Status Overview</div>
-          <PieChart
-            series={[
-              {
-                data: projectChartData,
-                highlightScope: { faded: "global", highlighted: "item" },
-                faded: {
-                  innerRadius: 30,
-                  additionalRadius: -30,
-                  color: "gray",
-                },
-              },
-            ]}
-            height={200}
-          />
-          <div>Total Projects: {totalProjectsCount}</div>
-        </div>
-      </div>
-      <div className="chart-container">
-        <div className="chart-border">
-          <div className="chart-header">Task Status Overview</div>
-          <PieChart
-            series={[
-              {
-                data: taskChartData,
-                highlightScope: { faded: "global", highlighted: "item" },
-                faded: {
-                  innerRadius: 30,
-                  additionalRadius: -30,
-                  color: "gray",
-                },
-              },
-            ]}
-            height={200}
-          />
-          <div>Total Tasks: {totalTasksCount}</div>
-        </div>
-      </div>
-      <div className="chart-container">
-        <div className="chart-border">
-          <div className="chart-header">
-            You have {incompleteTasksCount} task
-            {incompleteTasksCount === 1 ? "" : "s"} to complete
-          </div>
-          <div className="gauge-container">
-            <Gauge
-              value={completedTasksCount}
-              valueMax={totalTasksCount}
-              startAngle={-110}
-              endAngle={110}
-              sx={{
-                [`& .${gaugeClasses.valueText}`]: {
-                  fontSize: 40,
-                  transform: "translate(0px, 0px)",
-                },
-              }}
-              text={({ value, valueMax }) => `${value} / ${valueMax}`}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="chart-container">
-        <div className="chart-border">
-          <Card sx={{ minWidth: 275 }}>
-            <CardContent>
-              <Typography variant="h5" color="text.secondary" gutterBottom>
-                {bull} UPCOMING DUE DATES {bull}
-              </Typography>
-              <br></br>
-              <Typography sx={{ fontSize: 14 }} component="div">
-                Your next TASK is due
-              </Typography>
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                {taskToReturnResult &&
-                parseFormattedDate(
-                  taskToReturnResult.dateDue
-                ).toDateString() === today.toDateString()
-                  ? "TODAY"
-                  : taskToReturnResult
-                  ? parseFormattedDate(
-                      taskToReturnResult.dateDue
-                    ).toDateString()
-                  : "No upcoming due date"}
-              </Typography>
-              <Typography sx={{ fontSize: 14 }} component="div">
-                Your next PROJECT is due
-              </Typography>
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                {projectToReturn &&
-                parseFormattedDate(projectToReturn.dateDue).toDateString() ===
-                  today.toDateString()
-                  ? "TODAY"
-                  : projectToReturn
-                  ? parseFormattedDate(projectToReturn.dateDue).toDateString()
-                  : "No upcoming due date"}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Box
-                sx={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Button
-                  component={RouterLink}
-                  to="/dashboard/calendar"
-                  size="small"
-                >
-                  MY CALENDAR
-                </Button>
-              </Box>
-            </CardActions>
-          </Card>
-        </div>
-      </div>
-    </div>
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Grid container spacing={3}>
+          <Grid item xs={6}>
+          <div className="chart-container">
+              <div className="chart-border">
+                <Card>
+                  <CardContent>
+                    <Typography variant="h5" component="div">
+                      Welcome to your project dashboard, {meData.me.firstName}!
+                    </Typography>
+                    <br />
+                    <Typography variant="body1" component="div">
+                      Get an overview of your projects and tasks.
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={6}>
+          <div className="chart-container">
+              <div className="chart-border">
+                <Card sx={{ minWidth: 275 }}>
+                  <CardContent>
+                    <Typography variant="h5" color="text.secondary" gutterBottom>
+                      {bull} UPCOMING DUE DATES {bull}
+                    </Typography>
+                    <br />
+                    <Typography sx={{ fontSize: 14 }} component="div">
+                      Your next TASK is due
+                    </Typography>
+                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                      {taskToReturnResult &&
+                      parseFormattedDate(
+                        taskToReturnResult.dateDue
+                      ).toDateString() === today.toDateString()
+                        ? "TODAY"
+                        : taskToReturnResult
+                        ? parseFormattedDate(
+                            taskToReturnResult.dateDue
+                          ).toDateString()
+                        : "No upcoming due date"}
+                    </Typography>
+                    <Typography sx={{ fontSize: 14 }} component="div">
+                      Your next PROJECT is due
+                    </Typography>
+                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                      {projectToReturn &&
+                      parseFormattedDate(projectToReturn.dateDue).toDateString() ===
+                        today.toDateString()
+                        ? "TODAY"
+                        : projectToReturn
+                        ? parseFormattedDate(projectToReturn.dateDue).toDateString()
+                        : "No upcoming due date"}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Box
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Button
+                        component={RouterLink}
+                        to="/dashboard/calendar"
+                        size="small"
+                      >
+                        MY CALENDAR
+                      </Button>
+                    </Box>
+                  </CardActions>
+                </Card>
+              </div>
+            </div>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container spacing={3}>
+          <Grid item xs={4}>
+          <div className="chart-container">
+              <div className="chart-border">
+                <div className="chart-header">Project Status Overview</div>
+                <PieChart
+                  series={[
+                    {
+                      data: projectChartData,
+                      highlightScope: { faded: "global", highlighted: "item" },
+                      faded: {
+                        innerRadius: 30,
+                        additionalRadius: -30,
+                        color: "gray",
+                      },
+                    },
+                  ]}
+                  height={200}
+                />
+                <div>Total Projects: {totalProjectsCount}</div>
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={4}>
+          <div className="chart-container">
+              <div className="chart-border">
+                <div className="chart-header">Task Status Overview</div>
+                <PieChart
+                  series={[
+                    {
+                      data: taskChartData,
+                      highlightScope: { faded: "global", highlighted: "item" },
+                      faded: {
+                        innerRadius: 30,
+                        additionalRadius: -30,
+                        color: "gray",
+                      },
+                    },
+                  ]}
+                  height={200}
+                />
+                <div>Total Tasks: {totalTasksCount}</div>
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={4}>
+          <div className="chart-container">
+              <div className="chart-border">
+                <div className="chart-header">
+                  You have {incompleteTasksCount} task
+                  {incompleteTasksCount === 1 ? "" : "s"} to complete
+                </div>
+                <div className="gauge-container">
+                  <Gauge
+                    value={completedTasksCount}
+                    valueMax={totalTasksCount}
+                    startAngle={-110}
+                    endAngle={110}
+                    sx={{
+                      [`& .${gaugeClasses.valueText}`]: {
+                        fontSize: 40,
+                        transform: "translate(0px, 0px)",
+                      },
+                    }}
+                    text={({ value, valueMax }) => `${value} / ${valueMax}`}
+                  />
+                </div>
+              </div>
+            </div>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 
