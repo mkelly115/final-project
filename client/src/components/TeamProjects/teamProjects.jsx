@@ -4,7 +4,6 @@ import { Card, CardActionArea, CardContent, Typography, Grid } from '@mui/materi
 import { Link as RouterLink } from 'react-router-dom';
 import TeamTaskList from '../TeamTaskList/TeamTaskList';
 
-
 const TeamProjectList = () => {
   const { loading: meLoading, error: meError, data: meData } = useQuery(QUERY_ME);
   const { loading: teamsLoading, error: teamsError, data: teamsData } = useQuery(QUERY_TEAMS);
@@ -15,9 +14,8 @@ const TeamProjectList = () => {
 
   if (!meData || !teamsData || !projectsData || !projectsData.projects) return <p>No data found...</p>;
 
-  console.log("Projects Data:", projectsData); 
+  console.log("Projects Data:", projectsData);
 
-  // Extract the user's team information
   let userTeams = [];
   if (meData.me && meData.me._id && teamsData.teams) {
     userTeams = teamsData.teams.filter(team => team.members.some(member => member._id === meData.me._id));
@@ -26,14 +24,14 @@ const TeamProjectList = () => {
   const userTeamIds = userTeams.map(team => team._id);
 
   const userProjects = projectsData.projects.filter(project => {
-    const projectTeamIds = project.team.map(team => team._id); 
+    const projectTeamIds = project.team.map(team => team._id);
     return projectTeamIds.some(teamId => userTeamIds.includes(teamId));
   });
 
   return (
     <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
       {userProjects.map(project => (
-        <Grid item key={project._id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} xs={12}>
+        <Grid item key={project._id} xs={12} sm={6} md={4} lg={12}>
           <Card variant='outlined' sx={{ width: '100%', borderRadius: 2, boxShadow: 3 }}>
             <CardActionArea
               component={RouterLink}
@@ -68,7 +66,7 @@ const TeamProjectList = () => {
               </CardContent>
             </CardActionArea>
           </Card>
-          <TeamTaskList tasks={project.tasks} /> 
+          <TeamTaskList tasks={project.tasks} />
         </Grid>
       ))}
     </Grid>
