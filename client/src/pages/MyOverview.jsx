@@ -276,7 +276,8 @@ const MyOverview = () => {
       <div className="chart-container">
         <div className="chart-border">
           <div className="chart-header">
-            You have {incompleteTasksCount} tasks to complete
+            You have {incompleteTasksCount} task
+            {incompleteTasksCount === 1 ? "" : "s"} to complete
           </div>
           <div className="gauge-container">
             <Gauge
