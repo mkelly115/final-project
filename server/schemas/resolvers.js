@@ -155,35 +155,41 @@ const resolvers = {
     removeUser: async (parent, { userId }) => {
       return User.findOneAndDelete({ _id: userId });
     },
-
     addProject: async (parent, { input }) => {
       // Destructure input fields
       const { teamId, ...projectData } = input;
-
+    
       try {
         // Create the project with the provided data
         const project = await Project.create({
           ...projectData,
           team: [teamId],
         });
-
-        // If teamId is provided, associate the user with the team
+    
+        // If teamId is provided, associate the project with the team
         if (teamId) {
           // Fetch the team based on the provided teamId
           const team = await Team.findById(teamId);
           if (!team) {
             throw new Error("Team not found");
           }
-          console.log("Retrieved Team:", team);
-          //Associate the project with the team
-          project.team = team;
-          console.log("Project before association:", project);
-          await project.save();
-          console.log("Project after association:", project);
-
+    
+          // Associate the project with the team
           team.projects.push(project);
           await team.save();
+          
+          // Update each member of the team with the new project
+          const users = await User.find({ _id: { $in: team.members } });
+          if (!users) {
+            throw new Error("No users found in the team");
+          }
+    
+          for (const user of users) {
+            user.projects.push(project);
+            await user.save();
+          }
         }
+    
         return project;
       } catch (error) {
         throw new Error(`Failed to create project: ${error.message}`);
