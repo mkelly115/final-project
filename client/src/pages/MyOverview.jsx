@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useQuery } from "@apollo/client";
 import { QUERY_ME, QUERY_SINGLE_USER } from "../utils/queries";
+import logo from '../assets/logo.png';
 
 import "../index.css";
 
@@ -267,7 +268,7 @@ const MyOverview = () => {
 
 return (
   <Grid container spacing={3}>
-    <Grid item xs={12} sm={6}>
+    <Grid item md={12} lg={6}>
       {/* Welcome Card */}
       <div className="chart-container">
         <div className="chart-border">
@@ -277,15 +278,23 @@ return (
                 Welcome to your project dashboard, {meData.me.firstName}!
               </Typography>
               <br />
-              <Typography variant="body1" component="div">
-                Get an overview of your projects and tasks.
-              </Typography>
+              <img src = {logo}
+              alt="Logo"
+              style={{
+                  width: '100px',
+                  height: '100px',
+                  objectFit: 'cover',
+              }}
+               />
+               <br />
+               <br />
             </CardContent>
           </Card>
         </div>
       </div>
     </Grid>
-    <Grid item xs={12} sm={6}>
+
+    <Grid item md={12} lg={6}>
       {/* Upcoming Due Dates Card */}
       <div className="chart-container">
         <div className="chart-border">
@@ -344,7 +353,7 @@ return (
         </div>
       </div>
     </Grid>
-    <Grid item xs={12} sm={4}>
+    <Grid item md={12} lg={4}>
       {/* Tasks Pie Chart */}
       <div className="chart-container">
         <div className="chart-border">
@@ -367,7 +376,7 @@ return (
         </div>
       </div>
     </Grid>
-    <Grid item xs={12} sm={4}>
+    <Grid item md={12} lg={4}>
       {/* Projects Pie Chart */}
       <div className="chart-container">
         <div className="chart-border">
@@ -390,7 +399,7 @@ return (
         </div>
       </div>
     </Grid>
-    <Grid item xs={12} sm={4}>
+    <Grid  item md={12} lg={4}>
       {/* Gauge */}
       <div className="chart-container">
         <div className="chart-border">
