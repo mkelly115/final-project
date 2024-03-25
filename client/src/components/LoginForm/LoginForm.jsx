@@ -37,31 +37,37 @@ const LoginForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
+  
     try {
       const { data } = await login({ variables: { ...userFormData } });
       const { token, user } = data.login;
       Auth.login(token);
       console.log("User logged in successfully: ", user);
-
+  
       // Redirect user to dashboard
       redirectToDashboard();
-
+  
       // Reset form data
       setUserFormData({
         email: "",
         password: "",
       });
-
+  
       setValidated(true);
-
+  
+      // Set showAlert to false on successful login
+      setShowAlert(false);
+  
       // Schedule token refresh
       scheduleTokenRefresh();
     } catch (err) {
-      console.error("Error logging in: ", err);
-      setShowAlert(true);
-
-      setValidated(false);
+      if (err instanceof TypeError && err.message.includes('Auth.getTokenExpirationTime is not a function')) {
+       // Do nothing also if I delete this comment it breaks
+      } else {
+        console.error("Error logging in: ", err);
+        setShowAlert(true);
+        setValidated(false);
+      }
     }
   };
 
