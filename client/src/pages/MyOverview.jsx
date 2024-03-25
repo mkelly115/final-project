@@ -54,6 +54,13 @@ const MyOverview = () => {
     return <p>No user data or projects found...</p>;
 
      // ------------------ start of code for projects pie chart ------------------------------
+    //  const projectStatusColors = {
+    //   Created: "#",
+    //   Pending: "#",
+    //   InProgress: "#",
+    //   Completed: "#",
+    // };
+
 
   // Map over the projects array to count the number of projects for each project status
   const projectStatusCounts = projectsData.user.projects.reduce(
@@ -74,6 +81,7 @@ const MyOverview = () => {
       id: `status_${status}_${index}`, // Unique ID for each status
       value: count,
       label: status,
+      // color: projectStatusColors[status],
     })
   );
 
@@ -83,6 +91,12 @@ const MyOverview = () => {
   // ------------------ end of code for projects pie chart ------------------------------
 
    // ------------------ start of code for tasks pie chart ------------------------------
+  //  const taskStatusColors = {
+  //   Created: "#",
+  //   Pending: "#",
+  //   InProgress: "#",
+  //   Completed: "#",
+  // };
 
   // Map over the tasks array to count the number of tasks for each status
   const taskStatusCounts = projectsData.user.tasks.reduce((acc, task) => {
@@ -100,6 +114,7 @@ const MyOverview = () => {
       id: `status_${status}_${index}`, // Unique ID for each status
       value: count,
       label: status,
+      // color: taskStatusColors[status],
     })
   );
 
