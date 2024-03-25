@@ -1,4 +1,4 @@
-import TeamCalendar from "../components/Calender/calender"
+import TeamCalendar from "../components/Calendar/calendar"
 
 export default function MyCalendar() {
 
