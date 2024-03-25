@@ -183,6 +183,7 @@ export default function MiniDrawer() {
                     <ListItemText primary={text} />
                   </ListItemButton>
                 </ListItem>
+      
               ))}
             </List>
           </Typography>
