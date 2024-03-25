@@ -30,6 +30,8 @@ const UpdateProject = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [projectData, setProjectData] = useState({});
+  const [errorMessage, setErrorMessage] = useState("");
+  const [dateSelected, setDateSelected] = useState(false);
 
   useEffect(() => {
     if (data.project) {
@@ -61,6 +63,12 @@ const UpdateProject = () => {
   const handleSaveClick = async () => {
     try {
       const { name, projectStatus, teamId } = projectData;
+
+      if (!selectedDate) {
+        setErrorMessage("PLEASE SELECT A DATE");
+        setDateSelected(false);
+        return;
+      }
 
       const input = {
         name,
@@ -95,6 +103,7 @@ const UpdateProject = () => {
 
   return (
     <div className="grid-container">
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       {isEditing ? (
         <Grid className="grid-grid-container" container spacing={2}>
           <Grid item xs={12}>
@@ -129,10 +138,23 @@ const UpdateProject = () => {
                 value={selectedDate}
                 onChange={handleDateChange}
                 fullWidth
-                renderInput={(params) => <TextField {...params} fullWidth />}
+                error={!dateSelected}
+                helperText={!dateSelected && errorMessage}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    error={!dateSelected}
+                    helperText={!dateSelected && errorMessage}
+                    InputProps={{
+                      style: { borderColor: !dateSelected ? "red" : "" },
+                    }}
+                  />
+                )}
               />
             </LocalizationProvider>
           </Grid>
+
           {data.project.tasks.every(
             (task) => task.taskStatus === "Completed"
           ) && (

@@ -26,3 +26,30 @@
   .project-team {
     color: purple;
   }
+
+  /* UpdateProject.css */
+.error-message {
+  color: red;
+  font-size: 26px; /* Adjust the font size as needed */
+  margin-top: 0.5rem; /* Add some space between the input and the error message */
+}
+
+/* Add a red border to the input when error is true */
+.MuiInput-root.Mui-error .MuiInputBase-input {
+  border-color: red;
+}
+
+/* Add a red border to the date picker wrapper */
+.MuiPickersDateRangePickerView-root .MuiPaper-root {
+  border-color: red;
+}
+
+/* UpdateProject.css */
+.date-picker-error .MuiOutlinedInput-root {
+  border-color: red;
+}
+
+.date-picker-error .MuiInputLabel-root {
+  color: red;
+}
+
