@@ -37,7 +37,7 @@ const MyCalendarTasks = () => {
   const customLocalizer = momentLocalizer(moment);
 
   return (
-    <div style={{ height: '100vh', width: '100%' }}>
+    <div style={{ height: '60vh', width: '60vw' }}>
       <Calendar
         events={events}
         startAccessor="start"

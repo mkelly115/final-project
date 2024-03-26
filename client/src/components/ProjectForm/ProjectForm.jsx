@@ -24,7 +24,8 @@ const styles = {
   buttonStyle: {
     background: '#e4442b',
     margin: '1rem',
-    padding: '.5rem'
+    padding: '.5rem',
+    color: "white"
   },
 };
 
