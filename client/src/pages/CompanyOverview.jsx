@@ -3,6 +3,14 @@ import ProjectList from "../components/ProjectsList/projectsList";
 import { useState } from "react";
 import { Button, Grid } from "@mui/material";
 
+const styles = {
+  buttonStyle: {
+    background: '#e4442b',
+    margin: '1.5rem',
+    padding: '.5rem'
+  },
+};
+
 export default function CompanyOverview() {
     const [open, setOpen] = useState(false);
 
@@ -23,7 +31,7 @@ export default function CompanyOverview() {
     >
         <h1>Company Overview</h1>
         <ProjectList />
-        <Button onClick={handleOpenModal}>Add Project</Button>
+        <Button style={styles.buttonStyle} variant="contained" onClick={handleOpenModal}>Add Project</Button>
       <ProjectForm open={open} handleClose={handleCloseModal} />
         </Grid>
     )

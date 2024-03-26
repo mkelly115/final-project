@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import TeamTaskList from "../TeamTaskList/TeamTaskList";
-import webpulselogo from "../../../public/webpulselogo.png";
+import webpulselogo from "/webpulselogo.png";
 
 const TeamProjectList = () => {
   const {
