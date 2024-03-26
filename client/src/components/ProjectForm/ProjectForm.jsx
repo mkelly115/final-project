@@ -20,6 +20,14 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { QUERY_TEAMS } from "../../utils/queries";
 import { ADD_PROJECT } from "../../utils/mutations";
 
+const styles = {
+  buttonStyle: {
+    background: '#e4442b',
+    margin: '1rem',
+    padding: '.5rem'
+  },
+};
+
 const ProjectForm = ({ open, handleClose }) => {
   const {
     loading: teamsLoading,
@@ -184,12 +192,11 @@ const ProjectForm = ({ open, handleClose }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCloseModal}>Cancel</Button>
-        <Button
+        <Button style={styles.buttonStyle}
           onClick={handleFormSubmit}
           disabled={!userFormData.name || !userFormData.teamId}
           type="submit"
           variant="contained"
-          color="success"
         >
           Submit
         </Button>
