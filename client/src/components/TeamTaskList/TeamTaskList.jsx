@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import PropTypes from 'prop-types';
 
 const theme = createTheme({
   palette: {
@@ -72,6 +73,17 @@ const TeamTaskList = ({ tasks }) => {
       </TableContainer>
     </ThemeProvider>
   );
+};
+
+TeamTaskList.propTypes = {
+  tasks: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      taskStatus: PropTypes.string.isRequired,
+      dateDue: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default TeamTaskList;

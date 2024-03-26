@@ -27,13 +27,13 @@ export default function ProjectTask() {
         <Typography variant="h2" align="center" gutterBottom>
           {projectName}
         </Typography>
-        <Typography variant="h4" align="center" gutterBottom>
+        <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: "bold" }}>
           Status: {projectStatus}
         </Typography>
-        <Typography variant="h4" align="center" gutterBottom>
+        <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: "bold" }}>
           Due Date: {dueDate}
         </Typography>
-        <Typography variant="h4" align="center" gutterBottom>
+        <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: "bold" }}>
           Team: {team}
         </Typography>
       </Grid>
