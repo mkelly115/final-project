@@ -31,14 +31,12 @@ import { useParams } from "react-router-dom";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#e4442b",
-    },
-    action: {
-      hover: "#f5f5f5",
+      main: "#e4442b"
     },
   },
 });
 
+// StyledTableCell and StyledTableRow components for custom styling
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.common.white,
@@ -47,13 +45,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
-  },
-}));
-
-const SmallScreenTable = styled(TableContainer)(({ theme }) => ({
-  [theme.breakpoints.down("sm")]: {
-    maxWidth: "100%",
-    overflowX: "auto",
   },
 }));
 
@@ -222,16 +213,16 @@ const TaskTable = () => {
         console.error("Error adding task:", error);
         setError("Error adding task.");
       });
-    client.writeQuery({
-      query: QUERY_SINGLE_PROJECT,
-      variables: { projectId },
-      data: {
-        project: {
-          ...projectData.project,
-          tasks: [...projectData.project.tasks, newTask],
+      client.writeQuery({
+        query: QUERY_SINGLE_PROJECT,
+        variables: { projectId },
+        data: {
+          project: {
+            ...projectData.project,
+            tasks: [...projectData.project.tasks, newTask],
+          },
         },
-      },
-    });
+      });
   };
 
   if (meLoading || projectsLoading) return <p>Loading...</p>;
@@ -251,80 +242,51 @@ const TaskTable = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      {" "}
+      {/* Apply the custom theme */}
       <div>
-        <SmallScreenTable component={Paper} sx={{ width: "100%", marginBottom: "1rem", borderRadius: 1, boxShadow: 3, overflowX: "auto" }}>
-          <Table aria-label="task table">
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="task table">
             <TableHead>
               <StyledTableRow>
-                <StyledTableCell>
-                  <Typography variant="h6" component="div" sx={{ fontWeight: "bold", fontSize: "0.9rem" }}>
-                    Task
-                  </Typography>
-                </StyledTableCell>
-                <StyledTableCell>
-                  <Typography variant="h6" component="div" sx={{ fontWeight: "bold", fontSize: "0.9rem" }}>
-                    Status
-                  </Typography>
-                </StyledTableCell>
-                <StyledTableCell>
-                  <Typography variant="h6" component="div" sx={{ fontWeight: "bold", fontSize: "0.9rem" }}>
-                    Due Date
-                  </Typography>
-                </StyledTableCell>
-                <StyledTableCell>
-                  <Typography variant="h6" component="div" sx={{ fontWeight: "bold", fontSize: "0.9rem" }}>
-                    Assigned User
-                  </Typography>
-                </StyledTableCell>
-                <StyledTableCell>
-                  <Typography variant="h6" component="div" sx={{ fontWeight: "bold", fontSize: "0.9rem" }}>
-                    Edit
-                  </Typography>
-                </StyledTableCell>
+                <StyledTableCell>Task</StyledTableCell>
+                <StyledTableCell>Status</StyledTableCell>
+                <StyledTableCell>Due Date</StyledTableCell>
+                <StyledTableCell>Assigned User</StyledTableCell>
+                <StyledTableCell>Edit</StyledTableCell>
               </StyledTableRow>
             </TableHead>
             <TableBody>
               {projectData.project.tasks.map((task) => (
                 <StyledTableRow key={task._id}>
+                  <TableCell>{task.description}</TableCell>
                   <TableCell>
-                    <Typography variant="body1" component="div" sx={{ fontSize: "0.9rem" }}>
-                      {task.description}
-                    </Typography>
+                    {editingTaskId === task._id ? (
+                      <Select
+                        value={editedStatus}
+                        onChange={(e) => setEditedStatus(e.target.value)}
+                      >
+                        <MenuItem value="Created">Created</MenuItem>
+                        <MenuItem value="Pending">Pending</MenuItem>
+                        <MenuItem value="In Progress">In Progress</MenuItem>
+                        <MenuItem value="Completed">Completed</MenuItem>
+                      </Select>
+                    ) : (
+                      task.taskStatus
+                    )}
                   </TableCell>
+                  <TableCell>{task.dateDue}</TableCell>
                   <TableCell>
-                    <Typography variant="body1" component="div" sx={{ fontSize: "0.9rem" }}>
-                      {editingTaskId === task._id ? (
-                        <Select
-                          value={editedStatus}
-                          onChange={(e) => handleInputChange(e)}
-                        >
-                          <MenuItem value="Created">Created</MenuItem>
-                          <MenuItem value="Pending">Pending</MenuItem>
-                          <MenuItem value="In Progress">In Progress</MenuItem>
-                          <MenuItem value="Completed">Completed</MenuItem>
-                        </Select>
-                      ) : (
-                        task.taskStatus
-                      )}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body1" component="div" sx={{ fontSize: "0.9rem" }}>
-                      {task.dateDue}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body1" component="div" sx={{ fontSize: "0.9rem" }}>
-                      {task.assignedUser
-                        ? `${task.assignedUser.firstName} ${task.assignedUser.lastName}`
-                        : "Not Assigned"}
-                    </Typography>
+                    {task.assignedUser
+                      ? `${task.assignedUser.firstName} ${task.assignedUser.lastName}`
+                      : "Not Assigned"}
                   </TableCell>
                   <TableCell>
                     {editingTaskId === task._id ? (
                       <Button
                         variant="contained"
                         color="primary"
+                        backgroundColor="#e4442b"
                         onClick={() =>
                           handleSaveClick(
                             task._id,
@@ -354,13 +316,15 @@ const TaskTable = () => {
                   <TextField
                     name="description"
                     value={newTask.description}
-                    onChange={(e) => handleInputChange(e)}
+                    onChange={handleInputChange}
                   />
                 </TableCell>
                 <TableCell>
                   <Select
                     value={newTask.taskStatus}
-                    onChange={(e) => handleInputChange(e)}
+                    onChange={(e) =>
+                      setNewTask({ ...newTask, taskStatus: e.target.value })
+                    }
                   >
                     <MenuItem value="Created">Created</MenuItem>
                     <MenuItem value="Pending">Pending</MenuItem>
@@ -375,13 +339,12 @@ const TaskTable = () => {
                     dateFormat="yyyy-MM-dd"
                     isClearable
                     placeholderText="Click to select a date"
-                    className="custom-datepicker"
                   />
                 </TableCell>
                 <TableCell>
                   <Select
                     value={newTask.assignedUserId}
-                    onChange={(e) => handleAssignedUserChange(e)}
+                    onChange={handleAssignedUserChange}
                     name="assignedUserId"
                   >
                     {usersData.users.map((user) => (
@@ -403,18 +366,15 @@ const TaskTable = () => {
               </StyledTableRow>
               <StyledTableRow>
                 <TableCell colSpan={5}>
-                  {error && <Typography variant="body1" component="p" sx={{ color: "red" }}>{error}</Typography>}
+                  {error && <p style={{ color: "red" }}>{error}</p>}
                 </TableCell>
               </StyledTableRow>
             </TableBody>
           </Table>
-        </SmallScreenTable>
+        </TableContainer>
       </div>
     </ThemeProvider>
   );
 };
 
 export default TaskTable;
-
-
-
