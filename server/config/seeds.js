@@ -1,379 +1,745 @@
-const mongoose = require('mongoose');
-const { User, Team, Project, Task } = require('../models');
+const db = require("./connection");
+const { User, Team, Project, Task } = require("../models");
+const cleanDB = require("./cleanDB");
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/project-3-test', {
-  useNewUrlParser: false,
-  useUnifiedTopology: false,
-});
+db.once("open", async () => {
+  await cleanDB("User", "users");
+  await cleanDB("Team", "teams");
+  await cleanDB("Project", "projects");
+  await cleanDB("Task", "tasks");
 
+  const teams = await Team.insertMany([
+    { name: "Frontend Development" },
+    { name: "Backend Development" },
+    { name: "Full-Stack Development" },
+    { name: "UI/UX Design" },
+    { name: "DevOps" },
+  ]);
+  console.log("Teams Seeded");
 
+  const tasks = await Task.insertMany([
+    {
+      description: "Implement user authentication functionality",
+      taskStatus: "Pending",
+      dateDue: "",
+    },
+    {
+      description: "Design and develop data visualization components",
+      taskStatus: "Completed",
+      dateDue: "",
+    },
+    {
+      description: "Integrate with backend APIs for data retrieval",
+      taskStatus: "Created",
+      dateDue: "",
+    },
+    {
+      description: "Analyze and optimize bundle size",
+      taskStatus: "In Progress",
+      dateDue: "",
+    },
+    {
+      description: "Implement lazy loading for images and components",
+      taskStatus: "In Progress",
+      dateDue: "",
+    },
+    {
+      description: "Utilize caching mechanisms to improve page load times",
+      taskStatus: "Pending",
+      dateDue: "",
+    },
+    {
+      description: "Set up API gateway infrastructure",
+      taskStatus: "In Progress",
+      dateDue: "",
+    },
+    {
+      description: "Configure routing rules for different microservices",
+      taskStatus: "Created",
+      dateDue: "",
+    },
+    {
+      description: "Implement security policies and rate limiting",
+      taskStatus: "In Progress",
+      dateDue: "",
+    },
+    {
+      description: "Decompose monolithic application into microservices",
+      taskStatus: "Completed",
+      dateDue: "",
+    },
+    {
+      description: "Define communication protocols between microservices",
+      taskStatus: "In Progress",
+      dateDue: "",
+    },
+    {
+      description: "Implement service discovery and load balancing",
+      taskStatus: "Pending",
+      dateDue: "",
+    },
+    {
+      description: "Design database schema for product listings",
+      taskStatus: "Pending",
+      dateDue: "",
+    },
+    {
+      description: "Implement user registration and login functionality",
+      taskStatus: "Completed",
+      dateDue: "",
+    },
+    {
+      description: "Develop product search and filtering features",
+      taskStatus: "Created",
+      dateDue: "",
+    },
+    {
+      description:
+        "Integrate platform with social media APIs for user authentication",
+      taskStatus: "In Progress",
+      dateDue: "",
+    },
+    {
+      description: "Implement sharing functionalities for posts and products",
+      taskStatus: "In Progress",
+      dateDue: "",
+    },
+    {
+      description: "Develop notification system for user interactions",
+      taskStatus: "In Progress",
+      dateDue: "",
+    },
+    {
+      description: "Conduct user research and gather requirements",
+      taskStatus: "In Progress",
+      dateDue: "",
+    },
+    {
+      description: "Create wireframes and prototypes for new design",
+      taskStatus: "Created",
+      dateDue: "",
+    },
+    {
+      description:
+        "Develop responsive UI components using modern design principles",
+      taskStatus: "In Progress",
+      dateDue: "",
+    },
+    {
+      description: "Analyze user feedback and app usage data",
+      taskStatus: "Completed",
+      dateDue: "",
+    },
+    {
+      description: "Refine navigation and user flows",
+      taskStatus: "In Progress",
+      dateDue: "",
+    },
+    {
+      description: "Improve performance and responsiveness of the app",
+      taskStatus: "Pending",
+      dateDue: "",
+    },
+    {
+      description:
+        "Assess current infrastructure and identify migration candidates",
+      taskStatus: "Pending",
+      dateDue: "",
+    },
+    {
+      description: "Plan migration strategy and prioritize workloads",
+      taskStatus: "Completed",
+      dateDue: "",
+    },
+    {
+      description: "Execute migration process with minimal downtime",
+      taskStatus: "Created",
+      dateDue: "",
+    },
+    {
+      description:
+        "Implement Infrastructure as Code (IaC) using tools like Terraform",
+      taskStatus: "In Progress",
+      dateDue: "",
+    },
+    {
+      description:
+        "Automate provisioning and configuration of servers and services",
+      taskStatus: "In Progress",
+      dateDue: "",
+    },
+    {
+      description:
+        "Set up continuous integration and deployment pipelines for infrastructure changes",
+      taskStatus: "Pending",
+      dateDue: "",
+    },
+  ]);
+  console.log("Tasks Seeded");
 
-// Define sample data
-const users = [
-  {
+  const projects = await Project.insertMany([
+    {
+      name: "React Dashboard Development",
+      projectStatus: "In Progress",
+      dateDue: "",
+      team: teams[0]._id,
+      tasks: [tasks[0]._id, tasks[1]._id, tasks[2]._id],
+    },
+    {
+      name: "Frontend Performance Optimization",
+      projectStatus: "Created",
+      dateDue: "",
+      team: teams[0]._id,
+      tasks: [tasks[3]._id, tasks[4]._id, tasks[5]._id],
+    },
+    {
+      name: "API Gateway Implementation",
+      projectStatus: "Created",
+      dateDue: "",
+      team: teams[1]._id,
+      tasks: [tasks[6]._id, tasks[7]._id, tasks[8]._id],
+    },
+    {
+      name: "Microservices Architecture Refactoring",
+      projectStatus: "Pending",
+      dateDue: "",
+      team: teams[1]._id,
+      tasks: [tasks[9]._id, tasks[10]._id, tasks[11]._id],
+    },
+    {
+      name: "Online Marketplace Platform Development",
+      projectStatus: "In Progress",
+      dateDue: "",
+      team: teams[2]._id,
+      tasks: [tasks[12]._id, tasks[13]._id, tasks[14]._id],
+    },
+    {
+      name: "Social Media Integration",
+      projectStatus: "In Progress",
+      dateDue: "",
+      team: teams[2]._id,
+      tasks: [tasks[15]._id, tasks[16]._id, tasks[17]._id],
+    },
+    {
+      name: "Website Redesign",
+      projectStatus: "Created",
+      dateDue: "",
+      team: teams[3]._id,
+      tasks: [tasks[18]._id, tasks[19]._id, tasks[20]._id],
+    },
+    {
+      name: "Mobile App User Experience Enhancement",
+      projectStatus: "Pending",
+      dateDue: "",
+      team: teams[3]._id,
+      tasks: [tasks[21]._id, tasks[22]._id, tasks[23]._id],
+    },
+    {
+      name: "Cloud Migration Project",
+      projectStatus: "In Progress",
+      dateDue: "",
+      team: teams[4]._id,
+      tasks: [tasks[24]._id, tasks[25]._id, tasks[26]._id],
+    },
+    {
+      name: "Infrastructure Automation Project",
+      projectStatus: "Created",
+      dateDue: "",
+      team: teams[4]._id,
+      tasks: [tasks[27]._id, tasks[28]._id, tasks[29]._id],
+    },
+  ]);
+  console.log("Projects Seeded");
+
+  await User.create({
     firstName: "John",
     lastName: "Doe",
     email: "jdoe@email.com",
     password: "password123",
-  },
-  {
+    team: teams[0]._id,
+    projects: [projects[0]._id, projects[1]._id],
+    tasks: [tasks[0]._id, tasks[3]._id],
+  });
+
+  await User.create({
     firstName: "Jane",
     lastName: "Smith",
     email: "jsmith@email.com",
     password: "password123",
-  },
-  {
+    team: teams[0]._id,
+    projects: [projects[0]._id, projects[1]._id],
+    tasks: [tasks[1]._id, tasks[4]._id],
+  });
+
+  await User.create({
     firstName: "Michael",
     lastName: "Johnson",
     email: "mjohnson@email.com",
     password: "password123",
-  },
-  {
+    team: teams[0]._id,
+    projects: [projects[0]._id, projects[1]._id],
+    tasks: [tasks[2]._id, tasks[5]._id],
+  });
+
+  await User.create({
     firstName: "Emily",
     lastName: "Brown",
     email: "ebrown@email.com",
     password: "password123",
-  },
-  {
+    team: teams[1]._id,
+    projects: [projects[2]._id, projects[3]._id],
+    tasks: [tasks[6]._id, tasks[9]._id],
+  });
+
+  await User.create({
     firstName: "David",
     lastName: "Williams",
     email: "dwilliams@email.com",
     password: "password123",
-  },
-  {
+    team: teams[1]._id,
+    projects: [projects[2]._id, projects[3]._id],
+    tasks: [tasks[7]._id, tasks[10]._id],
+  });
+
+  await User.create({
     firstName: "Sarah",
     lastName: "Taylor",
     email: "staylor@email.com",
     password: "password123",
-  },
-  {
+    team: teams[1]._id,
+    projects: [projects[2]._id, projects[3]._id],
+    tasks: [tasks[8]._id, tasks[11]._id],
+  });
+
+  await User.create({
     firstName: "James",
     lastName: "Wilson",
     email: "jwilson@email.com",
     password: "password123",
-  },
-  {
+    team: teams[2]._id,
+    projects: [projects[4]._id, projects[5]._id],
+    tasks: [tasks[12]._id, tasks[15]._id],
+  });
+
+  await User.create({
     firstName: "Jessica",
     lastName: "Anderson",
     email: "janderson@email.com",
     password: "password123",
-  },
-  {
+    team: teams[2]._id,
+    projects: [projects[4]._id, projects[5]._id],
+    tasks: [tasks[13]._id, tasks[16]._id],
+  });
+
+  await User.create({
     firstName: "Robert",
     lastName: "Martinez",
     email: "rmartinez@email.com",
     password: "password123",
-  },
-  {
+    team: teams[2]._id,
+    projects: [projects[4]._id, projects[5]._id],
+    tasks: [tasks[14]._id, tasks[17]._id],
+  });
+
+  await User.create({
     firstName: "Jennifer",
     lastName: "Lopez",
     email: "jlopez@email.com",
     password: "password123",
-  },
-  {
+    team: teams[3]._id,
+    projects: [projects[6]._id, projects[7]._id],
+    tasks: [tasks[18]._id, tasks[21]._id],
+  });
+
+  await User.create({
     firstName: "Emma",
     lastName: "Jones",
     email: "ejones@email.com",
     password: "password123",
-  },
-  {
+    team: teams[3]._id,
+    projects: [projects[6]._id, projects[7]._id],
+    tasks: [tasks[19]._id, tasks[22]._id],
+  });
+
+  await User.create({
     firstName: "Joshua",
     lastName: "Brown",
     email: "jbrown@email.com",
     password: "password123",
-  },
-  {
+    team: teams[3]._id,
+    projects: [projects[6]._id, projects[7]._id],
+    tasks: [tasks[20]._id, tasks[23]._id],
+  });
+
+  await User.create({
     firstName: "Maeve",
     lastName: "Wilson",
     email: "mwilson@email.com",
     password: "password123",
-  },
-  {
+    team: teams[4]._id,
+    projects: [projects[8]._id, projects[9]._id],
+    tasks: [tasks[24]._id, tasks[27]._id],
+  });
+
+  await User.create({
     firstName: "Juan",
     lastName: "Martinez",
     email: "jmartinez@email.com",
     password: "password123",
-  },
-  {
+    team: teams[4]._id,
+    projects: [projects[8]._id, projects[9]._id],
+    tasks: [tasks[25]._id, tasks[28]._id],
+  });
+
+  await User.create({
     firstName: "Kelly",
     lastName: "Garcia",
     email: "kgarcia@email.com",
     password: "password123",
-  },
-];
+    team: teams[4]._id,
+    projects: [projects[8]._id, projects[9]._id],
+    tasks: [tasks[26]._id, tasks[29]._id],
+  });
 
-const teams = [
-  { name: "Frontend Development", members: [] },
-  { name: "Backend Development", members: [] },
-  { name: "Full-Stack Development", members: [] },
-  { name: "UI/UX Design", members: [] },
-  { name: "DevOps", members: [] },
-];
+  console.log("Users Seeded");
 
-const projects = [
-  {
-    name: "React Dashboard Development",
-    projectStatus: "In Progress",
-    team: [],
-  },
-  {
-    name: "Frontend Performance Optimization",
-    projectStatus: "Created",
-    team: [],
-  },
-  { name: "API Gateway Implementation", projectStatus: "Created", team: [] },
-  {
-    name: "Microservices Architecture Refactoring",
-    projectStatus: "Pending",
-    team: [],
-  },
-  {
-    name: "Online Marketplace Platform Development",
-    projectStatus: "In Progress",
-    team: [],
-  },
-  { name: "Social Media Integration", projectStatus: "In Progress", team: [] },
+  // Push users into teams
 
-  { name: "Website Redesign", projectStatus: "Created", team: [] },
-  {
-    name: "Mobile App User Experience Enhancement",
-    projectStatus: "Pending",
-    team: [],
-  },
-  { name: "Cloud Migration Project", projectStatus: "In Progress", team: [] },
-  {
-    name: "Infrastructure Automation Project",
-    projectStatus: "Created",
-    team: [],
-  },
-];
+  const users = await User.find({
+    $or: [
+      { email: "jdoe@email.com" },
+      { email: "jsmith@email.com" },
+      { email: "mjohnson@email.com" },
+    ],
+  });
+  const userIds = users.map((user) => user._id);
+  await Team.findOneAndUpdate(
+    { name: "Frontend Development" },
+    { $push: { members: { $each: userIds } } }
+  );
 
-const tasks = [
-  {
-    description: "Implement user authentication functionality",
-    taskStatus: "Pending",
-    dueDate: new Date(),
-  },
-  {
-    description: "Design and develop data visualization components",
-    taskStatus: "Completed",
-    dueDate: new Date(),
-  },
-  {
-    description: "Integrate with backend APIs for data retrieval",
-    taskStatus: "Created",
-    dueDate: new Date(),
-  },
-  {
-    description: "Analyze and optimize bundle size",
-    taskStatus: "In Progress",
-    dueDate: new Date(),
-  },
-  {
-    description: "Implement lazy loading for images and components",
-    taskStatus: "In Progress",
-    dueDate: new Date(),
-  },
-  {
-    description: "Utilize caching mechanisms to improve page load times",
-    taskStatus: "Pending",
-    dueDate: new Date(),
-  },
-  {
-    description: "Set up API gateway infrastructure",
-    taskStatus: "In Progress",
-    dueDate: new Date(),
-  },
-  {
-    description: "Configure routing rules for different microservices",
-    taskStatus: "Created",
-    dueDate: new Date(),
-  },
-  {
-    description: "Implement security policies and rate limiting",
-    taskStatus: "In Progress",
-    dueDate: new Date(),
-  },
-  {
-    description: "Decompose monolithic application into microservices",
-    taskStatus: "Completed",
-    dueDate: new Date(),
-  },
-  {
-    description: "Define communication protocols between microservices",
-    taskStatus: "In Progress",
-    dueDate: new Date(),
-  },
-  {
-    description: "Implement service discovery and load balancing",
-    taskStatus: "Pending",
-    dueDate: new Date(),
-  },
-  {
-    description: "Design database schema for product listings",
-    taskStatus: "Pending",
-    dueDate: new Date(),
-  },
-  {
-    description: "Implement user registration and login functionality",
-    taskStatus: "Completed",
-    dueDate: new Date(),
-  },
-  {
-    description: "Develop product search and filtering features",
-    taskStatus: "Created",
-    dueDate: new Date(),
-  },
-  {
-    description:
-      "Integrate platform with social media APIs for user authentication",
-    taskStatus: "In Progress",
-    dueDate: new Date(),
-  },
-  {
-    description: "Implement sharing functionalities for posts and products",
-    taskStatus: "In Progress",
-    dueDate: new Date(),
-  },
-  {
-    description: "Develop notification system for user interactions",
-    taskStatus: "In Progress",
-    dueDate: new Date(),
-  },
-  {
-    description: "Conduct user research and gather requirements",
-    taskStatus: "In Progress",
-    dueDate: new Date(),
-  },
-  {
-    description: "Create wireframes and prototypes for new design",
-    taskStatus: "Created",
-    dueDate: new Date(),
-  },
-  {
-    description:
-      "Develop responsive UI components using modern design principles",
-    taskStatus: "In Progress",
-    dueDate: new Date(),
-  },
-  {
-    description: "Analyze user feedback and app usage data",
-    taskStatus: "Completed",
-    dueDate: new Date(),
-  },
-  {
-    description: "Refine navigation and user flows",
-    taskStatus: "In Progress",
-    dueDate: new Date(),
-  },
-  {
-    description: "Improve performance and responsiveness of the app",
-    taskStatus: "Pending",
-    dueDate: new Date(),
-  },
-  {
-    description:
-      "Assess current infrastructure and identify migration candidates",
-    taskStatus: "Pending",
-    dueDate: new Date(),
-  },
-  {
-    description: "Plan migration strategy and prioritize workloads",
-    taskStatus: "Completed",
-    dueDate: new Date(),
-  },
-  {
-    description: "Execute migration process with minimal downtime",
-    taskStatus: "Created",
-    dueDate: new Date(),
-  },
-  {
-    description:
-      "Implement Infrastructure as Code (IaC) using tools like Terraform",
-    taskStatus: "In Progress",
-    dueDate: new Date(),
-  },
-  {
-    description:
-      "Automate provisioning and configuration of servers and services",
-    taskStatus: "In Progress",
-    dueDate: new Date(),
-  },
-  {
-    description:
-      "Set up continuous integration and deployment pipelines for infrastructure changes",
-    taskStatus: "Pending",
-    dueDate: new Date(),
-  },
-];
+  const users2 = await User.find({
+    $or: [
+      { email: "ebrown@email.com" },
+      { email: "dwilliams@email.com" },
+      { email: "staylor@email.com" },
+    ],
+  });
+  const userIds2 = users2.map((user) => user._id);
+  await Team.findOneAndUpdate(
+    { name: "Backend Development" },
+    { $push: { members: { $each: userIds2 } } }
+  );
 
-// Seed function
-async function seed() {
-  try {
-    // Clear existing data
-    await Promise.all([User.deleteMany(), Team.deleteMany(), Project.deleteMany(), Task.deleteMany()]);
+  const users3 = await User.find({
+    $or: [
+      { email: "jwilson@email.com" },
+      { email: "janderson@email.com" },
+      { email: "rmartinez@email.com" },
+    ],
+  });
+  const userIds3 = users3.map((user) => user._id);
+  await Team.findOneAndUpdate(
+    { name: "Full-Stack Development" },
+    { $push: { members: { $each: userIds3 } } }
+  );
 
-    // Insert sample data
-    const createdUsers = await User.create(users);
-    const createdTeams = await Team.create(teams);
-    const createdProjects = await Project.create(projects);
-    const createdTasks = await Task.create(tasks);
+  const users4 = await User.find({
+    $or: [
+      { email: "jlopez@email.com" },
+      { email: "ejones@email.com" },
+      { email: "jbrown@email.com" },
+    ],
+  });
+  const userIds4 = users4.map((user) => user._id);
+  await Team.findOneAndUpdate(
+    { name: "UI/UX Design" },
+    { $push: { members: { $each: userIds4 } } }
+  );
 
-    // Assign users to teams
-    for (let i = 0; i < createdUsers.length; i++) {
-      const teamIndex = i % createdTeams.length;
-      await Team.updateOne({ _id: createdTeams[teamIndex]._id }, { $push: { members: createdUsers[i]._id } });
-      await User.updateOne({ _id: createdUsers[i]._id }, { $set: { team: createdTeams[teamIndex]._id } });
-    }
+  const users5 = await User.find({
+    $or: [
+      { email: "mwilson@email.com" },
+      { email: "jmartinez@email.com" },
+      { email: "kgarcia@email.com" },
+    ],
+  });
+  const userIds5 = users5.map((user) => user._id);
+  await Team.findOneAndUpdate(
+    { name: "DevOps" },
+    { $push: { members: { $each: userIds5 } } }
+  );
 
-    // Assign teams to projects and projects to teams
-    for (let i = 0; i < createdProjects.length; i++) {
-      const teamIndex = i % createdTeams.length;
-      await Project.updateOne({ _id: createdProjects[i]._id }, { $push: { team: createdTeams[teamIndex]._id } });
-      await Team.updateOne({ _id: createdTeams[teamIndex]._id }, { $push: { projects: createdProjects[i]._id } });
-    }
+  // Push assignedUsers into tasks
+  const user1a = await User.find({
+    email: "jdoe@email.com",
+  });
+  const user1aId = user1a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Implement user authentication functionality" },
+    { $push: { assignedUser: user1aId } }
+  );
 
-    // Associate tasks with projects
-    for (let i = 0; i < createdTasks.length; i++) {
-      const projectIndex = i % createdProjects.length;
-      await Project.updateOne({ _id: createdProjects[projectIndex]._id }, { $push: { tasks: createdTasks[i]._id } });
-    }
+  const user1b = await User.find({
+    email: "jdoe@email.com",
+  });
+  const user1bId = user1b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Analyze and optimize bundle size" },
+    { $push: { assignedUser: user1bId } }
+  );
 
-    // Assign tasks and projects to users
-    for (let i = 0; i < createdUsers.length; i++) {
-      const teamIndex = i % createdTeams.length;
-      const projectIndex = teamIndex * 2; // Each team has two projects
-      const taskIndex1 = i * 2; // First task for user
-      const taskIndex2 = i * 2 + 1; // Second task for user
+  const user2a = await User.find({
+    email: "jsmith@email.com",
+  });
+  const user2aId = user2a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Design and develop data visualization components" },
+    { $push: { assignedUser: user2aId } }
+  );
 
-      await User.updateOne(
-        { _id: createdUsers[i]._id },
-        {
-          $set: {
-            tasks: [createdTasks[taskIndex1]._id, createdTasks[taskIndex2]._id],
-            projects: [createdProjects[projectIndex]._id, createdProjects[projectIndex + 1]._id],
-          },
-        }
-      );
-    }
+  const user2b = await User.find({
+    email: "jsmith@email.com",
+  });
+  const user2bId = user2b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Implement lazy loading for images and components" },
+    { $push: { assignedUser: user2bId } }
+  );
 
+  const user3a = await User.find({
+    email: "mjohnson@email.com",
+  });
+  const user3aId = user3a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Integrate with backend APIs for data retrieval" },
+    { $push: { assignedUser: user3aId } }
+  );
 
-    // Assign assignedUser field to tasks
-    for (let i = 0; i < createdTasks.length; i++) {
-      const userIndex = i % createdUsers.length;
-      await Task.updateOne(
-        { _id: createdTasks[i]._id },
-        { $set: { assignedUser: createdUsers[userIndex]._id } }
-      );
-    }
+  const user3b = await User.find({
+    email: "mjohnson@email.com",
+  });
+  const user3bId = user3b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Utilize caching mechanisms to improve page load times" },
+    { $push: { assignedUser: user3bId } }
+  );
 
-    console.log('Database seeded successfully.');
-    process.exit(0);
-  } catch (error) {
-    console.error('Error seeding database:', error);
-    process.exit(1);
-  }
-}
+  const user4a = await User.find({
+    email: "ebrown@email.com",
+  });
+  const user4aId = user4a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Set up API gateway infrastructure" },
+    { $push: { assignedUser: user4aId } }
+  );
 
-seed();
+  const user4b = await User.find({
+    email: "ebrown@email.com",
+  });
+  const user4bId = user4b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Decompose monolithic application into microservices" },
+    { $push: { assignedUser: user4bId } }
+  );
+
+  const user5a = await User.find({
+    email: "dwilliams@email.com",
+  });
+  const user5aId = user5a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Configure routing rules for different microservices" },
+    { $push: { assignedUser: user5aId } }
+  );
+
+  const user5b = await User.find({
+    email: "dwilliams@email.com",
+  });
+  const user5bId = user5b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Define communication protocols between microservices" },
+    { $push: { assignedUser: user5bId } }
+  );
+
+  const user6a = await User.find({
+    email: "staylor@email.com",
+  });
+  const user6aId = user6a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Implement security policies and rate limiting" },
+    { $push: { assignedUser: user6aId } }
+  );
+
+  const user6b = await User.find({
+    email: "staylor@email.com",
+  });
+  const user6bId = user6b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Implement service discovery and load balancing" },
+    { $push: { assignedUser: user6bId } }
+  );
+
+  const user7a = await User.find({
+    email: "jwilson@email.com",
+  });
+  const user7aId = user7a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Design database schema for product listings" },
+    { $push: { assignedUser: user7aId } }
+  );
+
+  const user7b = await User.find({
+    email: "jwilson@email.com",
+  });
+  const user7bId = user7b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Integrate platform with social media APIs for user authentication" },
+    { $push: { assignedUser: user7bId } }
+  );
+
+  const user8a = await User.find({
+    email: "janderson@email.com",
+  });
+  const user8aId = user8a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Implement user registration and login functionality" },
+    { $push: { assignedUser: user8aId } }
+  );
+
+  const user8b = await User.find({
+    email: "janderson@email.com",
+  });
+  const user8bId = user8b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Implement sharing functionalities for posts and products" },
+    { $push: { assignedUser: user8bId } }
+  );
+
+  const user9a = await User.find({
+    email: "rmartinez@email.com",
+  });
+  const user9aId = user9a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Develop product search and filtering features" },
+    { $push: { assignedUser: user9aId } }
+  );
+
+  const user9b = await User.find({
+    email: "rmartinez@email.com",
+  });
+  const user9bId = user9b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Develop notification system for user interactions" },
+    { $push: { assignedUser: user9bId } }
+  );
+
+  const user10a = await User.find({
+    email: "jlopez@email.com",
+  });
+  const user10aId = user10a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Conduct user research and gather requirements" },
+    { $push: { assignedUser: user10aId } }
+  );
+
+  const user10b = await User.find({
+    email: "jlopez@email.com",
+  });
+  const user10bId = user10b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Analyze user feedback and app usage data" },
+    { $push: { assignedUser: user10bId } }
+  );
+
+  const user11a = await User.find({
+    email: "ejones@email.com",
+  });
+  const user11aId = user11a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Create wireframes and prototypes for new design" },
+    { $push: { assignedUser: user11aId } }
+  );
+
+  const user11b = await User.find({
+    email: "ejones@email.com",
+  });
+  const user11bId = user11b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Refine navigation and user flows" },
+    { $push: { assignedUser: user11bId } }
+  );
+
+  const user12a = await User.find({
+    email: "jbrown@email.com",
+  });
+  const user12aId = user12a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Develop responsive UI components using modern design principles" },
+    { $push: { assignedUser: user12aId } }
+  );
+
+  const user12b = await User.find({
+    email: "jbrown@email.com",
+  });
+  const user12bId = user12b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Improve performance and responsiveness of the app" },
+    { $push: { assignedUser: user12bId } }
+  );
+
+  const user13a = await User.find({
+    email: "mwilson@email.com",
+  });
+  const user13aId = user13a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Assess current infrastructure and identify migration candidates" },
+    { $push: { assignedUser: user13aId } }
+  );
+
+  const user13b = await User.find({
+    email: "mwilson@email.com",
+  });
+  const user13bId = user13b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Implement Infrastructure as Code (IaC) using tools like Terraform" },
+    { $push: { assignedUser: user13bId } }
+  );
+
+  const user14a = await User.find({
+    email: "jmartinez@email.com",
+  });
+  const user14aId = user14a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Plan migration strategy and prioritize workloads" },
+    { $push: { assignedUser: user14aId } }
+  );
+
+  const user14b = await User.find({
+    email: "jmartinez@email.com",
+  });
+  const user14bId = user14b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Automate provisioning and configuration of servers and services" },
+    { $push: { assignedUser: user14bId } }
+  );
+
+  const user15a = await User.find({
+    email: "kgarcia@email.com",
+  });
+  const user15aId = user15a.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Execute migration process with minimal downtime" },
+    { $push: { assignedUser: user15aId } }
+  );
+
+  const user15b = await User.find({
+    email: "kgarcia@email.com",
+  });
+  const user15bId = user15b.map((user) => user._id);
+  await Task.findOneAndUpdate(
+    { description: "Set up continuous integration and deployment pipelines for infrastructure changes" },
+    { $push: { assignedUser: user15bId } }
+  );
+
+  process.exit();
+});
