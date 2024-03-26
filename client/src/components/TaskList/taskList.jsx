@@ -13,6 +13,7 @@ import {
   TextField,
   Select,
   MenuItem,
+  Typography
 } from "@mui/material";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles"; // Import styled, createTheme, and ThemeProvider from MUI
 import { useQuery, useMutation, useApolloClient } from "@apollo/client";
@@ -26,16 +27,17 @@ import { ADD_TASK, UPDATE_TASK } from "../../utils/mutations";
 
 import { useParams } from "react-router-dom";
 
-// Create a custom theme
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#a6d8aa", // Set primary color to #a6d8aa
+      main: "#e4442b",
+    },
+    action: {
+      hover: "#e3f1f1",
     },
   },
 });
 
-// StyledTableCell and StyledTableRow components for custom styling
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.common.white,
@@ -44,6 +46,13 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
+  },
+}));
+
+const SmallScreenTable = styled(TableContainer)(({ theme }) => ({
+  [theme.breakpoints.down("sm")]: {
+    maxWidth: "100%",
+    overflowX: "auto",
   },
 }));
 
@@ -212,16 +221,16 @@ const TaskTable = () => {
         console.error("Error adding task:", error);
         setError("Error adding task.");
       });
-      client.writeQuery({
-        query: QUERY_SINGLE_PROJECT,
-        variables: { projectId },
-        data: {
-          project: {
-            ...projectData.project,
-            tasks: [...projectData.project.tasks, newTask],
-          },
+    client.writeQuery({
+      query: QUERY_SINGLE_PROJECT,
+      variables: { projectId },
+      data: {
+        project: {
+          ...projectData.project,
+          tasks: [...projectData.project.tasks, newTask],
         },
-      });
+      },
+    });
   };
 
   if (meLoading || projectsLoading) return <p>Loading...</p>;
@@ -241,44 +250,74 @@ const TaskTable = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      {" "}
-      {/* Apply the custom theme */}
       <div>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="task table">
+        <SmallScreenTable component={Paper} sx={{ width: "100%", marginBottom: "1rem", borderRadius: 1, boxShadow: 3, overflowX: "auto" }}>
+          <Table aria-label="task table">
             <TableHead>
               <StyledTableRow>
-                <StyledTableCell>Task</StyledTableCell>
-                <StyledTableCell>Status</StyledTableCell>
-                <StyledTableCell>Due Date</StyledTableCell>
-                <StyledTableCell>Assigned User</StyledTableCell>
-                <StyledTableCell>Edit</StyledTableCell>
+                <StyledTableCell>
+                  <Typography variant="h6" component="div" sx={{ fontWeight: "bold", fontSize: "0.9rem" }}>
+                    Task
+                  </Typography>
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Typography variant="h6" component="div" sx={{ fontWeight: "bold", fontSize: "0.9rem" }}>
+                    Status
+                  </Typography>
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Typography variant="h6" component="div" sx={{ fontWeight: "bold", fontSize: "0.9rem" }}>
+                    Due Date
+                  </Typography>
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Typography variant="h6" component="div" sx={{ fontWeight: "bold", fontSize: "0.9rem" }}>
+                    Assigned User
+                  </Typography>
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Typography variant="h6" component="div" sx={{ fontWeight: "bold", fontSize: "0.9rem" }}>
+                    Edit
+                  </Typography>
+                </StyledTableCell>
               </StyledTableRow>
             </TableHead>
             <TableBody>
               {projectData.project.tasks.map((task) => (
                 <StyledTableRow key={task._id}>
-                  <TableCell>{task.description}</TableCell>
                   <TableCell>
-                    {editingTaskId === task._id ? (
-                      <Select
-                        value={editedStatus}
-                        onChange={(e) => setEditedStatus(e.target.value)}
-                      >
-                        <MenuItem value="Created">Created</MenuItem>
-                        <MenuItem value="Pending">Pending</MenuItem>
-                        <MenuItem value="In Progress">In Progress</MenuItem>
-                        <MenuItem value="Completed">Completed</MenuItem>
-                      </Select>
-                    ) : (
-                      task.taskStatus
-                    )}
+                    <Typography variant="body1" component="div" sx={{ fontSize: "0.9rem" }}>
+                      {task.description}
+                    </Typography>
                   </TableCell>
-                  <TableCell>{task.dateDue}</TableCell>
                   <TableCell>
-                    {task.assignedUser
-                      ? `${task.assignedUser.firstName} ${task.assignedUser.lastName}`
-                      : "Not Assigned"}
+                    <Typography variant="body1" component="div" sx={{ fontSize: "0.9rem" }}>
+                      {editingTaskId === task._id ? (
+                        <Select
+                          value={editedStatus}
+                          onChange={(e) => handleInputChange(e)}
+                        >
+                          <MenuItem value="Created">Created</MenuItem>
+                          <MenuItem value="Pending">Pending</MenuItem>
+                          <MenuItem value="In Progress">In Progress</MenuItem>
+                          <MenuItem value="Completed">Completed</MenuItem>
+                        </Select>
+                      ) : (
+                        task.taskStatus
+                      )}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body1" component="div" sx={{ fontSize: "0.9rem" }}>
+                      {task.dateDue}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body1" component="div" sx={{ fontSize: "0.9rem" }}>
+                      {task.assignedUser
+                        ? `${task.assignedUser.firstName} ${task.assignedUser.lastName}`
+                        : "Not Assigned"}
+                    </Typography>
                   </TableCell>
                   <TableCell>
                     {editingTaskId === task._id ? (
@@ -314,15 +353,13 @@ const TaskTable = () => {
                   <TextField
                     name="description"
                     value={newTask.description}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e)}
                   />
                 </TableCell>
                 <TableCell>
                   <Select
                     value={newTask.taskStatus}
-                    onChange={(e) =>
-                      setNewTask({ ...newTask, taskStatus: e.target.value })
-                    }
+                    onChange={(e) => handleInputChange(e)}
                   >
                     <MenuItem value="Created">Created</MenuItem>
                     <MenuItem value="Pending">Pending</MenuItem>
@@ -342,7 +379,7 @@ const TaskTable = () => {
                 <TableCell>
                   <Select
                     value={newTask.assignedUserId}
-                    onChange={handleAssignedUserChange}
+                    onChange={(e) => handleAssignedUserChange(e)}
                     name="assignedUserId"
                   >
                     {usersData.users.map((user) => (
@@ -364,15 +401,18 @@ const TaskTable = () => {
               </StyledTableRow>
               <StyledTableRow>
                 <TableCell colSpan={5}>
-                  {error && <p style={{ color: "red" }}>{error}</p>}
+                  {error && <Typography variant="body1" component="p" sx={{ color: "red" }}>{error}</Typography>}
                 </TableCell>
               </StyledTableRow>
             </TableBody>
           </Table>
-        </TableContainer>
+        </SmallScreenTable>
       </div>
     </ThemeProvider>
   );
 };
 
 export default TaskTable;
+
+
+
