@@ -1,13 +1,9 @@
+import "../ProfileForm/Profileform.css";
 import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_ME } from "../../utils/queries";
 import { UPDATE_USER } from "../../utils/mutations";
-import {
-  Typography,
-  TextField,
-  Grid,
-  Button,
-} from "@mui/material";
+import { Typography, TextField, Grid, Button } from "@mui/material";
 
 const ProfileForm = () => {
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
@@ -111,22 +107,39 @@ const ProfileForm = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} className="btn-container" container justifyContent="center">
+          <Grid
+            item
+            xs={12}
+            className="btn-container"
+            container
+            justifyContent="center"
+          >
             <Button
               variant="contained"
               color="primary"
               onClick={handleSaveClick}
+              sx={{
+                background: "#e4442b",
+                color: "white",
+              }}
             >
               Save
             </Button>
-            <Button variant="contained" onClick={handleCancelClick}>
+            <Button
+              variant="contained"
+              onClick={handleCancelClick}
+              sx={{
+                background: "#e4442b",
+                color: "white",
+              }}
+            >
               Cancel
             </Button>
           </Grid>
         </Grid>
       ) : (
         <div>
-          <Typography variant="h5">Profile Details</Typography>
+          {/* <Typography variant="h5">Profile Details</Typography> */}
           <p className="profile-details">
             <strong>First Name:</strong> {me.firstName}
           </p>
@@ -139,7 +152,14 @@ const ProfileForm = () => {
           <p className="profile-details">
             <strong>Password: *****</strong>
           </p>
-          <Button variant="contained" onClick={handleEditClick}>
+          <Button
+            variant="contained"
+            sx={{
+              background: "#e4442b",
+              color: "white",
+            }}
+            onClick={handleEditClick}
+          >
             Edit Profile
           </Button>
         </div>

@@ -62,11 +62,11 @@ const TeamProjectList = () => {
           <Grid
             item
             key={project._id}
-            xs={12}
-            sm={10}
-            md={8}
-            lg={6}
-            xl={4}
+            // xs={12}
+            // sm={10}
+            // md={8}
+            // lg={6}
+            // xl={4}
             sx={{
               display: "flex",
               flexDirection: "column",
