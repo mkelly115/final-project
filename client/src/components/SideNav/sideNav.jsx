@@ -192,7 +192,7 @@ export default function MiniDrawer() {
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <Box>
-            <strong>PROJECT THREE CORP</strong>
+            <strong>WEB PULSE CORP</strong>
           </Box>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
