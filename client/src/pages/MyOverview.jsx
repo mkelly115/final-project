@@ -11,7 +11,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useQuery } from "@apollo/client";
 import { QUERY_ME, QUERY_SINGLE_USER } from "../utils/queries";
-import logo from '../assets/logo.png';
+// import logo from "../assets/logo.png";
+import webpulselogo from "/webpulselogo.png";
 
 import "../index.css";
 
@@ -55,14 +56,13 @@ const MyOverview = () => {
   )
     return <p>No user data or projects found...</p>;
 
-     // ------------------ start of code for projects pie chart ------------------------------
-    //  const projectStatusColors = {
-    //   Created: "#",
-    //   Pending: "#",
-    //   InProgress: "#",
-    //   Completed: "#",
-    // };
-
+  // ------------------ start of code for projects pie chart ------------------------------
+  //  const projectStatusColors = {
+  //   Created: "#",
+  //   Pending: "#",
+  //   InProgress: "#",
+  //   Completed: "#",
+  // };
 
   // Map over the projects array to count the number of projects for each project status
   const projectStatusCounts = projectsData.user.projects.reduce(
@@ -92,7 +92,7 @@ const MyOverview = () => {
 
   // ------------------ end of code for projects pie chart ------------------------------
 
-   // ------------------ start of code for tasks pie chart ------------------------------
+  // ------------------ start of code for tasks pie chart ------------------------------
   //  const taskStatusColors = {
   //   Created: "#",
   //   Pending: "#",
@@ -120,9 +120,9 @@ const MyOverview = () => {
     })
   );
 
-   // total tasks count for task pie chart
+  // total tasks count for task pie chart
   const totalTasksCount = projectsData.user.tasks.length;
-   // ------------------ end of code for tasks pie chart ------------------------------
+  // ------------------ end of code for tasks pie chart ------------------------------
 
   //  ------------------ start of task counts by status for gauge ------------------------------
 
@@ -131,10 +131,10 @@ const MyOverview = () => {
     .filter((status) => status !== "Completed")
     .reduce((acc, status) => acc + taskStatusCounts[status], 0);
 
-    // count for how many tasks are completed
+  // count for how many tasks are completed
   const completedTasksCount = taskStatusCounts.Completed || 0;
 
- //  ------------------ end of task counts by status for gauge ------------------------------
+  //  ------------------ end of task counts by status for gauge ------------------------------
 
   // ------------------ start of code for upcoming due dates ------------------------------
 
@@ -213,7 +213,7 @@ const MyOverview = () => {
     null
   );
 
-// return the appropriate project object based on the selected due date above (todays date or most upcoming due date)
+  // return the appropriate project object based on the selected due date above (todays date or most upcoming due date)
   const projectToReturn = hasDueDateToday
     ? projectsData.user.projects.find((project) => {
         const projectDueDate = parseFormattedDate(project.dateDue);
@@ -221,7 +221,7 @@ const MyOverview = () => {
       })
     : closestDueDateProject;
 
-// repeat the due date evaluation for the tasks array and return the appropriate task object
+  // repeat the due date evaluation for the tasks array and return the appropriate task object
   const taskToReturn = () => {
     const hasDueDateToday = projectsData.user.tasks.some((task) => {
       const taskDueDate = parseFormattedDate(task.dateDue);
@@ -264,169 +264,346 @@ const MyOverview = () => {
   };
 
   const taskToReturnResult = taskToReturn();
-// ------------------ end of code for upcoming due dates ------------------------------
+  // ------------------ end of code for upcoming due dates ------------------------------
 
-return (
-  <Grid container spacing={3}>
-    <Grid item md={12} lg={6}>
-      {/* Welcome Card */}
-      <div className="chart-container">
-        <div className="chart-border">
-          <Card>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                Welcome to your project dashboard, {meData.me.firstName}!
-              </Typography>
-              <br />
-              <img src = {logo}
-              alt="Logo"
-              style={{
-                  width: '100px',
-                  height: '100px',
-                  objectFit: 'cover',
+  return (
+    <div
+      className="overview-container"
+      display="flex"
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      {/* Top Row */}
+      <Grid
+        container
+        spacing={3}
+        sx={{ alignItems: "center", justifyContent: "center",  marginTop: "3rem" }}
+      >
+        {/* Welcome Card */}
+        <Grid
+          item
+          md={12}
+          lg={6}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div className="chart-container">
+            {/* <div className="chart-border"> */}
+            <Card
+              variant="outlined"
+              sx={{
+                width: "calc(100% + 150px)",
+                borderRadius: 2,
+                boxShadow: 3,
+                border: 3,
+                borderColor: "#e4442b",
+                justifyContent: "center",
+                alignItems: "stretch", // Ensure all cards have the same height
+                height: "100%", // Ensure cards take the full height of their container
               }}
-               />
-               <br />
-               <br />
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </Grid>
-
-    <Grid item md={12} lg={6}>
-      {/* Upcoming Due Dates Card */}
-      <div className="chart-container">
-        <div className="chart-border">
-          <Card sx={{ minWidth: 275 }}>
-            <CardContent>
-              <Typography variant="h5" color="text.secondary" gutterBottom>
-                {bull} UPCOMING DUE DATES {bull}
-              </Typography>
-              <br />
-              <Typography sx={{ fontSize: 14 }} component="div">
-                Your next TASK is due
-              </Typography>
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              {taskToReturnResult &&
-              parseFormattedDate(
-                taskToReturnResult.dateDue
-              ).toDateString() === today.toDateString()
-                ? "TODAY"
-                : taskToReturnResult
-                ? parseFormattedDate(
-                    taskToReturnResult.dateDue
-                  ).toDateString()
-                : "No upcoming due date"}
-            </Typography>
-              <Typography sx={{ fontSize: 14 }} component="div">
-                Your next PROJECT is due
-              </Typography>
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              {projectToReturn &&
-              parseFormattedDate(projectToReturn.dateDue).toDateString() ===
-                today.toDateString()
-                ? "TODAY"
-                : projectToReturn
-                ? parseFormattedDate(projectToReturn.dateDue).toDateString()
-                : "No upcoming due date"}
-            </Typography>
-            </CardContent>
-            <CardActions>
-              <Box
+            >
+              <CardContent
                 sx={{
-                  width: "100%",
                   display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
                   justifyContent: "center",
                 }}
               >
-                <Button
-                  component={RouterLink}
-                  to="/dashboard/calendar"
-                  size="small"
+                <Typography
+                  variant="h4"
+                  component="div"
+                  gutterBottom
+                  sx={{ fontWeight: "bold" }}
                 >
-                  MY CALENDAR
-                </Button>
-              </Box>
-            </CardActions>
-          </Card>
-        </div>
-      </div>
-    </Grid>
-    <Grid item md={12} lg={4}>
-      {/* Tasks Pie Chart */}
-      <div className="chart-container">
-        <div className="chart-border">
-          <div className="chart-header">Task Status Overview</div>
-          <PieChart
-            series={[
-              {
-                data: taskChartData,
-                highlightScope: { faded: "global", highlighted: "item" },
-                faded: {
-                  innerRadius: 30,
-                  additionalRadius: -30,
-                  color: "gray",
-                },
-              },
-            ]}
-            height={200}
-          />
-          <div>Total Tasks: {totalTasksCount}</div>
-        </div>
-      </div>
-    </Grid>
-    <Grid item md={12} lg={4}>
-      {/* Projects Pie Chart */}
-      <div className="chart-container">
-        <div className="chart-border">
-          <div className="chart-header">Project Status Overview</div>
-          <PieChart
-            series={[
-              {
-                data: projectChartData,
-                highlightScope: { faded: "global", highlighted: "item" },
-                faded: {
-                  innerRadius: 30,
-                  additionalRadius: -30,
-                  color: "gray",
-                },
-              },
-            ]}
-            height={200}
-          />
-          <div>Total Projects: {totalProjectsCount}</div>
-        </div>
-      </div>
-    </Grid>
-    <Grid  item md={12} lg={4}>
-      {/* Gauge */}
-      <div className="chart-container">
-        <div className="chart-border">
-          <div className="chart-header">
-            You have {incompleteTasksCount} task
-            {incompleteTasksCount === 1 ? "" : "s"} to complete
+                  Welcome to your project dashboard, {meData.me.firstName}!
+                </Typography>
+                {/* <br /> */}
+                <img
+                  src={webpulselogo}
+                  alt="Logo"
+                  style={{
+                    width: "10rem",
+                    height: "10rem",
+                    objectFit: "cover",
+                    borderRadius: "50%"
+                  }}
+                />
+                {/* <br />
+                  <br /> */}
+              </CardContent>
+            </Card>
           </div>
-          <div className="gauge-container">
-            <Gauge
-              value={completedTasksCount}
-              valueMax={totalTasksCount}
-              startAngle={-110}
-              endAngle={110}
+          {/* </div> */}
+        </Grid>
+        {/* Upcoming Due Dates Card */}
+        <Grid
+          item
+          md={12}
+          lg={6}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div className="chart-container">
+            {/* <div className="chart-border"> */}
+            <Card
+              variant="outlined"
               sx={{
-                [`& .${gaugeClasses.valueText}`]: {
-                  fontSize: 40,
-                  transform: "translate(0px, 0px)",
-                },
+                width: "auto",
+                borderRadius: 2,
+                boxShadow: 3,
+                border: 3,
+                borderColor: "#e4442b",
+                alignItems: "stretch", // Ensure all cards have the same height
+                height: "100%", // Ensure cards take the full height of their container
               }}
-              text={({ value, valueMax }) => `${value} / ${valueMax}`}
-            />
+            >
+              <CardContent>
+                <Typography variant="h5" component="div" gutterBottom sx={{ fontWeight: "bold" }}>
+                  {bull} UPCOMING DUE DATES {bull}
+                </Typography>
+                <br />
+                <Typography sx={{ fontSize: "1rem", fontWeight: "bold" }} component="div" gutterBottom >
+                  Your next TASK is due
+                </Typography>
+                <Typography sx={{ fontSize: "1.25rem", mb: 1.5 }} color="text.secondary">
+                  {taskToReturnResult &&
+                  parseFormattedDate(
+                    taskToReturnResult.dateDue
+                  ).toDateString() === today.toDateString()
+                    ? "TODAY"
+                    : taskToReturnResult
+                    ? parseFormattedDate(
+                        taskToReturnResult.dateDue
+                      ).toDateString()
+                    : "No upcoming due date"}
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: "bold" }} component="div" gutterBottom>
+                  Your next PROJECT is due
+                </Typography>
+                <Typography sx={{ fontSize: "1.25rem", mb: 0.5 }} color="text.secondary">
+                  {projectToReturn &&
+                  parseFormattedDate(projectToReturn.dateDue).toDateString() ===
+                    today.toDateString()
+                    ? "TODAY"
+                    : projectToReturn
+                    ? parseFormattedDate(projectToReturn.dateDue).toDateString()
+                    : "No upcoming due date"}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Box
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Button
+                    component={RouterLink}
+                    to="/dashboard/calendar"
+                    sx={{
+                      background: "#e4442b",
+                      color: "white"
+                    }}
+                  >
+                    MY CALENDAR
+                  </Button>
+                </Box>
+              </CardActions>
+            </Card>
           </div>
-        </div>
-      </div>
-    </Grid>
-  </Grid>
-);  
+          {/* </div> */}
+        </Grid>
+      </Grid>
+      {/* Bottom Row */}
+      <Grid
+        container
+        spacing={3}
+        sx={{ alignItems: "center", justifyContent: "center",  marginTop: "2rem" }}
+      >
+        {/* Projects Pie Chart */}
+        <Grid
+          item
+          md={12}
+          lg={4}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div className="chart-container">
+            {/* <div className="chart-border"> */}
+            <Card
+              variant="outlined"
+              sx={{
+                width: "auto",
+                borderRadius: 2,
+                boxShadow: 3,
+                border: 3,
+                padding: 1,
+                borderColor: "#e4442b",
+                justifyContent: "center",
+                alignItems: "stretch", // Ensure all cards have the same height
+                height: "100%", // Ensure cards take the full height of their container
+              }}
+            >
+              <div className="chart-header">
+                <Typography
+                  variant="h5"
+                  component="div"
+                  gutterBottom
+                  sx={{ fontWeight: "bold" }}
+                >
+                  Project Status Overview
+                </Typography>
+              </div>
+              <PieChart
+                series={[
+                  {
+                    data: projectChartData,
+                    highlightScope: { faded: "global", highlighted: "item" },
+                    faded: {
+                      innerRadius: 30,
+                      additionalRadius: -30,
+                      color: "gray",
+                    },
+                  },
+                ]}
+                height={200}
+              />
+              <div>Total Projects: {totalProjectsCount}</div>
+            </Card>
+          </div>
+          {/* </div> */}
+        </Grid>
+        {/* Tasks Pie Chart */}
+        <Grid
+          item
+          md={12}
+          lg={4}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div className="chart-container">
+            {/* <div className="chart-border"> */}
+            <Card
+              variant="outlined"
+              sx={{
+                width: "auto",
+                borderRadius: 2,
+                boxShadow: 3,
+                border: 3,
+                borderColor: "#e4442b",
+                padding: 1,
+                justifyContent: "center",
+                alignItems: "stretch", // Ensure all cards have the same height
+                height: "100%", // Ensure cards take the full height of their container
+              }}
+            >
+              <div className="chart-header">
+              <Typography
+                  variant="h5"
+                  component="div"
+                  gutterBottom
+                  sx={{ fontWeight: "bold" }}
+                >
+                  Task Status Overview
+                </Typography>
+                </div>
+              <PieChart
+                series={[
+                  {
+                    data: taskChartData,
+                    highlightScope: { faded: "global", highlighted: "item" },
+                    faded: {
+                      innerRadius: 30,
+                      additionalRadius: -30,
+                      color: "gray",
+                    },
+                  },
+                ]}
+                height={200}
+              />
+              <div>Total Tasks: {totalTasksCount}</div>
+            </Card>
+          </div>
+          {/* </div> */}
+        </Grid>
+        {/* Gauge */}
+        <Grid
+          item
+          md={12}
+          lg={4}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div className="chart-container">
+            {/* <div className="chart-border"> */}
+            <Card
+              variant="outlined"
+              sx={{
+                width: "auto",
+                borderRadius: 2,
+                boxShadow: 3,
+                border: 3,
+                borderColor: "#e4442b",
+                padding: 1,
+                justifyContent: "center",
+                alignItems: "stretch", // Ensure all cards have the same height
+                height: "100%", // Ensure cards take the full height of their container
+              }}
+            >
+              <div className="chart-header">
+              <Typography
+                  variant="h5"
+                  component="div"
+                  gutterBottom
+                  sx={{ fontWeight: "bold" }}
+                >
+                  You have {incompleteTasksCount} task
+                {incompleteTasksCount === 1 ? "" : "s"} to complete
+                </Typography>
+              </div>
+              <div className="gauge-container">
+                <Gauge
+                  value={completedTasksCount}
+                  valueMax={totalTasksCount}
+                  startAngle={-110}
+                  endAngle={110}
+                  sx={{
+                    [`& .${gaugeClasses.valueText}`]: {
+                      fontSize: 40,
+                      transform: "translate(0px, 0px)",
+                    },
+                  }}
+                  text={({ value, valueMax }) => `${value} / ${valueMax}`}
+                />
+              </div>
+            </Card>
+          </div>
+          {/* </div> */}
+        </Grid>
+      </Grid>
+    </div>
+  );
 };
 
 export default MyOverview;
