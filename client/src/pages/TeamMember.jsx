@@ -45,9 +45,9 @@ export default function TeamMember() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>NAME</TableCell>
-              <TableCell align="right">EMAIL</TableCell>
-              <TableCell align="right">NUMBER OF ACTIVE TASKS</TableCell>
+              <TableCell align="center">NAME</TableCell>
+              <TableCell align="cener" sx={{ display: { xs: 'none', md: 'table-cell' } }}>EMAIL</TableCell>
+              <TableCell align="right" sx={{ display: { xs: 'none', md: 'table-cell' } }}>NUMBER OF ACTIVE TASKS</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -56,12 +56,12 @@ export default function TeamMember() {
                 key={member._id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell component="th" scope="row">
+                <TableCell align ='center' component="th" scope="row">
                   {`${member.firstName} ${member.lastName}`}
                 </TableCell>
-                <TableCell align="right">{member.email}</TableCell>
+                <TableCell align="center" sx={{ display: { xs: 'none', md: 'table-cell' } }}>{member.email}</TableCell>
                 {/* <TableCell align="right">{member.tasks.length}</TableCell> */}
-                <TableCell align="right">
+                <TableCell align="center">
                   <Badge badgeContent={member.tasks.length} color="primary">
                     <FormatListBulletedIcon color="action" />
                   </Badge>
