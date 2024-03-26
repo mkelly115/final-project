@@ -158,23 +158,23 @@ const UpdateProject = () => {
           {data.project.tasks.every(
             (task) => task.taskStatus === "Completed"
           ) && (
-            <Grid item xs={12}>
-              <InputLabel>Team</InputLabel>
-              <Select
-                name="teamId"
-                label="Team"
-                value={projectData.teamId}
-                onChange={handleChange}
-                fullWidth
-              >
-                {teamsData.teams.map((team) => (
-                  <MenuItem key={team._id} value={team._id}>
-                    {team.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-          )}
+              <Grid item xs={12}>
+                <InputLabel>Team</InputLabel>
+                <Select
+                  name="teamId"
+                  label="Team"
+                  value={projectData.teamId}
+                  onChange={handleChange}
+                  fullWidth
+                >
+                  {teamsData.teams.map((team) => (
+                    <MenuItem key={team._id} value={team._id}>
+                      {team.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+            )}
           <Grid item xs={12}>
             <Button
               variant="contained"
@@ -190,7 +190,7 @@ const UpdateProject = () => {
         </Grid>
       ) : (
         <div>
-          <Button variant="contained" color="primary" onClick={handleEditClick}>
+          <Button variant="contained" color="primary" style={{ backgroundColor: '#e4442b' }} onClick={handleEditClick}>
             Edit
           </Button>
         </div>
