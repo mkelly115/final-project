@@ -1,3 +1,4 @@
+import "../TaskList/TaskList.css"
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -33,7 +34,7 @@ const theme = createTheme({
       main: "#e4442b",
     },
     action: {
-      hover: "#e3f1f1",
+      hover: "#f5f5f5",
     },
   },
 });
@@ -374,6 +375,7 @@ const TaskTable = () => {
                     dateFormat="yyyy-MM-dd"
                     isClearable
                     placeholderText="Click to select a date"
+                    className="custom-datepicker"
                   />
                 </TableCell>
                 <TableCell>
@@ -392,7 +394,7 @@ const TaskTable = () => {
                 <TableCell>
                   <Button
                     variant="contained"
-                    sx={{ backgroundColor: "#a6d8aa" }}
+                    sx={{ backgroundColor: "#e4442b" }}
                     onClick={handleAddRow}
                   >
                     Add Task

@@ -191,7 +191,7 @@ const UpdateProject = () => {
       ) : (
         <div>
           <Button variant="contained" color="primary" style={{ backgroundColor: '#e4442b' }} onClick={handleEditClick}>
-            Edit
+            Edit Project
           </Button>
         </div>
       )}
