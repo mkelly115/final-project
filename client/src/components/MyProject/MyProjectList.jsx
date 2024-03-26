@@ -15,9 +15,9 @@ import webpulselogo from "/webpulselogo.png";
 const theme = createTheme({
   typography: {
     h5: {
-      fontSize: "1.5rem", // Default font size
+      fontSize: "1.5rem", 
       "@media (max-width:1200px)": {
-        fontSize: "1.2rem", // Decrease font size on smaller screens
+        fontSize: "1.2rem", 
       },
     },
     subtitle1: {
