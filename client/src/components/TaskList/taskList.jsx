@@ -107,7 +107,7 @@ const TaskTable = () => {
   const {
     loading: projectsLoading,
     error: projectsError,
-    data: projectsData,
+    // data: projectsData,
     refetch: projectsRefetch,
   } = useQuery(QUERY_SINGLE_USER, {
     variables: { userId: meData?.me?._id },
