@@ -39,8 +39,8 @@ const TeamProjectList = () => {
     return <p>No data found...</p>;
 
   console.log("Projects Data:", projectsData);
+  console.log("Projects Data:", projectsData);
 
-  // Extract the user's team information
   let userTeams = [];
   if (meData.me && meData.me._id && teamsData.teams) {
     userTeams = teamsData.teams.filter((team) =>
