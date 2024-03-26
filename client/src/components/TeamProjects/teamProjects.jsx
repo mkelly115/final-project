@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import TeamTaskList from "../TeamTaskList/TeamTaskList";
-import webpulselogo from "/webpulselogo.png";
+import webpulselogo from "../../../public/webpulselogo.png";
 
 const TeamProjectList = () => {
   const {
@@ -62,16 +62,30 @@ const TeamProjectList = () => {
           <Grid
             item
             key={project._id}
+            xs={12}
+            sm={10}
+            md={8}
+            lg={6}
+            xl={4}
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
-            xs={12}
           >
             <Card
               variant="outlined"
-              sx={{ width: "75%", borderRadius: 2, boxShadow: 3, display: "flex", alignItems: "center"}}
+              sx={{
+                width: "100%",
+                borderRadius: 2,
+                border: 3,
+                borderColor: "#e4442b",
+                boxShadow: 3,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "stretch",
+                
+              }}
             >
               <Avatar
                 alt="WebPulse Logo"
@@ -82,7 +96,7 @@ const TeamProjectList = () => {
                 component={RouterLink}
                 to={`/dashboard/projects/${project._id}`}
                 underline="none"
-                sx={{ display: "block", alignItems: "center" }}
+                sx={{ display: "block", alignItems: "center", width: "100%" }}
               >
                 <CardContent>
                   <Typography
