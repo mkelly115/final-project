@@ -20,6 +20,15 @@ import { validateEmail } from "../../utils/helpers";
 import { QUERY_TEAMS } from "../../utils/queries";
 import { ADD_USER } from "../../utils/mutations";
 
+const styles = {
+  buttonStyle: {
+    background: '#e4442b',
+    margin: '1rem',
+    padding: '.5rem',
+    color: "white"
+  },
+};
+
 const SignupForm = () => {
   const {
     loading: teamsLoading,
@@ -211,7 +220,7 @@ const SignupForm = () => {
           <FormControl
             sx={{ m: 1, width: "50%", flex: 1, justifyContent: "center" }}
           >
-            <Button
+            <Button style={styles.buttonStyle}
               disabled={
                 !(
                   userFormData.firstName &&
@@ -222,7 +231,6 @@ const SignupForm = () => {
               }
               type="submit"
               variant="contained"
-              color="success"
               size="large"
             >
               Submit
