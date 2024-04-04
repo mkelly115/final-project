@@ -22,6 +22,15 @@ const redirectToDashboard = () => {
   window.location.href = "/dashboard";
 };
 
+const styles = {
+  buttonStyle: {
+    background: '#e4442b',
+    margin: '1rem',
+    padding: '.5rem',
+    color: "white"
+  },
+};
+
 const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
   const [validated, setValidated] = useState(null);
@@ -164,12 +173,11 @@ const LoginForm = () => {
           </FormControl>
         </div>
         <div className="buttonContainer">
-          <Button
+          <Button style={styles.buttonStyle}
             sx={{ m: 1, width: "100%" }}
             disabled={!(userFormData.email && userFormData.password)}
             type="submit"
             variant="contained"
-            color="success"
             size="large"
           >
             Submit
