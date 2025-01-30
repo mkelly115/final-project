@@ -61,34 +61,36 @@ const SignupForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log(userFormData);
-
+    console.log("Form submitted with data:", userFormData);
+  
     // Validate email
     if (!validateEmail(userFormData.email)) {
       setErrorMessage("Invalid email address");
       setShowAlert(true);
       return;
     }
-
+  
     // Validate password length
     if (userFormData.password.length < 8) {
       setErrorMessage("Password must be at least 8 characters long");
       setShowAlert(true);
       return;
     }
-
+  
     try {
       const { data } = await addUser({
         variables: {
-          input: userFormData,
+          input: userFormData, // Ensure this matches your GraphQL schema
         },
       });
-
+  
+      console.log("Mutation response:", data);
+  
       // Handle successful signup
       const { token, user } = data.addUser;
       Auth.login(token);
-      console.log("User signed up successfully ", user);
-
+      console.log("User signed up successfully:", user);
+  
       // Reset form data
       setUserFormData({
         firstName: "",
@@ -97,14 +99,27 @@ const SignupForm = () => {
         password: "",
         teamId: "",
       });
-
+  
       setValidated(true);
     } catch (err) {
       console.error("Error signing up:", err);
+      
+      // Check if it's a GraphQL error
+      if (err.graphQLErrors) {
+        console.error("GraphQL Errors:", err.graphQLErrors);
+      }
+  
+      // Check if it's a network error
+      if (err.networkError) {
+        console.error("Network Error:", err.networkError);
+      }
+  
+      setErrorMessage(err.message || "Signup failed. Please try again.");
       setShowAlert(true);
       setValidated(false);
     }
   };
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
