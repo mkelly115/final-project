@@ -46,6 +46,8 @@ const LoginForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+
+    setShowAlert(false);
   
     try {
       const { data } = await login({ variables: { ...userFormData } });
