@@ -32,7 +32,7 @@ const styles = {
 };
 
 const LoginForm = () => {
-  const [userFormData, setUserFormData] = useState({ email: "", password: "" });
+  const [userFormData, setUserFormData] = useState({ email: "jsmith@email.com", password: "webpulse123!" });
   const [validated, setValidated] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -121,7 +121,6 @@ const LoginForm = () => {
   return (
     <Box>
       <form noValidate onSubmit={handleFormSubmit}>
-       
         <div style={{ display: "flex", gap: "10px" }}>
           <FormControl sx={{ m: 1, width: "100%", flex: 1 }} variant="outlined">
             <TextField
@@ -139,11 +138,7 @@ const LoginForm = () => {
         </div>
         <div>
           <FormControl sx={{ m: 1, width: "98%", flex: 1 }} variant="outlined">
-            <InputLabel
-              htmlFor="outlined-adornment-password"
-              required
-              error={validated === false}
-            >
+            <InputLabel htmlFor="outlined-adornment-password" required error={validated === false}>
               Password
             </InputLabel>
             <OutlinedInput
@@ -184,16 +179,15 @@ const LoginForm = () => {
           </Button>
         </div>
       </form>
-       {/* Display alert only if showAlert is true */}
-       {showAlert && (
-          <Alert
-            onClose={() => setShowAlert(false)}
-            open={showAlert}
-            severity="error"
-          >
-            Incorrect email or password. Please try again!
-          </Alert>
-        )}
+      {showAlert && (
+        <Alert
+          onClose={() => setShowAlert(false)}
+          open={showAlert}
+          severity="error"
+        >
+          Incorrect email or password. Please try again!
+        </Alert>
+      )}
     </Box>
   );
 };

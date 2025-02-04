@@ -21,158 +21,158 @@ db.once("open", async () => {
     {
       description: "Implement user authentication functionality",
       taskStatus: "In Progress",
-      dateDue: "05/04/2024",
+      dateDue: "02/05/2025", // updated
     },
     {
       description: "Design and develop data visualization components",
       taskStatus: "Completed",
-      dateDue: "03/20/2024",
+      dateDue: "03/01/2025", // updated
     },
     {
       description: "Integrate with backend APIs for data retrieval",
       taskStatus: "In Progress",
-      dateDue: "03/28/2024",
+      dateDue: "03/10/2025", // updated
     },
     {
       description: "Analyze and optimize bundle size",
       taskStatus: "In Progress",
-      dateDue: "06/30/2024",
+      dateDue: "03/20/2025", // updated
     },
     {
       description: "Implement lazy loading for images and components",
       taskStatus: "In Progress",
-      dateDue: "04/04/2024",
+      dateDue: "02/15/2025", // updated
     },
     {
       description: "Utilize caching mechanisms to improve page load times",
       taskStatus: "Pending",
-      dateDue: "05/08/2024",
+      dateDue: "03/25/2025", // updated
     },
     {
       description: "Set up API gateway infrastructure",
       taskStatus: "In Progress",
-      dateDue: "08/10/2024",
+      dateDue: "02/25/2025", // updated
     },
     {
       description: "Configure routing rules for different microservices",
       taskStatus: "In Progress",
-      dateDue: "06/15/2024",
+      dateDue: "03/05/2025", // updated
     },
     {
       description: "Implement security policies and rate limiting",
       taskStatus: "In Progress",
-      dateDue: "07/07/2024",
+      dateDue: "03/15/2025", // updated
     },
     {
       description: "Decompose monolithic application into microservices",
       taskStatus: "Completed",
-      dateDue: "03/15/2024",
+      dateDue: "02/28/2025", // updated
     },
     {
       description: "Define communication protocols between microservices",
       taskStatus: "In Progress",
-      dateDue: "04/01/2024",
+      dateDue: "03/12/2025", // updated
     },
     {
       description: "Implement service discovery and load balancing",
       taskStatus: "In Progress",
-      dateDue: "06/27/2024",
+      dateDue: "02/20/2025", // updated
     },
     {
       description: "Design database schema for product listings",
       taskStatus: "In Progress",
-      dateDue: "05/22/2024",
+      dateDue: "03/02/2025", // updated
     },
     {
       description: "Implement user registration and login functionality",
       taskStatus: "Completed",
-      dateDue: "02/12/2024",
+      dateDue: "02/12/2025", // updated
     },
     {
       description: "Develop product search and filtering features",
       taskStatus: "In Progress",
-      dateDue: "03/29/2024",
+      dateDue: "03/18/2025", // updated
     },
     {
       description:
         "Integrate platform with social media APIs for user authentication",
       taskStatus: "In Progress",
-      dateDue: "06/19/2024",
+      dateDue: "03/22/2025", // updated
     },
     {
       description: "Implement sharing functionalities for posts and products",
       taskStatus: "In Progress",
-      dateDue: "05/20/2024",
+      dateDue: "03/30/2025", // updated
     },
     {
       description: "Develop notification system for user interactions",
       taskStatus: "In Progress",
-      dateDue: "07/24/2024",
+      dateDue: "02/17/2025", // updated
     },
     {
       description: "Conduct user research and gather requirements",
       taskStatus: "In Progress",
-      dateDue: "06/17/2024",
+      dateDue: "03/28/2025", // updated
     },
     {
       description: "Create wireframes and prototypes for new design",
       taskStatus: "In Progress",
-      dateDue: "08/16/2024",
+      dateDue: "03/25/2025", // updated
     },
     {
       description:
         "Develop responsive UI components using modern design principles",
       taskStatus: "In Progress",
-      dateDue: "07/14/2024",
+      dateDue: "03/10/2025", // updated
     },
     {
       description: "Analyze user feedback and app usage data",
       taskStatus: "Completed",
-      dateDue: "3/08/2024",
+      dateDue: "03/08/2025", // updated
     },
     {
       description: "Refine navigation and user flows",
       taskStatus: "In Progress",
-      dateDue: "03/30/2024",
+      dateDue: "03/04/2025", // updated
     },
     {
       description: "Improve performance and responsiveness of the app",
       taskStatus: "Pending",
-      dateDue: "06/23/2024",
+      dateDue: "03/26/2025", // updated
     },
     {
       description:
         "Assess current infrastructure and identify migration candidates",
       taskStatus: "In Progress",
-      dateDue: "04/20/2024",
+      dateDue: "02/18/2025", // updated
     },
     {
       description: "Plan migration strategy and prioritize workloads",
       taskStatus: "Completed",
-      dateDue: "03/01/2024",
+      dateDue: "03/03/2025", // updated
     },
     {
       description: "Execute migration process with minimal downtime",
       taskStatus: "In Progress",
-      dateDue: "07/05/2024",
+      dateDue: "02/22/2025", // updated
     },
     {
       description:
         "Implement Infrastructure as Code (IaC) using tools like Terraform",
       taskStatus: "In Progress",
-      dateDue: "05/11/2024",
+      dateDue: "03/05/2025", // updated
     },
     {
       description:
         "Automate provisioning and configuration of servers and services",
       taskStatus: "In Progress",
-      dateDue: "03/27/2024",
+      dateDue: "03/07/2025", // updated
     },
     {
       description:
         "Set up continuous integration and deployment pipelines for infrastructure changes",
       taskStatus: "In Progress",
-      dateDue: "8/12/2024",
+      dateDue: "03/15/2025", // updated
     },
   ]);
   console.log("Tasks Seeded");
@@ -181,70 +181,70 @@ db.once("open", async () => {
     {
       name: "React Dashboard Development",
       projectStatus: "In Progress",
-      dateDue: "10/05/2024",
+      dateDue: "03/12/2025", // updated
       team: teams[0]._id,
       tasks: [tasks[0]._id, tasks[1]._id, tasks[2]._id],
     },
     {
       name: "Frontend Performance Optimization",
       projectStatus: "In Progress",
-      dateDue: "11/18/2024",
+      dateDue: "03/25/2025", // updated
       team: teams[0]._id,
       tasks: [tasks[3]._id, tasks[4]._id, tasks[5]._id],
     },
     {
       name: "API Gateway Implementation",
       projectStatus: "In Progress",
-      dateDue: "10/26/2024",
+      dateDue: "02/25/2025", // updated
       team: teams[1]._id,
       tasks: [tasks[6]._id, tasks[7]._id, tasks[8]._id],
     },
     {
       name: "Microservices Architecture Refactoring",
       projectStatus: "In Progress",
-      dateDue: "12/07/2024",
+      dateDue: "03/15/2025", // updated
       team: teams[1]._id,
       tasks: [tasks[9]._id, tasks[10]._id, tasks[11]._id],
     },
     {
       name: "Online Marketplace Platform Development",
       projectStatus: "In Progress",
-      dateDue: "10/12/2024",
+      dateDue: "02/15/2025", // updated
       team: teams[2]._id,
       tasks: [tasks[12]._id, tasks[13]._id, tasks[14]._id],
     },
     {
       name: "Social Media Integration",
       projectStatus: "In Progress",
-      dateDue: "11/13/2024",
+      dateDue: "02/28/2025", // updated
       team: teams[2]._id,
       tasks: [tasks[15]._id, tasks[16]._id, tasks[17]._id],
     },
     {
       name: "Website Redesign",
       projectStatus: "In Progress",
-      dateDue: "12/15/2024",
+      dateDue: "03/10/2025", // updated
       team: teams[3]._id,
       tasks: [tasks[18]._id, tasks[19]._id, tasks[20]._id],
     },
     {
       name: "Mobile App User Experience Enhancement",
       projectStatus: "In Progress",
-      dateDue: "10/04/2024",
+      dateDue: "03/18/2025", // updated
       team: teams[3]._id,
       tasks: [tasks[21]._id, tasks[22]._id, tasks[23]._id],
     },
     {
       name: "Cloud Migration Project",
       projectStatus: "In Progress",
-      dateDue: "11/24/2024",
+      dateDue: "02/22/2025", // updated
       team: teams[4]._id,
       tasks: [tasks[24]._id, tasks[25]._id, tasks[26]._id],
     },
     {
       name: "Infrastructure Automation Project",
       projectStatus: "In Progress",
-      dateDue: "12/10/2024",
+      dateDue: "03/30/2025", // updated
       team: teams[4]._id,
       tasks: [tasks[27]._id, tasks[28]._id, tasks[29]._id],
     },
