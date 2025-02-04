@@ -76,7 +76,7 @@ const LoginForm = () => {
        // Do nothing also if I delete this comment it breaks
       } else {
         console.error("Error logging in: ", err);
-        setShowAlert(true);
+        setShowAlert(false); // This needs to be set to true, but for some reason cannot right now (Error on succesful login issue) 2/4/2025
         setValidated(false);
       }
     }
