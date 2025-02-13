@@ -35,7 +35,7 @@ const ProjectForm = ({ open, handleClose }) => {
     error: teamsError,
     data: teamsData,
   } = useQuery(QUERY_TEAMS);
-  console.log(teamsData);
+
 
   // set initial form state
   const initialState = {
@@ -65,7 +65,6 @@ const ProjectForm = ({ open, handleClose }) => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log("Selected Date:", selectedDate);
     try {
       const input = {
         name: userFormData.name,
@@ -76,7 +75,6 @@ const ProjectForm = ({ open, handleClose }) => {
 
       await addProject({ variables: { input } });
 
-      console.log("Project created successfully ");
 
       setUserFormData({
         name: "",
