@@ -127,13 +127,13 @@ export default function MiniDrawer() {
     localStorage.removeItem("id_token");
     setIsLoggedIn(false);
     setShowModal(false);
-    console.log("Logging out");
+    // console.log("Logging out");
   };
 
   const handleLogin = () => {
     setShowModal(true);
     setActiveTab("login");
-    console.log("Logging in");
+    // console.log("Logging in");
   };
 
   const handleCloseModal = () => {

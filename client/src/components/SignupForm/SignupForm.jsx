@@ -35,7 +35,7 @@ const SignupForm = () => {
     error: teamsError,
     data: teamsData,
   } = useQuery(QUERY_TEAMS);
-  console.log(teamsData);
+  // console.log(teamsData);
 
   // set initial form state
   const [userFormData, setUserFormData] = useState({
@@ -84,12 +84,12 @@ const SignupForm = () => {
         },
       });
   
-      console.log("Mutation response:", data);
+      // console.log("Mutation response:", data);
   
       // Handle successful signup
       const { token, user } = data.addUser;
       Auth.login(token);
-      console.log("User signed up successfully:", user);
+      // console.log("User signed up successfully:", user);
   
       // Reset form data
       setUserFormData({
